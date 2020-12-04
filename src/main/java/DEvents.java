@@ -1,3 +1,4 @@
+import net.dv8tion.jda.api.entities.Invite;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
@@ -7,8 +8,6 @@ import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
 public class DEvents extends ListenerAdapter {
-
-
 
     public void onMessageReceived(@NotNull MessageReceivedEvent e) {
         String      DMessage = e.getMessage().getContentRaw();
@@ -21,12 +20,5 @@ public class DEvents extends ListenerAdapter {
             }
         }
     }
-
-    public void onGuildJoin(GuildMemberJoinEvent e) {
-        e.getUser().getName();
-        Main.getDiscordbot().getUserById(e.getUser().getId());//TODO
-        e.getUser().getId();
-    }
-
 
 }

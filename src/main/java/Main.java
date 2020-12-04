@@ -14,7 +14,6 @@ public class Main extends JavaPlugin {
     public static JDA discordbot;
     public static Main instance;
 
-
     public static void sendToDiscord(String username, String message) {
         TextChannel GAME_TEXT_CHANNEL = discordbot.getTextChannelById("783165153213546537");
         TextChannel ADMIN_TEXT_CHANNEL = discordbot.getTextChannelById("783165108859174972");
@@ -46,6 +45,7 @@ public class Main extends JavaPlugin {
 
 
         discordbot.addEventListener(new DEvents());
+        discordbot.addEventListener(new onGuildJoin());
         Bukkit.getServer().getPluginManager().registerEvents(new MEvents(), this);
         this.getCommand("discord").setExecutor(new MCommands());
         //TODO add event listener
