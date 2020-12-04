@@ -1,0 +1,8 @@
+name: KangarooBot
+main: Main
+version: 1.0
+author: ChewyN
+commands:
+    discord:
+      description: basic functionality
+
