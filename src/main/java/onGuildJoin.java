@@ -1,16 +1,52 @@
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.Invite;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.util.*;
+
 public class onGuildJoin extends ListenerAdapter {
 
-    public void onGuildJoin(GuildMemberJoinEvent e) {
-        User user = e.getUser();
-        user.openPrivateChannel().queue((channel) ->
-        {
-            channel.sendMessage("Hello There").queue();
-        });
-        Main.getDiscordbot().getUserById(e.getUser().getId());//TODO
-        e.getUser().getId();
+
+
+    @Override
+    public void onGuildMemberJoin(GuildMemberJoinEvent e) {
+
+
+        //Making activeCode array from discord
+        e.getMember().getEffectiveName();
+        List<Invite> activeInvites = e.getGuild().retrieveInvites().complete();
+
+        String[] activeCodes = new String[activeInvites.size()];
+        for(int j = 0; j<activeInvites.size(); j++) {
+            activeCodes[j] = activeInvites.get(j).getCode();
+        }
+
+        //Making sentCode array from minecraft
+        HashMap<String, String> playerInvite = MCommands.getPlayerInvite();
+        String[] sentCodes = playerInvite.keySet().toArray(new String[0]);
+
+        //Checking if any codes that were sent my kangaroo are now missing.
+        //Is an invite is missing it is because the user just joined.
+        List<String> usedCode = getUsedCode(sentCodes, activeCodes);
+
+        String mcName = playerInvite.get(usedCode.get(0));
+        e.getMember().modifyNickname(mcName).complete();
+
+//        e.getMember().getUser().openPrivateChannel().queue((channel) -> channel.sendMessage("DEBUG: Your name is: " + mcName).queue());
+
+        Role verified = e.getGuild().getRolesByName("Verified", false).get(0);
+        e.getGuild().addRoleToMember(e.getMember(), verified).queue();
+        MCommands.removeFromPlayerInvite(usedCode.get(0));
+
     }
+
+    private static List<String> getUsedCode(String [] first, String [] second) {
+        List<String> missing = new ArrayList<>(new HashSet<>(Arrays.asList(first)));
+        for (String num : second) {
+            missing.remove(num);
+        }
+        return missing;
+    }
+
 }
