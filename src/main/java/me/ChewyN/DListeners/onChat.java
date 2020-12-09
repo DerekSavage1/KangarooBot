@@ -1,3 +1,6 @@
+package me.ChewyN.DListeners;
+
+import me.ChewyN.Main;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -5,7 +8,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
-public class DEvents extends ListenerAdapter {
+public class onChat extends ListenerAdapter {
 
     public void onMessageReceived(@NotNull MessageReceivedEvent e) {
         String      DMessage = e.getMessage().getContentRaw();

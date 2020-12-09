@@ -1,3 +1,12 @@
+package me.ChewyN;
+
+import me.ChewyN.DListeners.onChat;
+import me.ChewyN.DListeners.onGuildJoin;
+import me.ChewyN.MCommands.DiscordCommand;
+import me.ChewyN.MCommands.TPermissionCommand;
+import me.ChewyN.MListeners.PlayerChat;
+import me.ChewyN.MListeners.PlayerListener;
+import me.ChewyN.managers.PermissionsManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -5,11 +14,13 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 
 public class Main extends JavaPlugin {
@@ -36,16 +47,48 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        awakenTheKangaroo();
+
+//        debug(Level.INFO, "debug-mode is enabled in the config.yml, debug messages will appear until you set this to false.");
+
+        getCommand("tpermissions").setExecutor(new TPermissionCommand());
+
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+
+        for(Player players : Bukkit.getOnlinePlayers()) {
+            PermissionsManager.getPermissionsManager().reload(players);
+        }
+
+        instance = this;
+        super.onEnable();
+
+
+//        discordbot.addEventListener(new DEvents());
+//        discordbot.addEventListener(new onGuildJoin());
+        Bukkit.getServer().getPluginManager().registerEvents(new PlayerChat(), this);
+        this.getCommand("discord").setExecutor(new DiscordCommand());
+    }
+
+    @Override
+    public void onDisable() {
+        for(Player players : Bukkit.getOnlinePlayers()) {
+            PermissionsManager.getPermissionsManager().clear(players);
+        }
+        discordbot.shutdown();
+        instance = null;
+        //FIXME this breaks
+    }
+
+    private void awakenTheKangaroo() {
         List<GatewayIntent> gatewayIntents = new ArrayList<>();
         gatewayIntents.add(GatewayIntent.GUILD_MEMBERS);
         JDABuilder jdaBuilder = JDABuilder.createDefault("NzgwNTQ4NTQyNDgxMzAxNTI2.X7wseg.t1CXGxEgE86R6K7COxpzR5_9Rxo");
         jdaBuilder.enableIntents(gatewayIntents);
         jdaBuilder.addEventListeners(new onGuildJoin());
-        jdaBuilder.addEventListeners(new DEvents());
+        jdaBuilder.addEventListeners(new onChat());
         jdaBuilder.setActivity(Activity.playing("Jumping simulator"));
 
-        instance = this;
-        super.onEnable();
         try {
             discordbot = jdaBuilder.build();
         } catch (LoginException e) {
@@ -56,18 +99,6 @@ public class Main extends JavaPlugin {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-//        discordbot.addEventListener(new DEvents());
-//        discordbot.addEventListener(new onGuildJoin());
-        Bukkit.getServer().getPluginManager().registerEvents(new MEvents(), this);
-        this.getCommand("discord").setExecutor(new MCommands());
-        //TODO add event listener
-    }
-
-    @Override
-    public void onDisable() {
-        discordbot.shutdown();
-        //FIXME this breaks
     }
 
     public static Main getInstance() {
@@ -76,6 +107,12 @@ public class Main extends JavaPlugin {
 
     public static JDA getDiscordbot() {
         return discordbot;
+    }
+
+    public void debug(Level level, String message) {
+//		if(UserSettings.getSettings().isDebugEnabled()) {
+        getLogger().log(level, message);
+//		}
     }
 
 }

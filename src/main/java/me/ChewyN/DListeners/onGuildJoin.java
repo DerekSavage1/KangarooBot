@@ -1,3 +1,7 @@
+package me.ChewyN.DListeners;
+
+import me.ChewyN.MCommands.DiscordCommand;
+import me.ChewyN.Main;
 import net.dv8tion.jda.api.entities.Invite;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
@@ -23,13 +27,15 @@ public class onGuildJoin extends ListenerAdapter {
         }
 
         //Making sentCode array from minecraft
-        HashMap<String, String> playerInvite = MCommands.getPlayerInvite();
+        HashMap<String, String> playerInvite = DiscordCommand.getPlayerInvite();
         String[] sentCodes = playerInvite.keySet().toArray(new String[0]);
 
         //Checking if any codes that were sent my kangaroo are now missing.
         //Is an invite is missing it is because the user just joined.
         List<String> usedCode = getUsedCode(sentCodes, activeCodes);
-
+        if(usedCode.size() > 1) {
+            Main.getInstance().getLogger().warning("OnGuildJoin: getUsedCode returned more than one value!");
+        }
         String mcName = playerInvite.get(usedCode.get(0));
         e.getMember().modifyNickname(mcName).complete();
 
@@ -37,7 +43,7 @@ public class onGuildJoin extends ListenerAdapter {
 
         Role verified = e.getGuild().getRolesByName("Verified", false).get(0);
         e.getGuild().addRoleToMember(e.getMember(), verified).queue();
-        MCommands.removeFromPlayerInvite(usedCode.get(0));
+        DiscordCommand.removeFromPlayerInvite(usedCode.get(0));
 
     }
 

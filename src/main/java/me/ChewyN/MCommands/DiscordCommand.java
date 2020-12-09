@@ -1,3 +1,6 @@
+package me.ChewyN.MCommands;
+
+import me.ChewyN.Main;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Invite;
 import net.dv8tion.jda.api.events.guild.invite.GuildInviteCreateEvent;
@@ -12,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-public class MCommands implements CommandExecutor {
+public class DiscordCommand implements CommandExecutor {
 
     public static HashMap<String, String> playerInvite = new HashMap<>();
 
