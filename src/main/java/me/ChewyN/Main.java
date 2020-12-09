@@ -27,8 +27,8 @@ public class Main extends JavaPlugin {
 
     public static JDA discordbot;
     public static Main instance;
-    public static TextChannel GAME_TEXT_CHANNEL = discordbot.getTextChannelById("783165153213546537");
-    public static TextChannel ADMIN_TEXT_CHANNEL = discordbot.getTextChannelById("783165108859174972");
+    public static TextChannel GAME_TEXT_CHANNEL;
+    public static TextChannel ADMIN_TEXT_CHANNEL;
 
     public static void sendToDiscord(String username, String message) {
         GAME_TEXT_CHANNEL.sendMessage("`" + username + " »` " + message).queue();
@@ -99,6 +99,9 @@ public class Main extends JavaPlugin {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        GAME_TEXT_CHANNEL = discordbot.getTextChannelById("783165153213546537");
+        ADMIN_TEXT_CHANNEL = discordbot.getTextChannelById("783165108859174972");
     }
 
     public static Main getInstance() {

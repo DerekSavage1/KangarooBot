@@ -10,9 +10,9 @@ import java.util.Map;
 
 public class UserSettings {
 	
-	private Map<FileConfiguration, File> fileConfigurationFileMap = new HashMap<>();
+	private final Map<FileConfiguration, File> fileConfigurationFileMap = new HashMap<>();
 	
-	private static UserSettings settings = new UserSettings();
+	private static final UserSettings settings = new UserSettings();
 	private UserSettings() {}
 	public static UserSettings getSettings() {
 		return settings;

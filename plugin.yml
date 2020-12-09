@@ -1,8 +1,11 @@
 name: KangarooBot
-main: Main
+main: me.ChewyN.Main
 version: 1.0
 author: ChewyN
+api-version: 1.16
 commands:
     discord:
       description: basic functionality
-
+    tpermissions:
+      description: Base Command.
+      usage: /tpermissions <rank> <user>

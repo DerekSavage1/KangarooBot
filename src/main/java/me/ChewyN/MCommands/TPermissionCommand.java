@@ -21,7 +21,8 @@ public class TPermissionCommand implements CommandExecutor{
 		
 		if(s instanceof Player) {
 			Player player = (Player) s;
-			
+
+			if(args.length == 0) return false;
 			String targetPermission = args[0];
 			List<String> permissions;
 			FileConfiguration fileConfiguration = UserSettings.getSettings().getFile("permissions");
