@@ -41,7 +41,7 @@ public class onGuildJoin extends ListenerAdapter {
 
 //        e.getMember().getUser().openPrivateChannel().queue((channel) -> channel.sendMessage("DEBUG: Your name is: " + mcName).queue());
 
-        Role verified = e.getGuild().getRolesByName("Verified", false).get(0);
+        Role verified = e.getGuild().getRolesByName("Verified", true).get(0);
         e.getGuild().addRoleToMember(e.getMember(), verified).queue();
         DiscordCommand.removeFromPlayerInvite(usedCode.get(0));
 

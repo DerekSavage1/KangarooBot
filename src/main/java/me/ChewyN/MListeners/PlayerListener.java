@@ -1,7 +1,11 @@
 package me.ChewyN.MListeners;
 
+import me.ChewyN.Main;
 import me.ChewyN.Util.Message;
 import me.ChewyN.managers.PermissionsManager;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -17,9 +21,22 @@ public class PlayerListener implements Listener{
 	public void onJoin(PlayerJoinEvent e) {
 		Player player = e.getPlayer();
 		modifyJoinMessage(e);
+		setOnlineRole(e.getPlayer().getPlayerListName(), true);
 		
 		PermissionsManager.getPermissionsManager().reload(player);
 		PermissionsManager.getPermissionsManager().refresh(player);
+	}
+
+	private void setOnlineRole(String nickname, boolean isOnline) {
+		Member member = Main.getGuild().getMembersByNickname(nickname,true).get(0);
+		Role onlineRole = Main.getGuild().getRolesByName("online in-game", true).get(0);
+		if(isOnline && !member.getOnlineStatus().equals(OnlineStatus.INVISIBLE)) {
+			Main.getGuild().addRoleToMember(member, onlineRole).queue();
+		} else {
+			Main.getGuild().removeRoleFromMember(member, onlineRole).queue();
+		}
+
+
 	}
 
 	private void modifyJoinMessage(PlayerJoinEvent e) {

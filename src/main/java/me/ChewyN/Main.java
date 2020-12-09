@@ -9,9 +9,7 @@ import me.ChewyN.MListeners.PlayerListener;
 import me.ChewyN.managers.PermissionsManager;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -75,9 +73,20 @@ public class Main extends JavaPlugin {
         for(Player players : Bukkit.getOnlinePlayers()) {
             PermissionsManager.getPermissionsManager().clear(players);
         }
+        clearOnlineRole();
         discordbot.shutdown();
         instance = null;
         //FIXME this breaks
+    }
+
+    private void clearOnlineRole() {
+        Member[] members = (Member[]) getGuild().getMembers().toArray();
+        Role onlineRole = getGuild().getRolesByName("online in-game", true).get(0);
+        for(Member user : members) {
+            if(user.getRoles().contains(onlineRole)) {
+                getGuild().removeRoleFromMember(user, onlineRole).complete();
+            }
+        }
     }
 
     private void awakenTheKangaroo() {
@@ -116,6 +125,10 @@ public class Main extends JavaPlugin {
 //		if(UserSettings.getSettings().isDebugEnabled()) {
         getLogger().log(level, message);
 //		}
+    }
+
+    public static Guild getGuild() {
+        return discordbot.getGuildById("767668284559851560");
     }
 
 }

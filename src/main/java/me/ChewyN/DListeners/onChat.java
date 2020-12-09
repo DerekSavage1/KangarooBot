@@ -17,7 +17,8 @@ public class onChat extends ListenerAdapter {
         TextChannel GAME_TEXT_CHANNEL = Main.discordbot.getTextChannelById("783165153213546537");
         if(e.getChannel().equals(GAME_TEXT_CHANNEL)) {
             if(!user.isBot()) {
-                Main.getInstance().getServer().broadcastMessage(ChatColor.GRAY + userName + ": " + ChatColor.WHITE + DMessage);
+                Main.getInstance().getServer().broadcastMessage("[" + ChatColor.AQUA + "Discord" + ChatColor.WHITE + "] " + ChatColor.AQUA + userName + ": " + ChatColor.WHITE + DMessage);
+
             }
         }
     }
