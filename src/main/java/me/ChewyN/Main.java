@@ -62,6 +62,8 @@ public class Main extends JavaPlugin {
         super.onEnable();
 
 
+
+
 //        discordbot.addEventListener(new DEvents());
 //        discordbot.addEventListener(new onGuildJoin());
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerChat(), this);
@@ -80,7 +82,8 @@ public class Main extends JavaPlugin {
     }
 
     private void clearOnlineRole() {
-        Member[] members = (Member[]) getGuild().getMembers().toArray();
+        //fetch members
+        List<Member> members = getGuild().getMembers();
         Role onlineRole = getGuild().getRolesByName("online in-game", true).get(0);
         for(Member user : members) {
             if(user.getRoles().contains(onlineRole)) {

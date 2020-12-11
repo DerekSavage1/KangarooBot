@@ -3,11 +3,14 @@ package me.ChewyN.DListeners;
 import me.ChewyN.MCommands.DiscordCommand;
 import me.ChewyN.Main;
 import net.dv8tion.jda.api.entities.Invite;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.*;
+
+import static me.ChewyN.Main.getGuild;
 
 public class onGuildJoin extends ListenerAdapter {
 
@@ -30,6 +33,7 @@ public class onGuildJoin extends ListenerAdapter {
         HashMap<String, String> playerInvite = DiscordCommand.getPlayerInvite();
         String[] sentCodes = playerInvite.keySet().toArray(new String[0]);
 
+
         //Checking if any codes that were sent my kangaroo are now missing.
         //Is an invite is missing it is because the user just joined.
         List<String> usedCode = getUsedCode(sentCodes, activeCodes);
@@ -44,7 +48,7 @@ public class onGuildJoin extends ListenerAdapter {
         Role verified = e.getGuild().getRolesByName("Verified", true).get(0);
         e.getGuild().addRoleToMember(e.getMember(), verified).queue();
         DiscordCommand.removeFromPlayerInvite(usedCode.get(0));
-
+        setOnlineRole(e.getMember());
     }
 
     private static List<String> getUsedCode(String [] first, String [] second) {
@@ -53,6 +57,12 @@ public class onGuildJoin extends ListenerAdapter {
             missing.remove(num);
         }
         return missing;
+    }
+
+    public void setOnlineRole(Member member) {
+        Role		onlineRole = getGuild().getRolesByName("online in-game", true).get(0);
+
+        getGuild().addRoleToMember(member, onlineRole).complete();
     }
 
 }

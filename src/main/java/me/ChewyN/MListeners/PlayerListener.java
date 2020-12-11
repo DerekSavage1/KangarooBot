@@ -3,7 +3,6 @@ package me.ChewyN.MListeners;
 import me.ChewyN.Main;
 import me.ChewyN.Util.Message;
 import me.ChewyN.managers.PermissionsManager;
-import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import org.bukkit.Bukkit;
@@ -16,6 +15,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import static me.ChewyN.Main.getGuild;
+import static me.ChewyN.Main.getInstance;
 
 public class PlayerListener implements Listener{
 	
@@ -25,36 +25,31 @@ public class PlayerListener implements Listener{
 		modifyJoinMessage(e);
 		String playerName = e.getPlayer().getPlayerListName();
 
-		Main.getInstance().getServer().broadcastMessage("1");
 
-		if(isPlayerDiscordMember(playerName)) {
-			Main.getInstance().getServer().broadcastMessage("3");
-			setOnlineRole(playerName, true);
-		}
+		setOnlineRole(playerName, true);
 
 		PermissionsManager.getPermissionsManager().reload(player);
 		PermissionsManager.getPermissionsManager().refresh(player);
 	}
 
-	private boolean isPlayerDiscordMember(String playerName) {
-
+	public void setOnlineRole(String nickname, boolean setOnline) {
 		Main.getGuild().retrieveMembers();
-		return !Main.getGuild().getMembersByNickname(playerName, false).isEmpty();
 
-	}
+		if(Main.getGuild().getMembersByNickname(nickname, false).isEmpty()) {
+			//FIXME inconsistent. sometimes it works and not other times
+			getInstance().getLogger().warning(nickname + "get members by nickname returned false");
+			return;
+		}
 
-	private void setOnlineRole(String nickname, boolean isOnlineInGame) {
 		Member		member = getGuild().getMembersByNickname(nickname,true).get(0);
 		Role		onlineRole = getGuild().getRolesByName("online in-game", true).get(0);
 
-		Main.getInstance().getServer().broadcastMessage("method called");
 
-		if(isOnlineInGame && !member.getOnlineStatus().equals(OnlineStatus.INVISIBLE)) {
+		if(setOnline) {
 			getGuild().addRoleToMember(member, onlineRole).complete();
 		} else {
 			getGuild().removeRoleFromMember(member, onlineRole).complete();
 		}
-
 
 	}
 
@@ -74,7 +69,7 @@ public class PlayerListener implements Listener{
 		Player player = e.getPlayer();
 		
 		PermissionsManager.getPermissionsManager().clear(player);
-		setOnlineRole(e.getPlayer().getPlayerListName(), false);
+		setOnlineRole(player.getPlayerListName(), false);
 	}
 
 	@EventHandler
@@ -82,7 +77,7 @@ public class PlayerListener implements Listener{
 		e.setCancelled(true);
 		Player	p = e.getPlayer();
 		String	name = p.getDisplayName();
-//		TODO add prefix
+//		TODO add prefix when ranks exist
 		String	message = e.getMessage();
 		Bukkit.broadcastMessage(name + ChatColor.GRAY.toString() + " » " + ChatColor.WHITE.toString() + message);
 	}
