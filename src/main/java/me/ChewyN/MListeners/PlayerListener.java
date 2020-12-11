@@ -1,8 +1,8 @@
 package me.ChewyN.MListeners;
 
-import me.ChewyN.Main;
 import me.ChewyN.Util.Message;
 import me.ChewyN.managers.PermissionsManager;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import org.bukkit.Bukkit;
@@ -14,41 +14,104 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import static me.ChewyN.Main.getGuild;
-import static me.ChewyN.Main.getInstance;
+import java.util.List;
+
+import static me.ChewyN.Main.*;
 
 public class PlayerListener implements Listener{
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
-		Player player = e.getPlayer();
+		Player	player = e.getPlayer();
+		String	playerUUID = player.getUniqueId().toString().replaceAll("-","");
+
+		String faceURL = "https://minotar.net/avatar/"+playerUUID+"/25";
+
+
 		modifyJoinMessage(e);
-		String playerName = e.getPlayer().getPlayerListName();
+		discordMessage(e.getPlayer(),true);
+		setOnlineRole(player.getPlayerListName(), true);
 
 
-		setOnlineRole(playerName, true);
+
 
 		PermissionsManager.getPermissionsManager().reload(player);
 		PermissionsManager.getPermissionsManager().refresh(player);
+
+	}//on join
+
+	@EventHandler
+	public void onQuit(PlayerQuitEvent e) {
+		Player player = e.getPlayer();
+
+		PermissionsManager.getPermissionsManager().clear(player);
+		setOnlineRole(player.getPlayerListName(), false);
+		discordMessage(e.getPlayer(),false);
 	}
 
-	public void setOnlineRole(String nickname, boolean setOnline) {
-		Main.getGuild().retrieveMembers();
+	private void discordMessage(Player player, boolean isJoining) {
+		String			playerUUID = player.getUniqueId().toString().replaceAll("-","");
+		String			faceURL = "https://minotar.net/avatar/"+playerUUID+"/25"; //discord wants as string
+		String			playerName = player.getPlayerListName();
+		int				playerCount = Bukkit.getOnlinePlayers().size();
 
-		if(Main.getGuild().getMembersByNickname(nickname, false).isEmpty()) {
-			//FIXME inconsistent. sometimes it works and not other times
-			getInstance().getLogger().warning(nickname + "get members by nickname returned false");
+		EmbedBuilder	joinMessage = new EmbedBuilder();
+		joinMessage.setThumbnail(faceURL);
+		if(isJoining) {
+			joinMessage.setTitle(playerName + " has joined the server");
+			joinMessage.setColor(0x42f545);
+		} else {
+			joinMessage.setTitle(playerName + " has left the server");
+			joinMessage.setColor(0xeb4034);
+			playerCount--;
+		}
+
+		if(playerCount <= 0) {
+			joinMessage.setDescription("No players online");
+			GAME_TEXT_CHANNEL.sendMessage(joinMessage.build()).queue();
+			joinMessage.clear();
 			return;
 		}
 
-		Member		member = getGuild().getMembersByNickname(nickname,true).get(0);
-		Role		onlineRole = getGuild().getRolesByName("online in-game", true).get(0);
+		//Building description
+		StringBuilder description = new StringBuilder("Now " + playerCount + " players online: \n");
+		for( Player p : Bukkit.getOnlinePlayers()) {
+			if(!isJoining && p.getPlayerListName().equals(player.getPlayerListName())) continue; //if they are quitting leave out their name
+			description.append("`").append(p.getPlayerListName()).append("`, ");
+		}
 
+		description = new StringBuilder(description.substring(0, description.length() - 2)); //removing the space and comma at the end
+		joinMessage.setDescription(description.toString());
+
+		GAME_TEXT_CHANNEL.sendMessage(joinMessage.build()).queue();
+
+		joinMessage.clear();
+
+	} //discord message
+
+	public void setOnlineRole(String nickname, boolean setOnline) {
+		List<Member>	members = getGuild().loadMembers().get();
+		Role			onlineRole = getGuild().getRolesByName("online in-game", true).get(0);
+		Member			match = null;
+
+		for( Member member : members ) {
+			if(member.getNickname() == null) continue;
+
+			if(member.getNickname().equalsIgnoreCase(nickname)) {
+				match = member;
+				break;
+			}
+		}
+
+		if(match == null) {
+			getInstance().getLogger().info("Debug: No match found!");
+			return;
+		}
 
 		if(setOnline) {
-			getGuild().addRoleToMember(member, onlineRole).complete();
+			getGuild().addRoleToMember(match, onlineRole).complete();
 		} else {
-			getGuild().removeRoleFromMember(member, onlineRole).complete();
+			getGuild().removeRoleFromMember(match, onlineRole).complete();
 		}
 
 	}
@@ -62,14 +125,6 @@ public class PlayerListener implements Listener{
 		} else {
 			e.setJoinMessage(Message.getCenteredMessage(ChatColor.YELLOW + p.getName() + ChatColor.AQUA + " has joined the game. Welcome back!"));
 		}
-	}
-
-	@EventHandler
-	public void onQuit(PlayerQuitEvent e) {
-		Player player = e.getPlayer();
-		
-		PermissionsManager.getPermissionsManager().clear(player);
-		setOnlineRole(player.getPlayerListName(), false);
 	}
 
 	@EventHandler
