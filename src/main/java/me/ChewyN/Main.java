@@ -92,6 +92,7 @@ public class Main extends JavaPlugin {
     private void awakenTheKangaroo() {
         List<GatewayIntent> gatewayIntents = new ArrayList<>();
         gatewayIntents.add(GatewayIntent.GUILD_MEMBERS);
+        gatewayIntents.add(GatewayIntent.GUILD_PRESENCES);
         JDABuilder jdaBuilder = JDABuilder.createDefault("NzgwNTQ4NTQyNDgxMzAxNTI2.X7wseg.t1CXGxEgE86R6K7COxpzR5_9Rxo");
         jdaBuilder.enableIntents(gatewayIntents);
         jdaBuilder.addEventListeners(new onGuildJoin());
@@ -128,7 +129,8 @@ public class Main extends JavaPlugin {
     }
 
     public static Guild getGuild() {
-        return discordbot.getGuildById("767668284559851560");
+        return discordbot.getGuilds().get(0);
+        //FIXME
     }
 
 }

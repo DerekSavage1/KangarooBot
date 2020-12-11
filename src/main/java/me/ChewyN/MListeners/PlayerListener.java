@@ -15,25 +15,44 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import static me.ChewyN.Main.getGuild;
+
 public class PlayerListener implements Listener{
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player player = e.getPlayer();
 		modifyJoinMessage(e);
-		setOnlineRole(e.getPlayer().getPlayerListName(), true);
-		
+		String playerName = e.getPlayer().getPlayerListName();
+
+		Main.getInstance().getServer().broadcastMessage("1");
+
+		if(isPlayerDiscordMember(playerName)) {
+			Main.getInstance().getServer().broadcastMessage("3");
+			setOnlineRole(playerName, true);
+		}
+
 		PermissionsManager.getPermissionsManager().reload(player);
 		PermissionsManager.getPermissionsManager().refresh(player);
 	}
 
-	private void setOnlineRole(String nickname, boolean isOnline) {
-		Member member = Main.getGuild().getMembersByNickname(nickname,true).get(0);
-		Role onlineRole = Main.getGuild().getRolesByName("online in-game", true).get(0);
-		if(isOnline && !member.getOnlineStatus().equals(OnlineStatus.INVISIBLE)) {
-			Main.getGuild().addRoleToMember(member, onlineRole).queue();
+	private boolean isPlayerDiscordMember(String playerName) {
+
+		Main.getGuild().retrieveMembers();
+		return !Main.getGuild().getMembersByNickname(playerName, false).isEmpty();
+
+	}
+
+	private void setOnlineRole(String nickname, boolean isOnlineInGame) {
+		Member		member = getGuild().getMembersByNickname(nickname,true).get(0);
+		Role		onlineRole = getGuild().getRolesByName("online in-game", true).get(0);
+
+		Main.getInstance().getServer().broadcastMessage("method called");
+
+		if(isOnlineInGame && !member.getOnlineStatus().equals(OnlineStatus.INVISIBLE)) {
+			getGuild().addRoleToMember(member, onlineRole).complete();
 		} else {
-			Main.getGuild().removeRoleFromMember(member, onlineRole).queue();
+			getGuild().removeRoleFromMember(member, onlineRole).complete();
 		}
 
 
@@ -55,6 +74,7 @@ public class PlayerListener implements Listener{
 		Player player = e.getPlayer();
 		
 		PermissionsManager.getPermissionsManager().clear(player);
+		setOnlineRole(e.getPlayer().getPlayerListName(), false);
 	}
 
 	@EventHandler
