@@ -145,7 +145,7 @@ public class PlayerListener implements Listener{
 		String signMessage =  e.getLine(0) + " " + e.getLine(1)  + " " +  e.getLine(2) + " " + e.getLine(3);
 		String playerName = player.getName();
 
-		if (player.hasPermission("commandspy.see.signs")) player.sendMessage(ChatColor.AQUA + playerName + " » " + signMessage);
+		if (player.hasPermission("commandspy.see.signs")) player.sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + signMessage);
 
 
 		ADMIN_TEXT_CHANNEL.sendMessage("`(Sign) " + playerName + " »` " + signMessage).queue();
