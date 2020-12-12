@@ -34,7 +34,7 @@ public class Main extends JavaPlugin {
     }
 
     public static void sendToAdminDiscord(String username, String message) {
-        ADMIN_TEXT_CHANNEL.sendMessage("`" + username + ": ` " + message).queue();
+        ADMIN_TEXT_CHANNEL.sendMessage("`" + username + "»` " + message).queue();
     }
 
     public static void addUser(String name) {

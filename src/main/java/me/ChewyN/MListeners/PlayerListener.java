@@ -1,5 +1,6 @@
 package me.ChewyN.MListeners;
 
+import me.ChewyN.Main;
 import me.ChewyN.Util.Message;
 import me.ChewyN.managers.PermissionsManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -10,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -137,7 +139,16 @@ public class PlayerListener implements Listener{
 		Bukkit.broadcastMessage(name + ChatColor.GRAY.toString() + " » " + ChatColor.WHITE.toString() + message);
 	}
 
+	@EventHandler
+	public void commandSpySign(SignChangeEvent e) {
+		Player player = (Player) e.getPlayer();
+		String signMessage =  e.getLine(0) + " " + e.getLine(1)  + " " +  e.getLine(2) + " " + e.getLine(3);
+		String playerName = player.getName();
+
+		if (player.hasPermission("commandspy.see.signs")) player.sendMessage(ChatColor.AQUA + playerName + " » " + signMessage);
 
 
-
+		ADMIN_TEXT_CHANNEL.sendMessage("`(Sign) " + playerName + " »` " + signMessage).queue();
+		Main.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + signMessage);
+	}
 }
