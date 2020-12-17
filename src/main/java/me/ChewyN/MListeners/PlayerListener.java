@@ -12,9 +12,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
@@ -25,17 +27,10 @@ public class PlayerListener implements Listener{
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player	player = e.getPlayer();
-		String	playerUUID = player.getUniqueId().toString().replaceAll("-","");
-
-		String faceURL = "https://minotar.net/avatar/"+playerUUID+"/25";
-
 
 		modifyJoinMessage(e);
-		discordMessage(e.getPlayer(),true);
+		discordMessage(player,true);
 		setOnlineRole(player.getPlayerListName(), true);
-
-
-
 
 		PermissionsManager.getPermissionsManager().reload(player);
 		PermissionsManager.getPermissionsManager().refresh(player);
@@ -48,7 +43,7 @@ public class PlayerListener implements Listener{
 
 		PermissionsManager.getPermissionsManager().clear(player);
 		setOnlineRole(player.getPlayerListName(), false);
-		discordMessage(e.getPlayer(),false);
+		discordMessage(player,false);
 	}
 
 	private void discordMessage(Player player, boolean isJoining) {
@@ -141,7 +136,7 @@ public class PlayerListener implements Listener{
 
 	@EventHandler
 	public void commandSpySign(SignChangeEvent e) {
-		Player player = (Player) e.getPlayer();
+		Player player = e.getPlayer();
 		String signMessage =  e.getLine(0) + " " + e.getLine(1)  + " " +  e.getLine(2) + " " + e.getLine(3);
 		String playerName = player.getName();
 
@@ -150,5 +145,19 @@ public class PlayerListener implements Listener{
 
 		ADMIN_TEXT_CHANNEL.sendMessage("`(Sign) " + playerName + " »` " + signMessage).queue();
 		Main.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + signMessage);
+	}
+
+	@EventHandler
+	public void onPlayerDeath(PlayerDeathEvent e) {
+		e.setDeathMessage(Message.getCenteredMessage(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() +  " has died"  + ChatColor.RED + " ☠"));
+
+		new BukkitRunnable(){
+			@Override
+			public void run() {
+				e.getEntity().sendMessage(ChatColor.GOLD + "For 100 coins you can teleport to where you died with /back");
+			}
+		}.runTaskLaterAsynchronously(getInstance(), 30);
+
+
 	}
 }

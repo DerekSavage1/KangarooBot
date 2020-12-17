@@ -37,22 +37,12 @@ public class Main extends JavaPlugin {
         ADMIN_TEXT_CHANNEL.sendMessage("`" + username + "»` " + message).queue();
     }
 
-    public static void addUser(String name) {
-        List<User> targetUsers = discordbot.getUsersByName(name,false);
-        ADMIN_TEXT_CHANNEL.sendMessage(targetUsers.toString()).queue();
-
-    }
-
     @Override
     public void onEnable() {
 
         awakenTheKangaroo();
 
 //        debug(Level.INFO, "debug-mode is enabled in the config.yml, debug messages will appear until you set this to false.");
-
-        getCommand("tpermissions").setExecutor(new TPermissionCommand());
-
-        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
         for(Player players : Bukkit.getOnlinePlayers()) {
             PermissionsManager.getPermissionsManager().reload(players);
@@ -61,13 +51,13 @@ public class Main extends JavaPlugin {
         instance = this;
         super.onEnable();
 
-
-
-
-//        discordbot.addEventListener(new DEvents());
-//        discordbot.addEventListener(new onGuildJoin());
+        //listeners
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerChat(), this);
+
+        //commands
         this.getCommand("discord").setExecutor(new DiscordCommand());
+        this.getCommand("tpermissions").setExecutor(new TPermissionCommand());
     }
 
     @Override
