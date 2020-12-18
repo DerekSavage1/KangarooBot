@@ -1,6 +1,7 @@
 package me.ChewyN.MListeners;
 
 import me.ChewyN.Main;
+import me.ChewyN.Packets.packet;
 import me.ChewyN.Util.Message;
 import me.ChewyN.managers.PermissionsManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -26,24 +27,26 @@ public class PlayerListener implements Listener{
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
-		Player	player = e.getPlayer();
+		Player	p = e.getPlayer();
 
 		modifyJoinMessage(e);
-		discordMessage(player,true);
-		setOnlineRole(player.getPlayerListName(), true);
+		discordMessage(p,true);
+		setOnlineRole(p.getPlayerListName(), true);
+		packet.injectPlayer(p);
 
-		PermissionsManager.getPermissionsManager().reload(player);
-		PermissionsManager.getPermissionsManager().refresh(player);
+		PermissionsManager.getPermissionsManager().reload(p);
+		PermissionsManager.getPermissionsManager().refresh(p);
 
 	}//on join
 
 	@EventHandler
 	public void onQuit(PlayerQuitEvent e) {
-		Player player = e.getPlayer();
+		Player p = e.getPlayer();
 
-		PermissionsManager.getPermissionsManager().clear(player);
-		setOnlineRole(player.getPlayerListName(), false);
-		discordMessage(player,false);
+		PermissionsManager.getPermissionsManager().clear(p);
+		setOnlineRole(p.getPlayerListName(), false);
+		discordMessage(p,false);
+		packet.removePlayer(p);
 	}
 
 	private void discordMessage(Player player, boolean isJoining) {
