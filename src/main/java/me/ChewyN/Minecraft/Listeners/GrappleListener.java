@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 public class GrappleListener implements Listener {
@@ -34,16 +35,25 @@ public class GrappleListener implements Listener {
 
         String fishingRodLore = "Explore the world with ease";
 
-        try {
-            return p.getInventory().getItemInMainHand().getItemMeta().getLore().contains(fishingRodLore);
-        } catch (NullPointerException e) {
-            try {
-                return p.getInventory().getItemInOffHand().getItemMeta().getLore().contains(fishingRodLore);
-            } catch (NullPointerException ex) {
-                return false;
-            }
+
+        ItemMeta mainHandMeta = p.getInventory().getItemInMainHand().getItemMeta();
+        assert mainHandMeta != null;
+
+        ItemMeta offHandMeta = p.getInventory().getItemInOffHand().getItemMeta();
+        assert offHandMeta != null;
+
+
+        if(mainHandMeta.hasLore()) {
+            assert mainHandMeta.getLore() != null;
+            return mainHandMeta.getLore().contains(fishingRodLore);
         }
 
+        if(!offHandMeta.hasLore()) {
+            assert offHandMeta.getLore() != null;
+            return offHandMeta.getLore().contains(fishingRodLore);
+        }
+
+        return false;
     }
 
     private void pullPlayerSlightly(Player p, Location loc){
