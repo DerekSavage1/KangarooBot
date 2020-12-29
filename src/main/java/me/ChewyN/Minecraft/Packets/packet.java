@@ -1,7 +1,6 @@
 package me.ChewyN.Minecraft.Packets;
 
 import io.netty.channel.*;
-import net.minecraft.server.v1_16_R3.PacketPlayOutCloseWindow;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -20,12 +19,6 @@ public class packet {
             @Override
             public void write(ChannelHandlerContext context, Object packet, ChannelPromise promise) throws Exception {
                 //on packet write
-
-                if(packet instanceof PacketPlayOutCloseWindow) {
-                    PacketPlayOutCloseWindow PacketPlayOutCloseWindow = (PacketPlayOutCloseWindow) packet;
-                    p.sendMessage("wait what?");
-                    return;
-                }
 
                 super.write(context, packet, promise);
             }

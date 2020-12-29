@@ -22,7 +22,7 @@ public class GrappleListener implements Listener {
                     p.sendMessage("It is too difficult to grapple while flying!");
                     return;
                 }
-                if(p.getLocation().distance(e.getHook().getLocation()) < 6) {
+                if(p.getLocation().distance(e.getHook().getLocation()) < 0) {
                     pullPlayerSlightly(p, e.getHook().getLocation());
                 } else {
                     pullPlayerToLocation(p, e.getHook().getLocation());
@@ -37,18 +37,16 @@ public class GrappleListener implements Listener {
 
 
         ItemMeta mainHandMeta = p.getInventory().getItemInMainHand().getItemMeta();
-        assert mainHandMeta != null;
 
         ItemMeta offHandMeta = p.getInventory().getItemInOffHand().getItemMeta();
-        assert offHandMeta != null;
 
 
-        if(mainHandMeta.hasLore()) {
+        if(mainHandMeta != null && mainHandMeta.hasLore()) {
             assert mainHandMeta.getLore() != null;
             return mainHandMeta.getLore().contains(fishingRodLore);
         }
 
-        if(!offHandMeta.hasLore()) {
+        if(offHandMeta != null && offHandMeta.hasLore()) {
             assert offHandMeta.getLore() != null;
             return offHandMeta.getLore().contains(fishingRodLore);
         }
