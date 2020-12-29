@@ -1,43 +1,35 @@
 package me.ChewyN;
 
-import me.ChewyN.DListeners.onChat;
-import me.ChewyN.DListeners.onGuildJoin;
-import me.ChewyN.MCommands.DiscordCommand;
-import me.ChewyN.MCommands.GrapplingHook;
-import me.ChewyN.MCommands.TPermissionCommand;
-import me.ChewyN.MListeners.GrappleListener;
-import me.ChewyN.MListeners.PlayerChat;
-import me.ChewyN.MListeners.PlayerListener;
-import me.ChewyN.managers.PermissionsManager;
+import me.ChewyN.Discord.Listeners.onChat;
+import me.ChewyN.Discord.Listeners.onGuildJoin;
+import me.ChewyN.Minecraft.Commands.DiscordCommand;
+import me.ChewyN.Minecraft.Commands.GrapplingHook;
+import me.ChewyN.Minecraft.Listeners.GrappleListener;
+import me.ChewyN.Minecraft.Listeners.Player.JoinAndQuit;
+import me.ChewyN.Minecraft.Listeners.Player.PlayerChat;
+import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;
+import me.ChewyN.Minecraft.Listeners.Player.PlayerSpy;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
+import java.util.Objects;
 
 
 public class Main extends JavaPlugin {
 
     public static JDA discordbot;
     public static Main instance;
-    public static TextChannel GAME_TEXT_CHANNEL;
-    public static TextChannel ADMIN_TEXT_CHANNEL;
 
-    public static void sendToDiscord(String username, String message) {
-        GAME_TEXT_CHANNEL.sendMessage("`" + username + " »` " + message).queue();
-        ADMIN_TEXT_CHANNEL.sendMessage("`" + username + " »` " + message).queue();
-    }
 
-    public static void sendToAdminDiscord(String username, String message) {
-        ADMIN_TEXT_CHANNEL.sendMessage("`" + username + "»` " + message).queue();
-    }
 
     @Override
     public void onEnable() {
@@ -46,29 +38,25 @@ public class Main extends JavaPlugin {
 
 //        debug(Level.INFO, "debug-mode is enabled in the config.yml, debug messages will appear until you set this to false.");
 
-        for(Player players : Bukkit.getOnlinePlayers()) {
-            PermissionsManager.getPermissionsManager().reload(players);
-        }
 
         instance = this;
         super.onEnable();
 
         //listeners
-        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-        Bukkit.getServer().getPluginManager().registerEvents(new PlayerChat(), this);
-        Bukkit.getServer().getPluginManager().registerEvents(new GrappleListener(), this);
+        getServer().getPluginManager().registerEvents(new JoinAndQuit(), this);
+        getServer().getPluginManager().registerEvents(new PlayerChat(), this);
+        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
+        getServer().getPluginManager().registerEvents(new PlayerSpy(), this);
+        getServer().getPluginManager().registerEvents(new GrappleListener(), this);
+
 
         //commands
-        this.getCommand("discord").setExecutor(new DiscordCommand());
-        this.getCommand("tpermissions").setExecutor(new TPermissionCommand());
-        this.getCommand("grapplinghook").setExecutor(new GrapplingHook());
+        Objects.requireNonNull(this.getCommand("discord")).setExecutor(new DiscordCommand());
+        Objects.requireNonNull(this.getCommand("grapplinghook")).setExecutor(new GrapplingHook());
     }
 
     @Override
     public void onDisable() {
-        for(Player players : Bukkit.getOnlinePlayers()) {
-            PermissionsManager.getPermissionsManager().clear(players);
-        }
         clearOnlineRole();
         discordbot.shutdown();
         instance = null;
@@ -107,8 +95,8 @@ public class Main extends JavaPlugin {
             e.printStackTrace();
         }
 
-        GAME_TEXT_CHANNEL = discordbot.getTextChannelById("783165153213546537");
-        ADMIN_TEXT_CHANNEL = discordbot.getTextChannelById("783165108859174972");
+        me.ChewyN.Discord.Util.TextChannels.GAME_TEXT_CHANNEL = discordbot.getTextChannelById("783165153213546537");
+        me.ChewyN.Discord.Util.TextChannels.ADMIN_TEXT_CHANNEL = discordbot.getTextChannelById("783165108859174972");
     }
 
     public static Main getInstance() {
@@ -119,15 +107,9 @@ public class Main extends JavaPlugin {
         return discordbot;
     }
 
-    public void debug(Level level, String message) {
-//		if(UserSettings.getSettings().isDebugEnabled()) {
-        getLogger().log(level, message);
-//		}
-    }
-
     public static Guild getGuild() {
         return discordbot.getGuilds().get(0);
-        //FIXME
+        //This bot will only be used on my discord server.
     }
 
 }

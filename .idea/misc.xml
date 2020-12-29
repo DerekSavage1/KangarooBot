@@ -6,7 +6,7 @@
     </list>
   </component>
   <component name="ExcludeFromValidation">
-    <file url="file://$PROJECT_DIR$/src/main/java/me/ChewyN/MListeners/PlayerListener.java" />
+    <file url="file://$PROJECT_DIR$/src/main/java/me/ChewyN/Minecraft/Listeners/Player/PlayerDeath.java" />
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="MavenProjectsManager">
