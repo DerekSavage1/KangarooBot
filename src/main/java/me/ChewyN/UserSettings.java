@@ -17,11 +17,7 @@ public class UserSettings {
 	public static UserSettings getSettings() {
 		return settings;
 	}
-	
-	public boolean isDebugEnabled() {
-		return getFile("config").getBoolean("debug-mode");
-	}
-	
+
 	public FileConfiguration getFile(String fileName) {
 		File tempFile = new File(Main.getInstance().getDataFolder(), fileName + ".yml");
 		if(!tempFile.exists()) {

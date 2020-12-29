@@ -3,7 +3,9 @@ package me.ChewyN;
 import me.ChewyN.DListeners.onChat;
 import me.ChewyN.DListeners.onGuildJoin;
 import me.ChewyN.MCommands.DiscordCommand;
+import me.ChewyN.MCommands.GrapplingHook;
 import me.ChewyN.MCommands.TPermissionCommand;
+import me.ChewyN.MListeners.GrappleListener;
 import me.ChewyN.MListeners.PlayerChat;
 import me.ChewyN.MListeners.PlayerListener;
 import me.ChewyN.managers.PermissionsManager;
@@ -54,10 +56,12 @@ public class Main extends JavaPlugin {
         //listeners
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerChat(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new GrappleListener(), this);
 
         //commands
         this.getCommand("discord").setExecutor(new DiscordCommand());
         this.getCommand("tpermissions").setExecutor(new TPermissionCommand());
+        this.getCommand("grapplinghook").setExecutor(new GrapplingHook());
     }
 
     @Override

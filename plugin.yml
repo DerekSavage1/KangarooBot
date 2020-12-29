@@ -9,3 +9,6 @@ commands:
     tpermissions:
       description: Base Command.
       usage: /tpermissions <rank> <user>
+    grapplinghook:
+      description: Base Command.
+      usage: /grapplinghook <give/enable/disable> <user>
