@@ -5,9 +5,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import java.util.List;
 import java.util.Objects;
 
 public class GrappleListener implements Listener {
@@ -35,12 +35,15 @@ public class GrappleListener implements Listener {
 
     private boolean isHoldingGrapple(Player p) {
 
-        String lore = "Explore the world with ease";
-        ItemStack itemInOffHand = p.getInventory().getItemInOffHand();
-        ItemStack itemInMainHand = p.getInventory().getItemInOffHand();
+        String fishingRodLore = "Explore the world with ease";
 
-        return Objects.requireNonNull(Objects.requireNonNull(itemInMainHand.getItemMeta()).getLore()).contains(lore)
-                || Objects.requireNonNull(Objects.requireNonNull(itemInOffHand.getItemMeta()).getLore()).contains(lore);
+        List<String> offHandItemLore = Objects.requireNonNull(p.getInventory().getItemInOffHand().getItemMeta()).getLore();
+        List<String> mainHandItemLore = Objects.requireNonNull(p.getInventory().getItemInOffHand().getItemMeta()).getLore();
+
+        assert mainHandItemLore != null;
+        assert offHandItemLore != null;
+
+        return offHandItemLore.contains(fishingRodLore) || mainHandItemLore.contains(fishingRodLore);
 
     }
 
