@@ -10,6 +10,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import static me.ChewyN.Main.getInstance;
 
@@ -17,10 +18,38 @@ public class PlayerDeath implements Listener {
 
 	private static HashMap<Player, Location> deathMap = new HashMap<>();
 
+	Random random = new Random();
+	int messageId = 0;
+	String message = "";
+
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e) {
 		e.setDeathMessage(null); // hmm will this throw an error? FIXME
-		Message.sendCenteredMessage(e.getEntity().getServer(), ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() +  " has died"  + ChatColor.RED + " ☠");
+
+		// Random Death Messages!
+		messageId = random.nextInt(5);
+		switch (messageId) {
+			case 0:
+				message = " has died";
+				break;
+			case 1:
+				message = " fucked up";
+				break;
+			case 2:
+				message = " slipped in barbeque sauce";
+				break;
+			case 3:
+				message = " found the off button";
+				break;
+			case 4:
+				message = " failed to live";
+				break;
+			default:
+				message = " something broke here lol";
+				break;
+		}
+
+		Message.sendCenteredMessage(e.getEntity().getServer(), ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() +  message  + ChatColor.RED + " ☠");
 
 		deathMap.put(e.getEntity(), e.getEntity().getLocation());
 
