@@ -15,5 +15,8 @@ commands:
     back:
       description: Go back when ded
       usage: /back after death
+    trashcan:
+      description: test
+      usage: test
 libraries:
   - com.squareup.okhttp3:okhttp:4.9.0
