@@ -9,13 +9,15 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.ChatColor;
 import org.jetbrains.annotations.NotNull;
 
+import static me.ChewyN.Main.discordbot;
+
 public class onChat extends ListenerAdapter {
 
     public void onMessageReceived(@NotNull MessageReceivedEvent e) {
         String      DMessage = e.getMessage().getContentRaw();
         User        user = e.getAuthor();
         String      userName = user.getName();
-        TextChannel GAME_TEXT_CHANNEL = me.ChewyN.Discord.Util.TextChannels.getGameTextChannel();
+        TextChannel GAME_TEXT_CHANNEL = discordbot.getTextChannelById("883249426062266409"); //TODO use a getter
         if(e.getChannel().equals(GAME_TEXT_CHANNEL)) {
             if(!user.isBot()) {
                 Main.getInstance().getServer().broadcastMessage("[" + ChatColor.AQUA + "Discord" + ChatColor.WHITE + "] " + ChatColor.AQUA + userName + ": " + ChatColor.WHITE + DMessage);
