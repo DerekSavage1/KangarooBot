@@ -22,7 +22,7 @@ public class DiscordCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String label, String[] args) {
         //creates discord link
-        GuildChannel welcomeChannel =  Main.getDiscordbot().getGuildChannelById("784154167467966495");
+        GuildChannel welcomeChannel =  Main.getDiscordbot().getGuildChannelById("885488997361676320");
         assert welcomeChannel != null;
         Invite invite = welcomeChannel.createInvite().setMaxAge(100).setMaxUses(1).setUnique(true).setTemporary(true).complete();
 
