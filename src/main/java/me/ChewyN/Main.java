@@ -28,6 +28,7 @@ import java.util.Objects;
 
 public class Main extends JavaPlugin {
 
+    //remember: what one developer can do in a day, two developers can do in two days
     public static JDA discordbot;
     public static Main instance;
 
