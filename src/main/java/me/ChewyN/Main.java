@@ -95,8 +95,8 @@ public class Main extends JavaPlugin {
             e.printStackTrace();
         }
 
-        me.ChewyN.Discord.Util.TextChannels.GAME_TEXT_CHANNEL = discordbot.getTextChannelById("783165153213546537");
-        me.ChewyN.Discord.Util.TextChannels.ADMIN_TEXT_CHANNEL = discordbot.getTextChannelById("783165108859174972");
+        me.ChewyN.Discord.Util.TextChannels.GAME_TEXT_CHANNEL = discordbot.getTextChannelById("883249426062266409");
+        me.ChewyN.Discord.Util.TextChannels.ADMIN_TEXT_CHANNEL = discordbot.getTextChannelById("883249317111013397");
     }
 
     public static Main getInstance() {

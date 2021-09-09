@@ -1,7 +1,7 @@
 package me.ChewyN.Minecraft.Listeners.Player;
 
 
-import me.ChewyN.Minecraft.Packets.packet;
+//import me.ChewyN.Minecraft.Packets.packet;
 import me.ChewyN.Minecraft.Util.Message;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
@@ -28,7 +28,7 @@ public class JoinAndQuit implements Listener {
         modifyJoinMessage(e);
         sendJoinOrQuitMessageToDiscord(p,true);
         setDiscordOnlineRole(p.getPlayerListName(), true);
-        packet.injectPlayer(p);
+//        packet.injectPlayer(p);
 
 
     }
@@ -39,7 +39,7 @@ public class JoinAndQuit implements Listener {
 
         setDiscordOnlineRole(p.getPlayerListName(), false);
         sendJoinOrQuitMessageToDiscord(p,false);
-        packet.removePlayer(p);
+//        packet.removePlayer(p);
     }
 
     private void modifyJoinMessage(PlayerJoinEvent e) {

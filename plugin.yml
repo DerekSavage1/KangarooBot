@@ -12,3 +12,5 @@ commands:
     grapplinghook:
       description: Base Command.
       usage: /grapplinghook <give/enable/disable> <user>
+libraries:
+  - com.squareup.okhttp3:okhttp:4.9.0
