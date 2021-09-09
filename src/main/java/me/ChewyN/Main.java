@@ -31,6 +31,8 @@ public class Main extends JavaPlugin {
 
 
 
+
+
     @Override
     public void onEnable() {
 
@@ -95,8 +97,10 @@ public class Main extends JavaPlugin {
             e.printStackTrace();
         }
 
-        me.ChewyN.Discord.Util.TextChannels.GAME_TEXT_CHANNEL = discordbot.getTextChannelById("883249426062266409");
-        me.ChewyN.Discord.Util.TextChannels.ADMIN_TEXT_CHANNEL = discordbot.getTextChannelById("883249317111013397");
+
+
+        me.ChewyN.Discord.Util.TextChannels.setGameTextChannel(discordbot.getTextChannelById("883249426062266409"));
+        me.ChewyN.Discord.Util.TextChannels.setAdminTextChannel(discordbot.getTextChannelById("883249317111013397"));
     }
 
     public static Main getInstance() {
