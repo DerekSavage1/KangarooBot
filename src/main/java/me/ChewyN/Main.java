@@ -29,6 +29,8 @@ public class Main extends JavaPlugin {
     public static JDA discordbot;
     public static Main instance;
 
+    //hello there sky
+
 
 
     @Override
