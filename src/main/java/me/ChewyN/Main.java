@@ -116,6 +116,4 @@ public class Main extends JavaPlugin {
         //This bot will only be used on my discord server.
     }
 
-    public static void test() {}
-
 }
