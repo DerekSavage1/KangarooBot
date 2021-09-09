@@ -15,7 +15,7 @@ import static me.ChewyN.Main.getInstance;
 
 public class PlayerDeath implements Listener {
 
-	private HashMap<Player, Location> deathMap = new HashMap<>();
+	private static HashMap<Player, Location> deathMap = new HashMap<>();
 
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e) {
@@ -33,4 +33,8 @@ public class PlayerDeath implements Listener {
 
 
 	}
+
+	 public static Location getPlayerDeathLocation(Player p) {
+		return deathMap.get(p);
+	 }
 }

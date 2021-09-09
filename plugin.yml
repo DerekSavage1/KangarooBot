@@ -12,5 +12,8 @@ commands:
     grapplinghook:
       description: Base Command.
       usage: /grapplinghook <give/enable/disable> <user>
+    back:
+      description: Go back when ded
+      usage: /back after death
 libraries:
   - com.squareup.okhttp3:okhttp:4.9.0

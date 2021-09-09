@@ -9,6 +9,7 @@ import me.ChewyN.Minecraft.Listeners.Player.JoinAndQuit;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerChat;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerSpy;
+import me.Skyla.Minecraft.Commands.BackCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -30,7 +31,7 @@ public class Main extends JavaPlugin {
     public static Main instance;
 
 
-
+    //TODO: CHEWY FOR THE LOVE OF GOD REMOVE THE .IDEA FILES -Love sky <3
 
 
     @Override
@@ -55,6 +56,7 @@ public class Main extends JavaPlugin {
         //commands
         Objects.requireNonNull(this.getCommand("discord")).setExecutor(new DiscordCommand());
         Objects.requireNonNull(this.getCommand("grapplinghook")).setExecutor(new GrapplingHook());
+        Objects.requireNonNull(this.getCommand("back")).setExecutor(new BackCommand());
     }
 
     @Override
