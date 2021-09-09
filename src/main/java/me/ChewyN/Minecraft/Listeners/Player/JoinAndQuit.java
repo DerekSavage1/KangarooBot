@@ -99,7 +99,7 @@ public class JoinAndQuit implements Listener {
 
         if(playerCount <= 0) {
             joinMessage.setDescription("No players online");
-            GAME_TEXT_CHANNEL.sendMessage(joinMessage.build()).queue();
+            getGameTextChannel().sendMessage(joinMessage.build()).queue();
             joinMessage.clear();
             return;
         }
@@ -114,7 +114,7 @@ public class JoinAndQuit implements Listener {
         description = new StringBuilder(description.substring(0, description.length() - 2)); //removing the space and comma at the end
         joinMessage.setDescription(description.toString());
 
-        GAME_TEXT_CHANNEL.sendMessage(joinMessage.build()).queue();
+        getGameTextChannel().sendMessage(joinMessage.build()).queue();
 
         joinMessage.clear();
 
