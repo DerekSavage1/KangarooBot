@@ -2,10 +2,12 @@ package me.ChewyN.Minecraft.Listeners.Player;
 
 
 //import me.ChewyN.Minecraft.Packets.packet;
+import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Minecraft.Util.Message;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -16,8 +18,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;
 
+import static me.ChewyN.Data.ConfigFile.getMinecraftChannel;
 import static me.ChewyN.Main.*;
-import static me.ChewyN.Discord.Util.TextChannels.*;
 
 public class JoinAndQuit implements Listener {
 
@@ -85,6 +87,7 @@ public class JoinAndQuit implements Listener {
         String			faceURL = "https://minotar.net/avatar/"+playerUUID+"/25"; //discord wants as string
         String			playerName = player.getPlayerListName();
         int				playerCount = Bukkit.getOnlinePlayers().size();
+        final TextChannel     DISCORD_MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(discordbot);
 
         EmbedBuilder joinMessage = new EmbedBuilder();
         joinMessage.setThumbnail(faceURL);
@@ -99,7 +102,8 @@ public class JoinAndQuit implements Listener {
 
         if(playerCount <= 0) {
             joinMessage.setDescription("No players online");
-            getGameTextChannel().sendMessage(joinMessage.build()).queue();
+            assert DISCORD_MINECRAFT_CHANNEL != null;
+            DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
             joinMessage.clear();
             return;
         }
@@ -114,7 +118,8 @@ public class JoinAndQuit implements Listener {
         description = new StringBuilder(description.substring(0, description.length() - 2)); //removing the space and comma at the end
         joinMessage.setDescription(description.toString());
 
-        getGameTextChannel().sendMessage(joinMessage.build()).queue();
+        assert DISCORD_MINECRAFT_CHANNEL != null;
+        DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
 
         joinMessage.clear();
 

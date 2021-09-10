@@ -1,5 +1,6 @@
 package me.ChewyN;
 
+import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Discord.Listeners.onChat;
 import me.ChewyN.Discord.Listeners.onGuildJoin;
 import me.ChewyN.Minecraft.Commands.DiscordCommand;
@@ -28,22 +29,29 @@ import java.util.Objects;
 
 public class Main extends JavaPlugin {
 
+    //Inspirational quote of the day: what one developer can do in two days, two developers can do in four
     public static JDA discordbot;
     public static Main instance;
-
-
-    //TODO: CHEWY FOR THE LOVE OF GOD REMOVE THE .IDEA FILES -Love sky <3
+    public static ConfigFile configFile;
 
 
     @Override
     public void onEnable() {
 
+        instance = this;
+
+
+
+        if(!getDataFolder().exists())
+            getDataFolder().mkdir();
+
+        configFile = new ConfigFile(instance);
+        ConfigFile.setup();
+
         awakenTheKangaroo();
 
-//        debug(Level.INFO, "debug-mode is enabled in the config.yml, debug messages will appear until you set this to false.");
 
 
-        instance = this;
         super.onEnable();
 
         //listeners
@@ -64,7 +72,7 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         clearOnlineRole();
-        discordbot.shutdown();
+        discordbot.shutdownNow();
         instance = null;
         //FIXME this breaks
     }
@@ -84,7 +92,7 @@ public class Main extends JavaPlugin {
         List<GatewayIntent> gatewayIntents = new ArrayList<>();
         gatewayIntents.add(GatewayIntent.GUILD_MEMBERS);
         gatewayIntents.add(GatewayIntent.GUILD_PRESENCES);
-        JDABuilder jdaBuilder = JDABuilder.createDefault("NzgwNTQ4NTQyNDgxMzAxNTI2.X7wseg.t1CXGxEgE86R6K7COxpzR5_9Rxo");
+        JDABuilder jdaBuilder = JDABuilder.createDefault(ConfigFile.getDiscordBotID());
         jdaBuilder.enableIntents(gatewayIntents);
         jdaBuilder.addEventListeners(new onGuildJoin());
         jdaBuilder.addEventListeners(new onChat());
@@ -101,10 +109,6 @@ public class Main extends JavaPlugin {
             e.printStackTrace();
         }
 
-
-
-        me.ChewyN.Discord.Util.TextChannels.setGameTextChannel(discordbot.getTextChannelById("883249426062266409"));
-        me.ChewyN.Discord.Util.TextChannels.setAdminTextChannel(discordbot.getTextChannelById("883249317111013397"));
     }
 
     public static Main getInstance() {
@@ -119,5 +123,7 @@ public class Main extends JavaPlugin {
         return discordbot.getGuilds().get(0);
         //This bot will only be used on my discord server.
     }
+
+
 
 }
