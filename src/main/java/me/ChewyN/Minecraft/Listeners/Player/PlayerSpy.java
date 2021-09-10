@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import java.util.Objects;
 
 import static me.ChewyN.Main.discordbot;
+import static me.ChewyN.Main.instance;
 
 
 public class PlayerSpy implements Listener {
@@ -23,7 +24,11 @@ public class PlayerSpy implements Listener {
         String      signMessage =  e.getLine(0) + " " + e.getLine(1)  + " " +  e.getLine(2) + " " + e.getLine(3);
         String      playerName = player.getName();
 
-        if (player.hasPermission("commandspy.see.signs")) player.sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + signMessage);
+
+        for(Player p : instance.getServer().getOnlinePlayers()) {
+            if (p.hasPermission("commandspy.see.signs")) player.sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + signMessage);
+        }
+
 
         sendToAdminDiscord("(Sign) " + playerName, signMessage);
         Main.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + signMessage);
@@ -40,6 +45,10 @@ public class PlayerSpy implements Listener {
             playerName = p.getName();
         } else {
             playerName = p.getCustomName();
+        }
+
+        for(Player player : instance.getServer().getOnlinePlayers()) {
+            if (player.hasPermission("commandspy.see.commands")) player.sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + commandMessage);
         }
 
         sendToAdminDiscord(playerName, commandMessage);
