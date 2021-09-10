@@ -31,6 +31,9 @@ public class ConfigFile extends AbstractFile{
         if(!config.contains("Bot_Status"))
             config.set("Bot_Status", "Jumping Simulator");
 
+        if(!config.contains("Back_Command"))
+            config.set("Back_Command", true);
+
         if(!config.contains("Debug_Enabled"))
             config.set("Debug_Enabled", "False");
 
@@ -97,6 +100,15 @@ public class ConfigFile extends AbstractFile{
     public static String getWelcomeChannelID() {
         try {
             return (String) config.get("Discord_Welcome_Channel");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Boolean getBackCommandUsage() {
+        try {
+            return (Boolean) config.get("Back_Command");
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
