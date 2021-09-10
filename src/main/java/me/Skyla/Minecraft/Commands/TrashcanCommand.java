@@ -19,6 +19,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * A simple command to open a GUI that acts as a "trash can". Players will put it items, close the menu, and the items will be destroyed.
+ * @Author Skyla
+ */
 public class TrashcanCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
