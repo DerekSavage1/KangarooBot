@@ -6,10 +6,10 @@ import java.util.HashMap;
 
 public class LocalChat {
 
-    private HashMap<Player, Boolean> chatMap = new HashMap<>();
+    private HashMap<Player, ChatStatus> chatMap = new HashMap<>();
 
 
-    public Boolean getPlayerChatStatus(Player p) {
+    public ChatStatus getPlayerChatStatus(Player p) {
         try {
             return chatMap.get(p);
         } catch (NullPointerException e) {
