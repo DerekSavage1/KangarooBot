@@ -1,5 +1,6 @@
 package me.ChewyN.Minecraft.Commands;
 
+import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Main;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Invite;
@@ -22,7 +23,7 @@ public class DiscordCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String label, String[] args) {
         //creates discord link
-        GuildChannel welcomeChannel =  Main.getDiscordbot().getGuildChannelById("885488997361676320");
+        GuildChannel welcomeChannel =  Main.getDiscordbot().getGuildChannelById(ConfigFile.getWelcomeChannelID());
         assert welcomeChannel != null;
         Invite invite = welcomeChannel.createInvite().setMaxAge(100).setMaxUses(1).setUnique(true).setTemporary(true).complete();
 

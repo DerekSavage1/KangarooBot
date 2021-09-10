@@ -80,11 +80,15 @@ public class Main extends JavaPlugin {
     private void clearOnlineRole() {
         //fetch members
         List<Member> members = getGuild().getMembers();
-        Role onlineRole = getGuild().getRolesByName("online in-game", true).get(0);
-        for(Member user : members) {
-            if(user.getRoles().contains(onlineRole)) {
-                getGuild().removeRoleFromMember(user, onlineRole).complete();
+        try {
+            Role onlineRole = getGuild().getRolesByName("online in-game", true).get(0);
+            for (Member user : members) {
+                if (user.getRoles().contains(onlineRole)) {
+                    getGuild().removeRoleFromMember(user, onlineRole).complete();
+                }
             }
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
         }
     }
 
@@ -96,7 +100,7 @@ public class Main extends JavaPlugin {
         jdaBuilder.enableIntents(gatewayIntents);
         jdaBuilder.addEventListeners(new onGuildJoin());
         jdaBuilder.addEventListeners(new onChat());
-        jdaBuilder.setActivity(Activity.playing("Jumping simulator"));
+        jdaBuilder.setActivity(Activity.playing(ConfigFile.getBotStatus()));
 
         try {
             discordbot = jdaBuilder.build();
