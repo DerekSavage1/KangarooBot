@@ -24,7 +24,6 @@ public class PlayerDeath implements Listener {
 
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e) {
-		e.setDeathMessage(null); // hmm will this throw an error? FIXME
 
 		// Random Death Messages!
 		messageId = random.nextInt(5);
@@ -49,16 +48,19 @@ public class PlayerDeath implements Listener {
 				break;
 		}
 
-		Message.sendCenteredMessage(e.getEntity().getServer(), ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() +  message  + ChatColor.RED + " ☠");
+
+		String deathMessageCentered = Message.getCenteredMessage(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() +  message  + ChatColor.RED + " ☠");
+		e.setDeathMessage(deathMessageCentered);
 
 		deathMap.put(e.getEntity(), e.getEntity().getLocation());
 
 		new BukkitRunnable(){
 			@Override
 			public void run() {
-				e.getEntity().sendMessage(ChatColor.GOLD + "For 100 coins you can teleport to where you died with /back");
+				e.getEntity().sendMessage(ChatColor.GOLD + "You can teleport to where you died with /back");
 			}
 		}.runTaskLaterAsynchronously(getInstance(), 50);
+
 
 
 	}

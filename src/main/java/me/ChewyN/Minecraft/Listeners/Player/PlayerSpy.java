@@ -1,5 +1,6 @@
 package me.ChewyN.Minecraft.Listeners.Player;
 
+import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -8,7 +9,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import static me.ChewyN.Discord.Util.TextChannels.sendToAdminDiscord;
+import java.util.Objects;
+
+import static me.ChewyN.Main.discordbot;
 
 
 public class PlayerSpy implements Listener {
@@ -42,5 +45,8 @@ public class PlayerSpy implements Listener {
         sendToAdminDiscord(playerName, commandMessage);
     }
 
+    public static void sendToAdminDiscord(String username, String message) {
+        Objects.requireNonNull(ConfigFile.getAdminChannel(discordbot)).sendMessage("`" + username + " »` " + message).queue();
+    }
 
 }
