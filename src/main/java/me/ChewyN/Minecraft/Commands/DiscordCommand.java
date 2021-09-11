@@ -16,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
+import static me.ChewyN.Main.discordbot;
+
 public class DiscordCommand implements CommandExecutor {
 
     public static HashMap<String, String> playerInvite = new HashMap<>();
@@ -23,7 +25,7 @@ public class DiscordCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String label, String[] args) {
         //creates discord link
-        GuildChannel welcomeChannel =  Main.getDiscordbot().getGuildChannelById(ConfigFile.getWelcomeChannelID());
+        GuildChannel welcomeChannel =  ConfigFile.getWelcomeChannel(discordbot);
         assert welcomeChannel != null;
         Invite invite = welcomeChannel.createInvite().setMaxAge(100).setMaxUses(1).setUnique(true).setTemporary(true).complete();
 

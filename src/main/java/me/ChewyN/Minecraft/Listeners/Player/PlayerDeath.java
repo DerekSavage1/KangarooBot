@@ -15,61 +15,24 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 
 import static me.ChewyN.Data.ConfigFile.getDeathMessages;
+import static me.ChewyN.Main.configFile;
 import static me.ChewyN.Main.getInstance;
 
 public class PlayerDeath implements Listener {
 
 	private static final HashMap<Player, DeathStatus> deathMap = new HashMap<>();
 
-    Random random = new Random();
-    int messageId = 0;
-    String message = "";
-
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
 
-//         Random Death Messages!
-        messageId = random.nextInt(5);
-        switch (messageId) {
-            case 0:
-                message = " has died";
-                break;
-            case 1:
-                message = " fucked up";
-                break;
-            case 2:
-                message = " slipped in barbeque sauce";
-                break;
-            case 3:
-                message = " found the off button";
-                break;
-            case 4:
-                message = " failed to live";
-                break;
-            default:
-                message = " something broke here lol";
-                break;
-        }
-
-        //TODO: FIX THIS YAML CONFIG
-        /*
-        String randomDeathMessage = "";
-        try {
-            randomDeathMessage = getDeathMessages().get(new Random().nextInt(getDeathMessages().size()));
-        } catch (NullPointerException ex) {
-            ex.printStackTrace();
-        }
-        */
-
-		String deathMessageCentered = Message.getCenteredMessage(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() +  message  + ChatColor.RED + " ☠");
-		e.setDeathMessage(deathMessageCentered);
+		e.setDeathMessage(getDeathMessage(e, configFile.centeredDeathMessageEnabled()));
 
         deathMap.put(e.getEntity(), new DeathStatus(e.getEntity().getLocation()));
-        Main.getInstance().getLogger().log(Level.INFO, "did status");
 
         if (ConfigFile.backCommandEnabled()) {
             new BukkitRunnable() {
@@ -81,6 +44,22 @@ public class PlayerDeath implements Listener {
 
         }
 
+    }
+
+    private String getDeathMessage(PlayerDeathEvent e, boolean isEnabled) {
+        String randomDeathMessage = " passed away :(";
+
+        List<String> deathMessages = getDeathMessages();
+        if(!deathMessages.isEmpty()) {
+            int messageNumber = new Random().nextInt(getDeathMessages().size());
+            randomDeathMessage = deathMessages.get(messageNumber);
+        }
+
+        if(isEnabled) {
+            Message.getCenteredMessage(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() +  randomDeathMessage  + ChatColor.RED + " ☠");
+        }
+
+        return randomDeathMessage;
     }
 
     public static DeathStatus getPlayerDeathStatus(Player p) {

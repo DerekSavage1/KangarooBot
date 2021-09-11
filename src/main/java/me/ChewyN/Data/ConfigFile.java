@@ -36,21 +36,23 @@ public class ConfigFile extends AbstractFile{
             config.set("Back_Command", true);
 
         if(!config.contains("Debug_Enabled"))
-            config.set("Debug_Enabled", "False");
+            config.set("Debug_Enabled", true);
 
         if(config.getBoolean("Debug_Enabled"))
             instance.getLogger().log(Level.INFO, "debug-mode is enabled in the config.yml," +
                     "debug messages will appear until you set this to false.");
 
         if(!config.contains("Death_Messages"))
-            config.set("Death_Messages", "{is no longer with us, died}");
+            config.set("Death_Messages", "");
+
+        if(!config.contains("Center_Death_Messages"))
+            config.set("Center_Death_Messages", true);
 
 
 
         save();
     }
 
-    @Nonnull
     public static TextChannel getMinecraftChannel(JDA discordbot) {
         try{
             return discordbot.getTextChannelById((String) Objects.requireNonNull(config.get("Discord_Minecraft_Channel")));
@@ -63,7 +65,6 @@ public class ConfigFile extends AbstractFile{
         return null;
     }
 
-    @Nonnull
     public static TextChannel getAdminChannel(JDA discordbot) {
         try{
             return discordbot.getTextChannelById((String) Objects.requireNonNull(config.get("Discord_Admin_Channel")));
@@ -73,7 +74,6 @@ public class ConfigFile extends AbstractFile{
         return null;
     }
 
-    @Nonnull
     public static TextChannel getWelcomeChannel(JDA discordbot) {
         try{
             return discordbot.getTextChannelById((String) Objects.requireNonNull(config.get("Discord_Welcome_Channel")));
@@ -131,5 +131,7 @@ public class ConfigFile extends AbstractFile{
     }
 
 
-
+    public boolean centeredDeathMessageEnabled() {
+        return config.getBoolean("Center_Death_Messages");
+    }
 }
