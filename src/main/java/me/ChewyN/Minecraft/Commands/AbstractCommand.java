@@ -62,6 +62,12 @@ public abstract class AbstractCommand implements CommandExecutor {
         return commandSender;
     }
 
+    /**
+     * Sets the command sender to a player. Use only if the sender is a player.
+     * @param s The command sender
+     */
+    public void setSender(CommandSender s) {
+        this.s = s;
     public void setCommandSender(CommandSender s) {
         this.commandSender = s;
         if(s instanceof Player)
