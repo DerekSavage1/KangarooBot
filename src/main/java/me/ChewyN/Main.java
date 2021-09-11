@@ -19,6 +19,7 @@ import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
@@ -74,8 +75,14 @@ public class Main extends JavaPlugin {
     public void onDisable() {
         // THIS STATEMENT NEEDS TO BE AT THE BEGINNING OF THE METHOD
         sendStartStopMessageToDiscord(false);
-        clearOnlineRole();
-        discordbot.shutdownNow();
+        BukkitScheduler s = getInstance().getServer().getScheduler();
+        s.scheduleSyncDelayedTask(getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                clearOnlineRole();
+                discordbot.shutdownNow();
+            }
+        }, 30l);
         instance = null;
         //FIXME this breaks
     }
