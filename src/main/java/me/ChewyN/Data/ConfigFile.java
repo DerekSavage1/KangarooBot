@@ -3,11 +3,13 @@ package me.ChewyN.Data;
 import me.ChewyN.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
+
+import static me.ChewyN.Main.log;
 
 public class ConfigFile extends AbstractFile{
 
@@ -26,8 +28,8 @@ public class ConfigFile extends AbstractFile{
         if(!config.contains("Discord_Admin_Channel"))
             config.set("Discord_Admin_Channel", "");
 
-        if(!config.contains("DiscordBot_ID"))
-            config.set("DiscordBot_ID", "");
+        if(!config.contains("DiscordBot_Token"))
+            config.set("DiscordBot_Token", null);
 
         if(!config.contains("Bot_Status"))
             config.set("Bot_Status", "Jumping Simulator");
@@ -83,39 +85,48 @@ public class ConfigFile extends AbstractFile{
     }
 
     public static TextChannel getWelcomeChannel(JDA discordbot) {
-        try{
-            return discordbot.getTextChannelById((String) Objects.requireNonNull(config.get("Discord_Welcome_Channel")));
-        } catch(NullPointerException e) {
-            e.printStackTrace();
+        String channelID = config.getString("Discord_Welcome_Channel");
+
+        if(channelID == null) {
+            log(Level.WARNING, "Welcome channel is missing in config.yml.");
+            log(Level.WARNING, "We don't know which channel to send new players to.");
+            log(Level.WARNING, "Disabling /discord command...");
+
         }
-        return null;
+        return discordbot.getTextChannelById(channelID);
+
+        //TODO: disable discord command
+
     }
 
+    @NotNull
     public static String getDiscordBotID () {
-        try {
-            return (String) config.get("DiscordBot_ID");
-        } catch(NullPointerException e) {
-            e.printStackTrace();
+        String ID = config.getString("DiscordBot_ID");
+
+        if(ID == null) {
+            String RED = (char)27 + "[31m";
+            log(Level.SEVERE,RED + "=============================================================================");
+            log(Level.SEVERE,RED + "DiscordBot_ID is blank in plugin.yml! Shutting down...");
+            log(Level.SEVERE,RED + "In order to use this plugin you must create a discord bot.");
+            log(Level.SEVERE,RED + "See https://discord.com/developers/applications/me for more information");
+            log(Level.SEVERE,RED + "Once you create a developer application, create and customize your bot");
+            log(Level.SEVERE,RED + "In the bot tab, copy the Token and put it in the config.yml");
+            log(Level.SEVERE,RED + "Do not share your bot token!. Treat it like a password to your discord");
+            log(Level.SEVERE,RED + "=============================================================================");
+            instance.getServer().getPluginManager().disablePlugin(instance);
         }
-        return null;
+
+        assert ID != null;
+        return ID;
     }
 
+    @NotNull
     public static String getBotStatus () {
-        try {
-            return (String) config.get("Bot_Status");
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+        String status = config.getString("Bot_Status");
+        if(status == null) {
+            return "Minecraft!";
         }
-        return null;
-    }
-
-    public static String getWelcomeChannelID() {
-        try {
-            return (String) config.get("Discord_Welcome_Channel");
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return status;
     }
 
     public static Boolean backCommandEnabled() {
@@ -159,9 +170,14 @@ public class ConfigFile extends AbstractFile{
         return config.getBoolean("Center_Death_Messages");
     }
 
+    public boolean isDebugEnabled() {
+        return config.getBoolean("Debug_Enabled");
+    }
     //TODO make this
     public void reload() {
 
     }
+
+
 
 }

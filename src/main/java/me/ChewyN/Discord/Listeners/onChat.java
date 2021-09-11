@@ -39,7 +39,7 @@ public class onChat extends ListenerAdapter {
 
         if(e.getChannel().equals(ADMIN_TEXT_CHANNEL)) {
 
-            if(e.getAuthor().isBot()) {
+            if(!e.getAuthor().isBot()) {
                 for(Player p : getInstance().getServer().getOnlinePlayers()) {
                     if(p.hasPermission("adminChat.see")) {
                         p.sendMessage("[" + ChatColor.RED + "Admin" + ChatColor.WHITE + "] " + ChatColor.RED + userName + ": " + ChatColor.WHITE + DMessage);

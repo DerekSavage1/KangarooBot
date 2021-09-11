@@ -18,7 +18,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;
 
-import static me.ChewyN.Data.ConfigFile.getMinecraftChannel;
 import static me.ChewyN.Main.*;
 
 public class JoinAndQuit implements Listener {
@@ -70,7 +69,7 @@ public class JoinAndQuit implements Listener {
         }
 
         if(match == null) {
-            getInstance().getLogger().info("Debug: No match found!");
+            debug("No match found!");
             return;
         }
 

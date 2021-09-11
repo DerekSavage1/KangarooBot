@@ -20,14 +20,13 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
 
 public class Main extends JavaPlugin {
@@ -104,10 +103,15 @@ public class Main extends JavaPlugin {
         List<GatewayIntent> gatewayIntents = new ArrayList<>();
         gatewayIntents.add(GatewayIntent.GUILD_MEMBERS);
         gatewayIntents.add(GatewayIntent.GUILD_PRESENCES);
+
         JDABuilder jdaBuilder = JDABuilder.createDefault(ConfigFile.getDiscordBotID());
+
+
+
         jdaBuilder.enableIntents(gatewayIntents);
         jdaBuilder.addEventListeners(new onGuildJoin());
         jdaBuilder.addEventListeners(new onChat());
+
         jdaBuilder.setActivity(Activity.playing(ConfigFile.getBotStatus()));
 
         try {
@@ -164,6 +168,16 @@ public class Main extends JavaPlugin {
         message.clear();
 
 
+    }
+
+    public static void log(Level level, String message) {
+        instance.getServer().getLogger().log(level, message);
+    }
+
+    public static void debug(String message) {
+        if(configFile.isDebugEnabled()) {
+            instance.getServer().getLogger().log(Level.INFO, "Debug: " + message);
+        }
     }
 
 

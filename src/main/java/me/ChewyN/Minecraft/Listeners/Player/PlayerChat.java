@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class PlayerChat implements Listener {
 
-    private static JDA discordbot = Main.getDiscordbot();
+    private static final JDA discordbot = Main.getDiscordbot();
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {

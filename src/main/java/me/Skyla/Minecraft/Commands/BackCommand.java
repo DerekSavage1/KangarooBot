@@ -2,10 +2,12 @@ package me.Skyla.Minecraft.Commands;
 
 import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Main;
-import org.bukkit.*;
-import org.bukkit.block.Block;
+import me.ChewyN.Minecraft.Commands.AbstractCommand;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,12 +21,13 @@ import org.jetbrains.annotations.NotNull;
  * A command that allows players to teleport to their death point once after death.
  * @Author Skyla
  */
-public class BackCommand implements CommandExecutor {
+public class BackCommand extends AbstractCommand implements CommandExecutor {
 
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         // Check if sender is a player
+
         if (!(sender instanceof Player)) {
             sender.sendMessage("MR SQUIDWARD!? I SHOULD KICK YER FUCKING ARSE!");
             return false;

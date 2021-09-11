@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 import static me.ChewyN.Main.discordbot;
 
-public class DiscordCommand implements CommandExecutor {
+public class DiscordCommand extends AbstractCommand implements CommandExecutor{
 
     public static HashMap<String, String> playerInvite = new HashMap<>();
 

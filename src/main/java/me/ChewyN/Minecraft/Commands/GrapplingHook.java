@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class GrapplingHook implements CommandExecutor {
+public class GrapplingHook extends AbstractCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender s, Command cmd, @NotNull String label, String[] args) {
