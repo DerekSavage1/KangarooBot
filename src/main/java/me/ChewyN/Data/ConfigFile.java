@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -133,6 +134,7 @@ public class ConfigFile extends AbstractFile{
         return status;
     }
 
+    @NotNull
     public static Boolean backCommandEnabled() {
         try {
             return (Boolean) config.get("Back_Command");
