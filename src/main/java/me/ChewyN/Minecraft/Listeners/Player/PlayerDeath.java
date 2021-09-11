@@ -26,6 +26,7 @@ import static me.ChewyN.Main.getInstance;
 public class PlayerDeath implements Listener {
 
 	private static final HashMap<Player, DeathStatus> deathMap = new HashMap<>();
+    private String cOD = "unknown";
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
@@ -33,6 +34,8 @@ public class PlayerDeath implements Listener {
 		e.setDeathMessage(getDeathMessage(e, configFile.centeredDeathMessageEnabled()));
 
         deathMap.put(e.getEntity(), new DeathStatus(e.getEntity().getLocation()));
+
+        cOD = e.getDeathMessage();
 
         if (ConfigFile.backCommandEnabled()) {
             new BukkitRunnable() {
