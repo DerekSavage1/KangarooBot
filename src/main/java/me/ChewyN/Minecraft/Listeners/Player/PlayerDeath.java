@@ -47,7 +47,7 @@ public class PlayerDeath implements Listener {
     }
 
     private String getDeathMessage(PlayerDeathEvent e, boolean isEnabled) {
-        String randomDeathMessage = " passed away :(";
+        String randomDeathMessage = "passed away :(";
 
         List<String> deathMessages = getDeathMessages();
         if(!deathMessages.isEmpty()) {
@@ -56,7 +56,7 @@ public class PlayerDeath implements Listener {
         }
 
         if(isEnabled) {
-            Message.getCenteredMessage(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() +  randomDeathMessage  + ChatColor.RED + " ☠");
+            Message.getCenteredMessage(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() + " " + randomDeathMessage  + ChatColor.RED + " ☠");
         }
 
         return randomDeathMessage;
