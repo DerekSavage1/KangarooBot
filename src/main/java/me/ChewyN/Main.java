@@ -70,6 +70,7 @@ public class Main extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("back")).setExecutor(new BackCommand());
         Objects.requireNonNull(this.getCommand("trashcan")).setExecutor(new TrashcanCommand());
         Objects.requireNonNull(this.getCommand("kgrl")).setExecutor(new ReloadCommand());
+
         // THIS STATEMENT NEEDS TO REMAIN AT THE END OF THE METHOD
         sendStartStopMessageToDiscord(true);
     }
