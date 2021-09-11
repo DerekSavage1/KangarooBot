@@ -19,6 +19,11 @@ public class GrapplingHook extends AbstractCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender s, Command cmd, @NotNull String label, String[] args) {
 
+        if(!isCommandEnabled()) {
+            s.sendMessage(net.md_5.bungee.api.ChatColor.RED + "Command is disabled.");
+            return true;
+        }
+
         setup(s, true, false);
 
         if(cmd.getName().equals("grapplinghook")) {

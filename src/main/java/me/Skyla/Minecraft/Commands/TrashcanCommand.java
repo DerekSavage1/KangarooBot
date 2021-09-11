@@ -1,6 +1,7 @@
 package me.Skyla.Minecraft.Commands;
 
 import me.ChewyN.Minecraft.Commands.AbstractCommand;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,6 +18,11 @@ import org.jetbrains.annotations.NotNull;
 public class TrashcanCommand extends AbstractCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if(!isCommandEnabled()) {
+            sender.sendMessage(ChatColor.RED + "Command is disabled.");
+            return true;
+        }
+
         if (!(sender instanceof Player)) {
             sender.sendMessage("MR SQUIDWARD!? I SHOULD KICK YER FUCKING ARSE!");
             return false;

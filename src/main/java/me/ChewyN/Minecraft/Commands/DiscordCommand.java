@@ -25,6 +25,10 @@ public class DiscordCommand extends AbstractCommand implements CommandExecutor{
     @Override
     public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String label, String[] args) {
 
+        if(!isCommandEnabled()) {
+            s.sendMessage(ChatColor.RED + "Command is disabled.");
+            return true;
+        }
 
         //creates discord link
         GuildChannel welcomeChannel =  ConfigFile.getWelcomeChannel(discordbot);
