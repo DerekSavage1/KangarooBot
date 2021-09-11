@@ -6,30 +6,24 @@ import me.ChewyN.Minecraft.Util.Message;
 import me.Skyla.Minecraft.Objects.DeathStatus;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
-import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.logging.Level;
 
 import static me.ChewyN.Data.ConfigFile.getDeathMessages;
 import static me.ChewyN.Main.configFile;
-import static me.ChewyN.Main.getInstance;
 
 public class PlayerDeath implements Listener {
 
     private static final HashMap<Player, DeathStatus> deathMap = new HashMap<>();
-    private String cOD = "unknown";
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
@@ -38,7 +32,7 @@ public class PlayerDeath implements Listener {
 
         deathMap.put(e.getEntity(), new DeathStatus(e.getEntity().getLocation()));
 
-        cOD = e.getEntity().getLastDamageCause().getCause().name();
+        String cOD = Objects.requireNonNull(e.getEntity().getLastDamageCause()).getCause().name();
         String l  = ("X:" + e.getEntity().getLocation().getBlockX() + ", Y: " + e.getEntity().getLocation().getBlockY() + ", Z: " + e.getEntity().getLocation().getBlockZ());
 
         sendDeathMessageToDiscord(e.getEntity().getName(), cOD, l);
