@@ -42,8 +42,10 @@ public class ConfigFile extends AbstractFile{
             instance.getLogger().log(Level.INFO, "debug-mode is enabled in the config.yml," +
                     "debug messages will appear until you set this to false.");
 
+        List<String> defaultDeathMessages = null;
+        defaultDeathMessages.add("test");
         if(!config.contains("Death_Messages"))
-            config.set("Death_Messages", "");
+            config.set("Death_Messages", defaultDeathMessages);
 
         if(!config.contains("Center_Death_Messages"))
             config.set("Center_Death_Messages", true);
