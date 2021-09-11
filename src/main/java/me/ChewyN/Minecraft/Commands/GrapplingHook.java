@@ -19,6 +19,8 @@ public class GrapplingHook extends AbstractCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender s, Command cmd, @NotNull String label, String[] args) {
 
+        setup(s, true, false);
+
         if(cmd.getName().equals("grapplinghook")) {
             if(s instanceof Player) {
                 Player sender = (Player) s;

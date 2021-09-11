@@ -9,8 +9,8 @@ public abstract class AbstractCommand implements CommandExecutor {
 
 
     @NotNull private    boolean isCommandEnabled;
-    private             boolean isSenderConsole;
-    private             boolean isConsoleSenderAllowed;
+    private             boolean senderIsConsole;
+    private             boolean ConsoleSenderAllowed;
     private             Player p;
     private             CommandSender s;
 
@@ -18,25 +18,12 @@ public abstract class AbstractCommand implements CommandExecutor {
         isCommandEnabled = true;
     }
 
-    public void setup(CommandSender _s) {
-        s = _s;
-        isCommandEnabled = true;
-        isSenderConsole = _s instanceof Player;
-        isConsoleSenderAllowed = true;
-    }
-
-    public void setup(CommandSender _s, boolean _isCommandEnabled) {
-        s = _s;
-        isCommandEnabled = _isCommandEnabled;
-        isSenderConsole = _s instanceof Player;
-        isConsoleSenderAllowed = true;
-    }
-
-    public void setup(CommandSender _s, boolean _isCommandEnabled, boolean _isConsoleSenderAllowed) {
-        s = _s;
-        isCommandEnabled = _isCommandEnabled;
-        isSenderConsole = _s instanceof Player;
-        isConsoleSenderAllowed = _isConsoleSenderAllowed;
+    public void setup(CommandSender s, boolean isCommandEnabled, boolean isConsoleSenderAllowed) {
+        setSender(s);
+        setCommandEnabled(isCommandEnabled);
+        setSenderIsConsole(s instanceof Player);
+        setConsoleSenderAllowed(isConsoleSenderAllowed);
+        if(!senderIsConsole) setPlayer((Player) s);
     }
 
     public boolean isCommandEnabled() {
@@ -47,20 +34,20 @@ public abstract class AbstractCommand implements CommandExecutor {
         isCommandEnabled = commandEnabled;
     }
 
-    public boolean isSenderConsole() {
-        return isSenderConsole;
+    public boolean isSenderIsConsole() {
+        return senderIsConsole;
     }
 
-    public void setSenderConsole(boolean senderConsole) {
-        isSenderConsole = senderConsole;
+    public void setSenderIsConsole(boolean senderIsConsole) {
+        this.senderIsConsole = senderIsConsole;
     }
 
     public boolean isConsoleSenderAllowed() {
-        return isConsoleSenderAllowed;
+        return ConsoleSenderAllowed;
     }
 
     public void setConsoleSenderAllowed(boolean consoleSenderAllowed) {
-        isConsoleSenderAllowed = consoleSenderAllowed;
+        ConsoleSenderAllowed = consoleSenderAllowed;
     }
 
     public Player getPlayer() {
