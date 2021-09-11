@@ -24,6 +24,8 @@ public class DiscordCommand extends AbstractCommand implements CommandExecutor{
 
     @Override
     public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String label, String[] args) {
+
+
         //creates discord link
         GuildChannel welcomeChannel =  ConfigFile.getWelcomeChannel(discordbot);
         assert welcomeChannel != null;
