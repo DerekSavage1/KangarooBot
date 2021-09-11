@@ -11,8 +11,8 @@ public abstract class AbstractCommand implements CommandExecutor {
     @NotNull private    boolean isCommandEnabled;
     private             boolean senderIsConsole;
     private             boolean ConsoleSenderAllowed;
-    private             Player p;
-    private             CommandSender s;
+    private             Player player;
+    private             CommandSender commandSender;
 
     public AbstractCommand() {
         isCommandEnabled = true;
@@ -51,19 +51,19 @@ public abstract class AbstractCommand implements CommandExecutor {
     }
 
     public Player getPlayer() {
-        return p;
+        return player;
     }
 
     public void setPlayer(Player p) {
-        this.p = p;
+        this.player = p;
     }
 
     public CommandSender getSender() {
-        return s;
+        return commandSender;
     }
 
     public void setSender(CommandSender s) {
-        this.s = s;
+        this.commandSender = s;
         if(s instanceof Player)
             setPlayer((Player) s);
     }
