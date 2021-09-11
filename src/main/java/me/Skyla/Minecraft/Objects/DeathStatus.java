@@ -12,7 +12,7 @@ import org.bukkit.Location;
 public class DeathStatus {
 
     private Location l;
-    private Boolean hasTeleported = false;
+    private Boolean hasTeleported;
 
     /**
      * Constructor.
@@ -20,6 +20,7 @@ public class DeathStatus {
      */
     public DeathStatus (Location loc) {
         l = loc;
+        hasTeleported = false;
     }
 
     /**

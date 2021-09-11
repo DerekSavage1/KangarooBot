@@ -5,7 +5,6 @@ import me.ChewyN.Main;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,9 +34,9 @@ public class BackCommand implements CommandExecutor {
         Player p = (Player) sender;
 
         // If command is enabled or if the player has not teleported back once yet, run the command
-        if (ConfigFile.backCommandEnabled() && !PlayerDeath.getPlayerDeathLocation(p).getTPStatus()) {
+        if (ConfigFile.backCommandEnabled() && !PlayerDeath.getPlayerDeathStatus(p).getTPStatus()) {
 
-            Location l = PlayerDeath.getPlayerDeathLocation(p).getLocation();
+            Location l = PlayerDeath.getPlayerDeathStatus(p).getLocation();
             Block b = l.getBlock();
 
             if (b.getType() == Material.LAVA || b.getType().isAir()) {
@@ -55,12 +53,12 @@ public class BackCommand implements CommandExecutor {
                     }
                 }, 20L);
                 // set tp status to true
-                PlayerDeath.getPlayerDeathLocation(p).setTPStatus(true);
+                PlayerDeath.getPlayerDeathStatus(p).setTPStatus(true);
                 return true;
             }
             p.teleport(l);
             // set tp status to true
-            PlayerDeath.getPlayerDeathLocation(p).setTPStatus(true);
+            PlayerDeath.getPlayerDeathStatus(p).setTPStatus(true);
             return true;
         }
         p.sendMessage(ChatColor.RED + "This command has been disabled, or you have already teleported back!");

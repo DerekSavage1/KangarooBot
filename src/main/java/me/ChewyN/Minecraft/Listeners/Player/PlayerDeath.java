@@ -4,6 +4,7 @@ import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Main;
 import me.ChewyN.Minecraft.Util.Message;
 import me.Skyla.Minecraft.Objects.DeathStatus;
+import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -15,6 +16,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.HashMap;
 import java.util.Random;
+import java.util.logging.Level;
 
 import static me.ChewyN.Data.ConfigFile.getDeathMessages;
 import static me.ChewyN.Main.getInstance;
@@ -52,12 +54,22 @@ public class PlayerDeath implements Listener {
                 message = " something broke here lol";
                 break;
         }
-		String randomDeathMessage = getDeathMessages().get(new Random().nextInt(getDeathMessages().size()));
 
-		String deathMessageCentered = Message.getCenteredMessage(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() +  randomDeathMessage  + ChatColor.RED + " ☠");
+        //TODO: FIX THIS YAML CONFIG
+        /*
+        String randomDeathMessage = "";
+        try {
+            randomDeathMessage = getDeathMessages().get(new Random().nextInt(getDeathMessages().size()));
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+        }
+        */
+
+		String deathMessageCentered = Message.getCenteredMessage(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() +  message  + ChatColor.RED + " ☠");
 		e.setDeathMessage(deathMessageCentered);
 
         deathMap.put(e.getEntity(), new DeathStatus(e.getEntity().getLocation()));
+        Main.getInstance().getLogger().log(Level.INFO, "did status");
 
         if (ConfigFile.backCommandEnabled()) {
             new BukkitRunnable() {
@@ -71,7 +83,7 @@ public class PlayerDeath implements Listener {
 
     }
 
-    public static DeathStatus getPlayerDeathLocation(Player p) {
+    public static DeathStatus getPlayerDeathStatus(Player p) {
         return deathMap.get(p);
     }
 

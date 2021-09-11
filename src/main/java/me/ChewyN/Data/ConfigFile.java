@@ -119,8 +119,15 @@ public class ConfigFile extends AbstractFile{
         }
         return null;
     }
+
     public static List<String> getDeathMessages() {
-        return config.getStringList("Death_Messages");
+        try {
+            return config.getStringList("Death_Messages");
+        } catch (Exception e) {
+            Main.getInstance().getLogger().log(Level.SEVERE, "Incorrect config.yml!");
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
