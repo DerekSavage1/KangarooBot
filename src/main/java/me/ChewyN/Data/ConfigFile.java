@@ -3,9 +3,8 @@ package me.ChewyN.Data;
 import me.ChewyN.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
-import org.eclipse.jgit.annotations.NonNull;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 import java.util.logging.Level;
 
@@ -29,6 +28,12 @@ public class ConfigFile extends AbstractFile{
         if(!config.contains("DiscordBot_ID"))
             config.set("DiscordBot_ID", "");
 
+        if(!config.contains("Bot_Status"))
+            config.set("Bot_Status", "Jumping Simulator");
+
+        if(!config.contains("Back_Command"))
+            config.set("Back_Command", true);
+
         if(!config.contains("Debug_Enabled"))
             config.set("Debug_Enabled", "False");
 
@@ -36,10 +41,11 @@ public class ConfigFile extends AbstractFile{
             instance.getLogger().log(Level.INFO, "debug-mode is enabled in the config.yml," +
                     "debug messages will appear until you set this to false.");
 
+
         save();
     }
 
-    @NonNull
+    @Nonnull
     public static TextChannel getMinecraftChannel(JDA discordbot) {
         try{
             return discordbot.getTextChannelById((String) Objects.requireNonNull(config.get("Discord_Minecraft_Channel")));
@@ -52,7 +58,7 @@ public class ConfigFile extends AbstractFile{
         return null;
     }
 
-    @NonNull
+    @Nonnull
     public static TextChannel getAdminChannel(JDA discordbot) {
         try{
             return discordbot.getTextChannelById((String) Objects.requireNonNull(config.get("Discord_Admin_Channel")));
@@ -62,7 +68,7 @@ public class ConfigFile extends AbstractFile{
         return null;
     }
 
-    @NonNull
+    @Nonnull
     public static TextChannel getWelcomeChannel(JDA discordbot) {
         try{
             return discordbot.getTextChannelById((String) Objects.requireNonNull(config.get("Discord_Welcome_Channel")));
@@ -81,6 +87,33 @@ public class ConfigFile extends AbstractFile{
         return null;
     }
 
+    @Nonnull
+    public static String getBotStatus () {
+        try {
+            return (String) config.get("Bot_Status");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getWelcomeChannelID() {
+        try {
+            return (String) config.get("Discord_Welcome_Channel");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Boolean getBackCommandUsage() {
+        try {
+            return (Boolean) config.get("Back_Command");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 }
