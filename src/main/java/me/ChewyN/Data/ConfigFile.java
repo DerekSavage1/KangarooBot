@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -20,8 +19,13 @@ public class ConfigFile extends AbstractFile{
 
     public static void setup() {
 
-        if(!config.contains("Discord_Welcome_Channel"))
-            config.set("Discord_Welcome_Channel", "");
+        if(!config.contains("Discord_Welcome_Channel") ||
+                config.getString("Discord_Welcome_Channel") == null) {
+            log(Level.WARNING, "Welcome channel is missing in config.yml.");
+            log(Level.WARNING, "We don't know which channel to send new players to.");
+            log(Level.WARNING, "Disabling /discord command..."); //TODO: disable discord command
+            config.set("Discord_Welcome_Channel", null);
+        }
 
         if(!config.contains("Discord_Minecraft_Channel"))
             config.set("Discord_Minecraft_Channel", "");
@@ -89,14 +93,14 @@ public class ConfigFile extends AbstractFile{
         String channelID = config.getString("Discord_Welcome_Channel");
 
         if(channelID == null) {
-            log(Level.WARNING, "Welcome channel is missing in config.yml.");
-            log(Level.WARNING, "We don't know which channel to send new players to.");
-            log(Level.WARNING, "Disabling /discord command...");
+            log(Level.WARNING, "Discord command disabled! No welcome channel found!");
 
+            return null;
         }
+
         return discordbot.getTextChannelById(channelID);
 
-        //TODO: disable discord command
+
 
     }
 
@@ -105,15 +109,14 @@ public class ConfigFile extends AbstractFile{
         String ID = config.getString("DiscordBot_ID");
 
         if(ID == null) {
-            String RED = (char)27 + "[31m";
-            log(Level.SEVERE,RED + "=============================================================================");
-            log(Level.SEVERE,RED + "DiscordBot_ID is blank in plugin.yml! Shutting down...");
-            log(Level.SEVERE,RED + "In order to use this plugin you must create a discord bot.");
-            log(Level.SEVERE,RED + "See https://discord.com/developers/applications/me for more information");
-            log(Level.SEVERE,RED + "Once you create a developer application, create and customize your bot");
-            log(Level.SEVERE,RED + "In the bot tab, copy the Token and put it in the config.yml");
-            log(Level.SEVERE,RED + "Do not share your bot token!. Treat it like a password to your discord");
-            log(Level.SEVERE,RED + "=============================================================================");
+            log(Level.SEVERE, "=============================================================================");
+            log(Level.SEVERE,"DiscordBot_ID is blank in plugin.yml! Shutting down...");
+            log(Level.SEVERE,"In order to use this plugin you must create a discord bot.");
+            log(Level.SEVERE,"See https://discord.com/developers/applications/me for more information");
+            log(Level.SEVERE,"Once you create a developer application, create and customize your bot");
+            log(Level.SEVERE,"In the bot tab, copy the Token and put it in the config.yml");
+            log(Level.SEVERE,"Do not share your bot token!. Treat it like a password to your discord");
+            log(Level.SEVERE,"=============================================================================");
             instance.getServer().getPluginManager().disablePlugin(instance);
         }
 
