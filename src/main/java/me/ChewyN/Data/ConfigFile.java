@@ -111,7 +111,7 @@ public class ConfigFile extends AbstractFile{
         return null;
     }
 
-    public static Boolean getBackCommandUsage() {
+    public static Boolean backCommandEnabled() {
         try {
             return (Boolean) config.get("Back_Command");
         } catch (NullPointerException e) {

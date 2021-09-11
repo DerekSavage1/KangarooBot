@@ -36,7 +36,7 @@ public class BackCommand implements CommandExecutor {
         Player p = (Player) sender;
 
         // If command is enabled or if the player has not teleported back once yet, run the command
-        if (ConfigFile.getBackCommandUsage() && !PlayerDeath.getPlayerDeathLocation(p).getTPStatus()) {
+        if (ConfigFile.backCommandEnabled() && !PlayerDeath.getPlayerDeathLocation(p).getTPStatus()) {
 
             Location l = PlayerDeath.getPlayerDeathLocation(p).getLocation();
             Block b = l.getBlock();
