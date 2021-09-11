@@ -59,7 +59,7 @@ public class PlayerDeath implements Listener {
 
         deathMap.put(e.getEntity(), new DeathStatus(e.getEntity().getLocation()));
 
-        if (ConfigFile.getBackCommandUsage()) {
+        if (ConfigFile.backCommandEnabled()) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
