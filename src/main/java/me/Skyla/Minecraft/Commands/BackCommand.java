@@ -17,8 +17,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 
-import static me.ChewyN.Minecraft.Listeners.Player.PlayerDeath.clearPlayerDeathLocation;
-
 /**
  * A command that allows players to teleport to their death point once after death.
  * @Author Skyla
