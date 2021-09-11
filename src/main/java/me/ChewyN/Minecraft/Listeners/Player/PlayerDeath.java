@@ -16,11 +16,12 @@ import org.bukkit.scheduler.BukkitScheduler;
 import java.util.HashMap;
 import java.util.Random;
 
+import static me.ChewyN.Data.ConfigFile.getDeathMessages;
 import static me.ChewyN.Main.getInstance;
 
 public class PlayerDeath implements Listener {
 
-    private static HashMap<Player, DeathStatus> deathMap = new HashMap<>();
+	private static final HashMap<Player, DeathStatus> deathMap = new HashMap<>();
 
     Random random = new Random();
     int messageId = 0;
@@ -30,31 +31,31 @@ public class PlayerDeath implements Listener {
     public void onPlayerDeath(PlayerDeathEvent e) {
 
         // Random Death Messages!
-        messageId = random.nextInt(5);
-        switch (messageId) {
-            case 0:
-                message = " has died";
-                break;
-            case 1:
-                message = " fucked up";
-                break;
-            case 2:
-                message = " slipped in barbeque sauce";
-                break;
-            case 3:
-                message = " found the off button";
-                break;
-            case 4:
-                message = " failed to live";
-                break;
-            default:
-                message = " something broke here lol";
-                break;
-        }
+//        messageId = random.nextInt(5);
+//        switch (messageId) {
+//            case 0:
+//                message = " has died";
+//                break;
+//            case 1:
+//                message = " fucked up";
+//                break;
+//            case 2:
+//                message = " slipped in barbeque sauce";
+//                break;
+//            case 3:
+//                message = " found the off button";
+//                break;
+//            case 4:
+//                message = " failed to live";
+//                break;
+//            default:
+//                message = " something broke here lol";
+//                break;
+//        }
+		String randomDeathMessage = getDeathMessages().get(new Random().nextInt(getDeathMessages().size()));
 
-
-        String deathMessageCentered = Message.getCenteredMessage(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() + message + ChatColor.RED + " ☠");
-        e.setDeathMessage(deathMessageCentered);
+		String deathMessageCentered = Message.getCenteredMessage(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() +  randomDeathMessage  + ChatColor.RED + " ☠");
+		e.setDeathMessage(deathMessageCentered);
 
         deathMap.put(e.getEntity(), new DeathStatus(e.getEntity().getLocation()));
 

@@ -20,13 +20,13 @@ public class PlayerSpy implements Listener {
 
     @EventHandler
     public void signSpy(SignChangeEvent e) {
-        Player      player = e.getPlayer();
+        Player      p = e.getPlayer();
         String      signMessage =  e.getLine(0) + " " + e.getLine(1)  + " " +  e.getLine(2) + " " + e.getLine(3);
-        String      playerName = player.getName();
+        String      playerName = p.getName();
 
 
-        for(Player p : instance.getServer().getOnlinePlayers()) {
-            if (p.hasPermission("commandspy.see.signs")) player.sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + signMessage);
+        for(Player player : instance.getServer().getOnlinePlayers()) {
+            if (player.hasPermission("commandspy.see.signs") & !player.equals(e.getPlayer())) player.sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + signMessage);
         }
 
 
@@ -48,7 +48,7 @@ public class PlayerSpy implements Listener {
         }
 
         for(Player player : instance.getServer().getOnlinePlayers()) {
-            if (player.hasPermission("commandspy.see.commands")) player.sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + commandMessage);
+            if (player.hasPermission("commandspy.see.commands") && !player.equals(e.getPlayer())) player.sendMessage(ChatColor.AQUA + playerName + " » " + commandMessage);
         }
 
         sendToAdminDiscord(playerName, commandMessage);

@@ -3,6 +3,8 @@ package me.Skyla.Minecraft.Objects;
 
 import org.bukkit.Location;
 
+
+
 /**
  * Class that holds the death information of a player.
  * @Author Skyla

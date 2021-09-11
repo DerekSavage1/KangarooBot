@@ -4,6 +4,9 @@ import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Main;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;
+import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,7 +16,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
-import me.ChewyN.Minecraft.Listeners.Player.*;
+
+import static me.ChewyN.Minecraft.Listeners.Player.PlayerDeath.clearPlayerDeathLocation;
 
 /**
  * A command that allows players to teleport to their death point once after death.

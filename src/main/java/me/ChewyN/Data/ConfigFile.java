@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 
@@ -40,6 +41,10 @@ public class ConfigFile extends AbstractFile{
         if(config.getBoolean("Debug_Enabled"))
             instance.getLogger().log(Level.INFO, "debug-mode is enabled in the config.yml," +
                     "debug messages will appear until you set this to false.");
+
+        if(!config.contains("Death_Messages"))
+            config.set("Death_Messages", "{is no longer with us, died}");
+
 
 
         save();
@@ -114,6 +119,10 @@ public class ConfigFile extends AbstractFile{
         }
         return null;
     }
+    public static List<String> getDeathMessages() {
+        return config.getStringList("Death_Messages");
+    }
+
 
 
 }
