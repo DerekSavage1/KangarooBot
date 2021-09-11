@@ -50,6 +50,12 @@ public class ConfigFile extends AbstractFile{
         if(!config.contains("Center_Death_Messages"))
             config.set("Center_Death_Messages", true);
 
+        if(!config.contains("Discord_Server_Online_Message"))
+            config.set("Discord_Server_Online_Message", "Server online! Join now!");
+
+        if(!config.contains("Discord_Server_Offline_Message"))
+            config.set("Discord_Server_Offline_Message", "Server Stopped.");
+
 
 
         save();
@@ -122,6 +128,24 @@ public class ConfigFile extends AbstractFile{
         return null;
     }
 
+    public static String getDiscordOnlineMessage() {
+        try {
+            return (String) config.get("Discord_Server_Online_Message");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getDiscordOfflineMessage() {
+        try {
+            return (String) config.get("Discord_Server_Offline_Message");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static List<String> getDeathMessages() {
         try {
             return config.getStringList("Death_Messages");
@@ -131,7 +155,6 @@ public class ConfigFile extends AbstractFile{
             return null;
         }
     }
-
 
     public boolean centeredDeathMessageEnabled() {
         return config.getBoolean("Center_Death_Messages");

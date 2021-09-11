@@ -12,13 +12,12 @@ import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerSpy;
 import me.Skyla.Minecraft.Commands.BackCommand;
 import me.Skyla.Minecraft.Commands.TrashcanCommand;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.security.auth.login.LoginException;
@@ -67,10 +66,14 @@ public class Main extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("grapplinghook")).setExecutor(new GrapplingHook());
         Objects.requireNonNull(this.getCommand("back")).setExecutor(new BackCommand());
         Objects.requireNonNull(this.getCommand("trashcan")).setExecutor(new TrashcanCommand());
+        // THIS STATEMENT NEEDS TO REMAIN AT THE END OF THE METHOD
+        sendStartStopMessageToDiscord(true);
     }
 
     @Override
     public void onDisable() {
+        // THIS STATEMENT NEEDS TO BE AT THE BEGINNING OF THE METHOD
+        sendStartStopMessageToDiscord(false);
         clearOnlineRole();
         discordbot.shutdownNow();
         instance = null;
@@ -126,6 +129,31 @@ public class Main extends JavaPlugin {
     public static Guild getGuild() {
         return discordbot.getGuilds().get(0);
         //This bot will only be used on my discord server.
+    }
+
+    /**
+     * Void method to send a start/stop method to the discord channel once the server has started/stopped.
+     * @param isStarting If the server is starting or stopping
+     */
+    private void sendStartStopMessageToDiscord(boolean isStarting) {
+        final TextChannel DISCORD_MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(discordbot);
+
+        EmbedBuilder message = new EmbedBuilder();
+        if (isStarting) {
+            message.setTitle("Server Online!");
+            message.setColor(0x42f545);
+            message.setDescription(ConfigFile.getDiscordOnlineMessage());
+        } else {
+            message.setTitle("Server Offline.");
+            message.setColor(0xeb4034);
+            message.setDescription(ConfigFile.getDiscordOfflineMessage());
+        }
+
+        Objects.requireNonNull(DISCORD_MINECRAFT_CHANNEL.sendMessage(message.build())).queue();
+
+        message.clear();
+
+
     }
 
 
