@@ -30,28 +30,28 @@ public class PlayerDeath implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
 
-        // Random Death Messages!
-//        messageId = random.nextInt(5);
-//        switch (messageId) {
-//            case 0:
-//                message = " has died";
-//                break;
-//            case 1:
-//                message = " fucked up";
-//                break;
-//            case 2:
-//                message = " slipped in barbeque sauce";
-//                break;
-//            case 3:
-//                message = " found the off button";
-//                break;
-//            case 4:
-//                message = " failed to live";
-//                break;
-//            default:
-//                message = " something broke here lol";
-//                break;
-//        }
+//         Random Death Messages!
+        messageId = random.nextInt(5);
+        switch (messageId) {
+            case 0:
+                message = " has died";
+                break;
+            case 1:
+                message = " fucked up";
+                break;
+            case 2:
+                message = " slipped in barbeque sauce";
+                break;
+            case 3:
+                message = " found the off button";
+                break;
+            case 4:
+                message = " failed to live";
+                break;
+            default:
+                message = " something broke here lol";
+                break;
+        }
 		String randomDeathMessage = getDeathMessages().get(new Random().nextInt(getDeathMessages().size()));
 
 		String deathMessageCentered = Message.getCenteredMessage(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() +  randomDeathMessage  + ChatColor.RED + " ☠");
@@ -74,4 +74,5 @@ public class PlayerDeath implements Listener {
     public static DeathStatus getPlayerDeathLocation(Player p) {
         return deathMap.get(p);
     }
+
 }
