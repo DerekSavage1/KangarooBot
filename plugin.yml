@@ -18,5 +18,8 @@ commands:
     trashcan:
       description: test
       usage: test
+    kgrl:
+        description: Reloads bukkit
+        usage: Reload bukkit
 libraries:
   - com.squareup.okhttp3:okhttp:4.9.0

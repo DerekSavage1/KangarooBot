@@ -11,7 +11,10 @@ import me.ChewyN.Minecraft.Listeners.Player.PlayerChat;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerSpy;
 import me.Skyla.Minecraft.Commands.BackCommand;
+import me.Skyla.Minecraft.Commands.ReloadCommand;
 import me.Skyla.Minecraft.Commands.TrashcanCommand;
+import me.Skyla.Minecraft.Listeners.CommandListener;
+import me.Skyla.Minecraft.Listeners.ServerCommandListener;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -41,15 +44,13 @@ public class Main extends JavaPlugin {
         instance = this;
 
 
-
-        if(!getDataFolder().exists())
+        if (!getDataFolder().exists())
             getDataFolder().mkdir();
 
         configFile = new ConfigFile(instance);
         ConfigFile.setup();
 
         awakenTheKangaroo();
-
 
 
         super.onEnable();
@@ -60,6 +61,8 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
         getServer().getPluginManager().registerEvents(new PlayerSpy(), this);
         getServer().getPluginManager().registerEvents(new GrappleListener(), this);
+        getServer().getPluginManager().registerEvents(new CommandListener(), this);
+        getServer().getPluginManager().registerEvents(new ServerCommandListener(), this);
 
 
         //commands
@@ -67,6 +70,7 @@ public class Main extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("grapplinghook")).setExecutor(new GrapplingHook());
         Objects.requireNonNull(this.getCommand("back")).setExecutor(new BackCommand());
         Objects.requireNonNull(this.getCommand("trashcan")).setExecutor(new TrashcanCommand());
+        Objects.requireNonNull(this.getCommand("kgrl")).setExecutor(new ReloadCommand());
         // THIS STATEMENT NEEDS TO REMAIN AT THE END OF THE METHOD
         sendStartStopMessageToDiscord(true);
     }
@@ -74,15 +78,9 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         // THIS STATEMENT NEEDS TO BE AT THE BEGINNING OF THE METHOD
-        sendStartStopMessageToDiscord(false);
-        BukkitScheduler s = getInstance().getServer().getScheduler();
-        s.scheduleSyncDelayedTask(getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                clearOnlineRole();
-                discordbot.shutdownNow();
-            }
-        }, 30l);
+        //sendStartStopMessageToDiscord(false);
+        clearOnlineRole();
+        discordbot.shutdownNow();
         instance = null;
         //FIXME this breaks
     }
@@ -133,6 +131,10 @@ public class Main extends JavaPlugin {
         return discordbot;
     }
 
+    public static ConfigFile getConfigFile() {
+        return configFile;
+    }
+
     public static Guild getGuild() {
         return discordbot.getGuilds().get(0);
         //This bot will only be used on my discord server.
@@ -140,9 +142,10 @@ public class Main extends JavaPlugin {
 
     /**
      * Void method to send a start/stop method to the discord channel once the server has started/stopped.
+     *
      * @param isStarting If the server is starting or stopping
      */
-    private void sendStartStopMessageToDiscord(boolean isStarting) {
+    public static void sendStartStopMessageToDiscord(boolean isStarting) {
         final TextChannel DISCORD_MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(discordbot);
 
         EmbedBuilder message = new EmbedBuilder();
@@ -162,7 +165,6 @@ public class Main extends JavaPlugin {
 
 
     }
-
 
 
 }

@@ -158,4 +158,10 @@ public class ConfigFile extends AbstractFile{
     public boolean centeredDeathMessageEnabled() {
         return config.getBoolean("Center_Death_Messages");
     }
+
+    //TODO make this
+    public void reload() {
+
+    }
+
 }
