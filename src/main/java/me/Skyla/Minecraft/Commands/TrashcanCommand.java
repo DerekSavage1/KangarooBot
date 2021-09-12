@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 public class TrashcanCommand extends AbstractCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(!isCommandEnabled()) {
+        if(isCommandEnabled()) {
             sender.sendMessage(ChatColor.RED + "Command is disabled.");
             return true;
         }

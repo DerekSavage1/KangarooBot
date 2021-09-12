@@ -5,9 +5,9 @@ import org.bukkit.entity.Player;
 
 import static me.ChewyN.Minecraft.Util.centerMessage.center;
 
-public class messageHandler {
+public class MinecraftMessageHandler {
 
-    private static Main instance = Main.getInstance();
+    private static final Main instance = Main.getInstance();
 
     public static void sendMessage(Player p, String message) {
         p.sendMessage(message);

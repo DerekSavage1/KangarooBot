@@ -25,7 +25,7 @@ public class BackCommand extends AbstractCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(!isCommandEnabled()) {
+        if(isCommandEnabled()) {
             sender.sendMessage(net.md_5.bungee.api.ChatColor.RED + "Command is disabled.");
             return true;
         }
@@ -50,14 +50,11 @@ public class BackCommand extends AbstractCommand implements CommandExecutor {
                 p.sendMessage(ChatColor.RED + "Teleporting to possibly unsafe location, waiting 5 seconds");
                 BukkitScheduler scheduler = Main.getInstance().getServer().getScheduler();
                 // Schedule the tp event, and delay it by 5s
-                scheduler.scheduleSyncDelayedTask(Main.getInstance(), new Runnable() {
-                    @Override
-                    public void run() {
-                        // Add some protection effects for 20s
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 400, 1));
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 200, 1));
-                        p.teleport(l);
-                    }
+                scheduler.scheduleSyncDelayedTask(Main.getInstance(), () -> {
+                    // Add some protection effects for 20s
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 400, 1));
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 200, 1));
+                    p.teleport(l);
                 }, 20L);
                 // set tp status to true
                 PlayerDeath.getPlayerDeathStatus(p).setTPStatus(true);

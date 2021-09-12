@@ -35,7 +35,7 @@ public class onGuildJoin extends ListenerAdapter {
 
 
         //Checking if any codes that were sent my kangaroo are now missing.
-        //Is an invite is missing it is because the user just joined.
+        //If an invitation is missing it is because the user just joined.
         List<String> usedCode = getUsedCode(sentCodes, activeCodes);
         if(usedCode.size() > 1) {
             Main.getInstance().getLogger().warning("OnGuildJoin: getUsedCode returned more than one value!");
@@ -62,10 +62,6 @@ public class onGuildJoin extends ListenerAdapter {
         Role		onlineRole = getGuild().getRolesByName("online in-game", true).get(0);
 
         getGuild().addRoleToMember(member, onlineRole).complete();
-    }
-
-    private void verifyNewMember() {
-
     }
 
 }

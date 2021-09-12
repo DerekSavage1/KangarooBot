@@ -3,51 +3,37 @@ package me.ChewyN.Minecraft.Commands;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractCommand implements CommandExecutor {
 
-
-    @NotNull private    boolean isCommandEnabled;
-    private             boolean senderIsConsole;
-    private             boolean ConsoleSenderAllowed;
-    private             Player player;
-    private             CommandSender commandSender;
+    private boolean isCommandEnabled;
+    private boolean senderIsConsole;
+    private Player  player;
 
     public AbstractCommand() {
         isCommandEnabled = true;
     }
 
-    public void setup(CommandSender commandSender, boolean isCommandEnabled, boolean isConsoleSenderAllowed) {
+    public void setup(CommandSender commandSender, boolean isCommandEnabled) {
         setCommandSender(commandSender);
         setCommandEnabled(isCommandEnabled);
         setSenderIsConsole(commandSender instanceof Player);
-        setConsoleSenderAllowed(isConsoleSenderAllowed);
-        if(!senderIsConsole) setPlayer((Player) commandSender);
+        if(!senderIsConsole) {
+            assert commandSender instanceof Player;
+            setPlayer((Player) commandSender);
+        }
     }
 
     public boolean isCommandEnabled() {
-        return isCommandEnabled;
+        return !isCommandEnabled;
     }
 
     public void setCommandEnabled(boolean commandEnabled) {
         isCommandEnabled = commandEnabled;
     }
 
-    public boolean isSenderIsConsole() {
-        return senderIsConsole;
-    }
-
     public void setSenderIsConsole(boolean senderIsConsole) {
         this.senderIsConsole = senderIsConsole;
-    }
-
-    public boolean isConsoleSenderAllowed() {
-        return ConsoleSenderAllowed;
-    }
-
-    public void setConsoleSenderAllowed(boolean consoleSenderAllowed) {
-        ConsoleSenderAllowed = consoleSenderAllowed;
     }
 
     public Player getPlayer() {
@@ -58,16 +44,11 @@ public abstract class AbstractCommand implements CommandExecutor {
         this.player = p;
     }
 
-    public CommandSender getSender() {
-        return commandSender;
-    }
-
     /**
      * Sets the command sender to a player. Use only if the sender is a player.
      * @param s The command sender
      */
     public void setCommandSender(CommandSender s) {
-        this.commandSender = s;
         if(s instanceof Player)
             setPlayer((Player) s);
     }

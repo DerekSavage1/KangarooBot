@@ -13,6 +13,8 @@ import static me.ChewyN.Main.log;
 
 public class ConfigFile extends AbstractFile{
 
+    final private static Main instance = Main.getInstance();
+
     public ConfigFile(Main main) {
         super(main, "config.yml");
     }
@@ -46,11 +48,10 @@ public class ConfigFile extends AbstractFile{
             config.set("Debug_Enabled", true);
 
         if(config.getBoolean("Debug_Enabled"))
-            instance.getLogger().log(Level.INFO, "debug-mode is enabled in the config.yml," +
+            Main.log(Level.INFO, "debug-mode is enabled in the config.yml," +
                     "debug messages will appear until you set this to false.");
 
-//        List<String> defaultDeathMessages = null;
-//        defaultDeathMessages.add("test");
+        //TODO: set default death messages (List<String>)
         if(!config.contains("Death_Messages"))
             config.set("Death_Messages", "");
 
@@ -68,11 +69,12 @@ public class ConfigFile extends AbstractFile{
         save();
     }
 
+    //TODO: Make getMinecraftChannel @Notnull
     public static TextChannel getMinecraftChannel(JDA discordbot) {
         try{
             return discordbot.getTextChannelById((String) Objects.requireNonNull(config.get("Discord_Minecraft_Channel")));
         } catch(NullPointerException e) {
-            Main.getInstance().getLogger().log(Level.SEVERE,"Discord is not configured correctly." +
+            Main.log(Level.SEVERE,"Discord is not configured correctly." +
                     "(is the discordbot field empty?)");
             if(config.getBoolean("Debug_Enabled"))
                 e.printStackTrace();
@@ -80,6 +82,7 @@ public class ConfigFile extends AbstractFile{
         return null;
     }
 
+    //TODO: Make getAdminChannel @Notnull
     public static TextChannel getAdminChannel(JDA discordbot) {
         try{
             return discordbot.getTextChannelById((String) Objects.requireNonNull(config.get("Discord_Admin_Channel")));
@@ -124,7 +127,6 @@ public class ConfigFile extends AbstractFile{
         return ID;
     }
 
-    @NotNull
     public static String getBotStatus () {
         String status = config.getString("Bot_Status");
         if(status == null) {
@@ -133,14 +135,8 @@ public class ConfigFile extends AbstractFile{
         return status;
     }
 
-    @NotNull
     public static Boolean backCommandEnabled() {
-        try {
-            return (Boolean) config.get("Back_Command");
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return config.getBoolean("Back_Command");
     }
 
     public static String getDiscordOnlineMessage() {
@@ -165,7 +161,7 @@ public class ConfigFile extends AbstractFile{
         try {
             return config.getStringList("Death_Messages");
         } catch (Exception e) {
-            Main.getInstance().getLogger().log(Level.SEVERE, "Incorrect config.yml!");
+            Main.log(Level.SEVERE, "Incorrect config.yml!");
             e.printStackTrace();
             return null;
         }
@@ -178,10 +174,9 @@ public class ConfigFile extends AbstractFile{
     public boolean isDebugEnabled() {
         return config.getBoolean("Debug_Enabled");
     }
-    //TODO make this
-    public void reload() {
 
-    }
+    //TODO: Create Reload Function
+
 
 
 

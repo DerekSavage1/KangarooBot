@@ -16,12 +16,7 @@ public class CommandListener implements Listener {
             Bukkit.broadcastMessage("Server Stopping in 10s!");
             Main.sendStartStopMessageToDiscord(false);
             BukkitScheduler s = Main.getInstance().getServer().getScheduler();
-            s.scheduleSyncDelayedTask(Main.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    Bukkit.shutdown();
-                }
-            }, 200l);
+            s.scheduleSyncDelayedTask(Main.getInstance(), Bukkit::shutdown, 200L);
         }
     }
  }

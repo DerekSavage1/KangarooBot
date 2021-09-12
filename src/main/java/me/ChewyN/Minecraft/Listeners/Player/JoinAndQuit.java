@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.List;
 
 import static me.ChewyN.Main.*;
-import static me.ChewyN.Minecraft.Util.messageHandler.sendCenteredMessage;
+import static me.ChewyN.Minecraft.Util.MinecraftMessageHandler.sendCenteredMessage;
 
 public class JoinAndQuit implements Listener {
 

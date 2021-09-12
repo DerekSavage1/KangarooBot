@@ -17,14 +17,14 @@ import java.util.ArrayList;
 public class GrapplingHook extends AbstractCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(@NotNull CommandSender s, Command cmd, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String label, String[] args) {
 
-        if(!isCommandEnabled()) {
+        if(isCommandEnabled()) {
             s.sendMessage(net.md_5.bungee.api.ChatColor.RED + "Command is disabled.");
             return true;
         }
 
-        setup(s, true, false);
+        setup(s, true);
 
         if(cmd.getName().equals("grapplinghook")) {
             if(s instanceof Player) {

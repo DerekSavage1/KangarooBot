@@ -11,6 +11,7 @@ import me.ChewyN.Minecraft.Listeners.Player.PlayerChat;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerSpy;
 import me.Skyla.Minecraft.Commands.BackCommand;
+import me.Skyla.Minecraft.Commands.FunCommand;
 import me.Skyla.Minecraft.Commands.ReloadCommand;
 import me.Skyla.Minecraft.Commands.TrashcanCommand;
 import me.Skyla.Minecraft.Listeners.CommandListener;
@@ -70,6 +71,7 @@ public class Main extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("back")).setExecutor(new BackCommand());
         Objects.requireNonNull(this.getCommand("trashcan")).setExecutor(new TrashcanCommand());
         Objects.requireNonNull(this.getCommand("kgrl")).setExecutor(new ReloadCommand());
+        Objects.requireNonNull(this.getCommand("wiener")).setExecutor(new FunCommand());
 
         // THIS STATEMENT NEEDS TO REMAIN AT THE END OF THE METHOD
         sendStartStopMessageToDiscord(true);
