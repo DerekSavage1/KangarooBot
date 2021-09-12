@@ -10,6 +10,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 import static me.ChewyN.Main.discordbot;
 import static me.ChewyN.Main.getInstance;
 
@@ -48,18 +50,31 @@ public class onChat extends ListenerAdapter {
 
 
     }
+
     private String formatMessage(Message message) {
 
-        if(message.getAttachments().size() > 1) {
-            return "(multiple attachments) " + message.getJumpUrl();
+        if(!message.getAttachments().isEmpty()) {
+
+            List<Message.Attachment> attachments = message.getAttachments();
+
+            if(attachments.size() > 1)
+                return "Multiple Attachments: " + message.getJumpUrl();
+
+            if(attachments.get(0).isImage())
+                return "Image: " + attachments.get(0).getUrl();
+
+            if(attachments.get(0).isVideo())
+                return "Video: " + attachments.get(0).getUrl();
+
+
+            if(attachments.get(0).isSpoiler())
+                return "Spoiler: " + attachments.get(0).getUrl();
+
+            if(!message.getStickers().isEmpty() && message.getContentStripped().isEmpty())
+                return "Sticker: " + message.getJumpUrl();
         }
 
-        if(message.getAttachments().get(0).isImage()) {
-            Message.Attachment image = message.getAttachments().get(0);
-            return image.getUrl();
-        }
-
-        return message.toString();
+        return message.getContentStripped();
 
     }
 

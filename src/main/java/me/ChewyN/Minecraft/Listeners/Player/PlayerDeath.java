@@ -2,7 +2,7 @@ package me.ChewyN.Minecraft.Listeners.Player;
 
 import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Main;
-import me.ChewyN.Minecraft.Util.Message;
+import me.ChewyN.Minecraft.Util.centerMessage;
 import me.Skyla.Minecraft.Objects.DeathStatus;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -53,13 +53,13 @@ public class PlayerDeath implements Listener {
         String randomDeathMessage = " passed away :(";
 
         List<String> deathMessages = getDeathMessages();
-        if (!deathMessages.isEmpty()) {
+        if (!(deathMessages == null)) {
             int messageNumber = new Random().nextInt(getDeathMessages().size());
             randomDeathMessage = deathMessages.get(messageNumber);
         }
 
         if (isEnabled) {
-           randomDeathMessage = Message.getCenteredMessage(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() + " " + randomDeathMessage + ChatColor.RED + " ☠");
+           randomDeathMessage = centerMessage.center(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() + " " + randomDeathMessage + ChatColor.RED + " ☠");
         }
 
         return randomDeathMessage;
@@ -77,6 +77,8 @@ public class PlayerDeath implements Listener {
      */
     private void sendDeathMessageToDiscord(String name, String c, String l) {
         final TextChannel DISCORD_MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(Main.getDiscordbot());
+        final TextChannel DISCORD_ADMIN_CHANNEL = ConfigFile.getAdminChannel(Main.getDiscordbot());
+
 
         EmbedBuilder message = new EmbedBuilder();
         EmbedBuilder mAdmin = new EmbedBuilder();
@@ -88,8 +90,10 @@ public class PlayerDeath implements Listener {
         mAdmin.setDescription(name + " died from " + c + ". Location: " + l);
 
 
+        assert DISCORD_MINECRAFT_CHANNEL != null;
         Objects.requireNonNull(DISCORD_MINECRAFT_CHANNEL.sendMessage(message.build())).queue();
-        Objects.requireNonNull(ConfigFile.getAdminChannel(Main.getDiscordbot()).sendMessage(mAdmin.build())).queue();
+        assert DISCORD_ADMIN_CHANNEL != null;
+        Objects.requireNonNull(DISCORD_ADMIN_CHANNEL.sendMessage(mAdmin.build())).queue();
 
         message.clear();
         mAdmin.clear();

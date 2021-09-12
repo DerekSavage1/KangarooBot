@@ -3,7 +3,6 @@ package me.ChewyN.Minecraft.Listeners.Player;
 
 //import me.ChewyN.Minecraft.Packets.packet;
 import me.ChewyN.Data.ConfigFile;
-import me.ChewyN.Minecraft.Util.Message;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -19,6 +18,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.List;
 
 import static me.ChewyN.Main.*;
+import static me.ChewyN.Minecraft.Util.messageHandler.sendCenteredMessage;
 
 public class JoinAndQuit implements Listener {
 
@@ -29,9 +29,6 @@ public class JoinAndQuit implements Listener {
         modifyJoinMessage(e);
         sendJoinOrQuitMessageToDiscord(p,true);
         setDiscordOnlineRole(p.getPlayerListName(), true);
-//        packet.injectPlayer(p);
-
-
     }
 
     @EventHandler
@@ -40,18 +37,19 @@ public class JoinAndQuit implements Listener {
 
         setDiscordOnlineRole(p.getPlayerListName(), false);
         sendJoinOrQuitMessageToDiscord(p,false);
-//        packet.removePlayer(p);
     }
 
     private void modifyJoinMessage(PlayerJoinEvent e) {
+        e.setJoinMessage("");
+
         Player p = e.getPlayer();
         if (!p.hasPlayedBefore()) {
-            e.setJoinMessage("");
-            Message.sendCenteredMessage(p.getServer(), ChatColor.AQUA + "Please welcome " + p.getName() + " to our Chewy's Hub!");
-            Message.sendCenteredMessage(p.getServer(), ChatColor.AQUA + "This is their first time playing!");
-        } else {
-            e.setJoinMessage(Message.getCenteredMessage(ChatColor.YELLOW + p.getName() + ChatColor.AQUA + " has joined the game. Welcome back!"));
+            sendCenteredMessage(ChatColor.AQUA + "Please welcome " + p.getName() + " to our Chewy's Hub!");
+            sendCenteredMessage(ChatColor.AQUA + "This is their first time playing!");
         }
+
+        sendCenteredMessage(ChatColor.YELLOW + p.getName() + ChatColor.AQUA + " has joined the game. Welcome back!");
+
     }
 
     public void setDiscordOnlineRole(String nickname, boolean setOnline) {
@@ -96,7 +94,6 @@ public class JoinAndQuit implements Listener {
         } else {
             joinMessage.setTitle(playerName + " has left the server");
             joinMessage.setColor(0xeb4034);
-            playerCount--;
         }
 
         if(playerCount <= 0) {
