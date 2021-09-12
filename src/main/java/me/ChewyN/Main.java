@@ -136,10 +136,6 @@ public class Main extends JavaPlugin {
         return discordbot;
     }
 
-    public static ConfigFile getConfigFile() {
-        return configFile;
-    }
-
     public static Guild getGuild() {
         return discordbot.getGuilds().get(0);
         //This bot will only be used on my discord server.
@@ -164,6 +160,7 @@ public class Main extends JavaPlugin {
             message.setDescription(ConfigFile.getDiscordOfflineMessage());
         }
 
+        assert DISCORD_MINECRAFT_CHANNEL != null;
         Objects.requireNonNull(DISCORD_MINECRAFT_CHANNEL.sendMessage(message.build())).queue();
 
         message.clear();
