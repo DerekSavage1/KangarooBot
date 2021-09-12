@@ -56,7 +56,7 @@ public class JoinAndQuit implements Listener {
 
     public void setDiscordOnlineRole(String nickname, boolean setOnline) {
         List<Member> members = getGuild().loadMembers().get();
-        Role onlineRole = getGuild().getRolesByName("online in-game", true).get(0);
+        Role onlineRole = getGuild().getRolesByName("online in-game", true).get(0); //FIXME: this throws null pointer exception if online in-game role doesn't exist
         Member			match = null;
 
         for( Member member : members ) {
