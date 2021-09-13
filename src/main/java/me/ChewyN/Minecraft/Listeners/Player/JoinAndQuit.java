@@ -30,7 +30,8 @@ public class JoinAndQuit implements Listener {
         Player p = e.getPlayer();
 
         modifyJoinMessage(e);
-        sendJoinOrQuitMessageToDiscord(p, true);
+        if (ConfigFile.discordJoinLeaveMessagesEnabled())
+            sendJoinOrQuitMessageToDiscord(p, true);
         setDiscordOnlineRole(p.getPlayerListName(), true);
     }
 
@@ -39,7 +40,8 @@ public class JoinAndQuit implements Listener {
         Player p = e.getPlayer();
 
         setDiscordOnlineRole(p.getPlayerListName(), false);
-        sendJoinOrQuitMessageToDiscord(p, false);
+        if(ConfigFile.discordJoinLeaveMessagesEnabled())
+            sendJoinOrQuitMessageToDiscord(p, false);
     }
 
     private void modifyJoinMessage(PlayerJoinEvent e) {
@@ -86,7 +88,7 @@ public class JoinAndQuit implements Listener {
                 getGuild().removeRoleFromMember(match, onlineRole).complete();
             }
         } else {
-            Main.log(Level.WARNING, "[KangarooBot] Online role: " + onlineRoleName + ", does not exist!");
+            Main.log(Level.WARNING, "Online role: " + onlineRoleName + ", does not exist!");
         }
     }
 
@@ -101,16 +103,15 @@ public class JoinAndQuit implements Listener {
         EmbedBuilder joinMessage = new EmbedBuilder();
         joinMessage.setThumbnail(faceURL);
         if (isJoining) {
-            joinMessage.setTitle(playerName + " has joined the server"); //TODO: make this customizable and toggleable
+            joinMessage.setTitle(playerName + ConfigFile.getDiscordPlayerJoinMessage());
             joinMessage.setColor(0x42f545);
         } else {
-            joinMessage.setTitle(playerName + " has left the server"); //TODO: make this customizable and toggleable
+            joinMessage.setTitle(playerName + ConfigFile.getDiscordPlayerLeaveMessage());
             joinMessage.setColor(0xeb4034);
         }
 
         if (playerCount <= 0) {
             joinMessage.setDescription("No players online");
-            assert DISCORD_MINECRAFT_CHANNEL != null;
             DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
             joinMessage.clear();
             return;

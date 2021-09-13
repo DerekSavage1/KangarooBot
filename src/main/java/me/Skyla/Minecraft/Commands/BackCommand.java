@@ -44,7 +44,7 @@ public class BackCommand extends AbstractCommand implements CommandExecutor {
         if (ConfigFile.backCommandEnabled() && !PlayerDeath.getPlayerDeathStatus(p).getTPStatus()) {
 
             Location l = PlayerDeath.getPlayerDeathStatus(p).getLocation();
-            Block b = l.getBlock();
+            Block b = l.subtract(0, 1, 0).getBlock();
 
             if (b.getType() == Material.LAVA || b.getType().isAir()) {
                 p.sendMessage(ChatColor.RED + "Teleporting to possibly unsafe location, waiting 5 seconds");
@@ -54,13 +54,13 @@ public class BackCommand extends AbstractCommand implements CommandExecutor {
                     // Add some protection effects for 20s
                     p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 400, 1));
                     p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 200, 1));
-                    p.teleport(l);
-                }, 20L);
+                    p.teleport(l.add(0, 1, 0));
+                }, 100L);
                 // set tp status to true
                 PlayerDeath.getPlayerDeathStatus(p).setTPStatus(true);
                 return true;
             }
-            p.teleport(l);
+            p.teleport(l.add(0,1,0));
             // set tp status to true
             PlayerDeath.getPlayerDeathStatus(p).setTPStatus(true);
             return true;

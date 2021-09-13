@@ -1,7 +1,6 @@
 package me.ChewyN.Data;
 
 import me.ChewyN.Main;
-import me.ChewyN.Minecraft.Commands.DiscordCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
@@ -26,8 +25,8 @@ public class ConfigFile extends AbstractFile {
      */
     public static void setup() {
 
-        if (!config.contains("Discord_Welcome_Channel") ||
-                config.getString("Discord_Welcome_Channel") == null || config.getString("Discord_Welcome_Channel").equals("")) {
+        if (!config.contains("Discord_Welcome_Channel")  ||
+                config.getString("Discord_Welcome_Channel") == null || Objects.requireNonNull(config.getString("Discord_Welcome_Channel")).isEmpty()) {
             log(Level.WARNING, "Welcome channel is missing in config.yml.");
             log(Level.WARNING, "We don't know which channel to send new players to.");
             log(Level.WARNING, "Disabling /discord command...");
@@ -35,7 +34,7 @@ public class ConfigFile extends AbstractFile {
             config.set("Discord_Welcome_Channel", "");
         }
 
-        Main.log(Level.INFO, "Welcome Channel Exists: id:" + config.getString("Discord_Welcome_Channel"));
+        //Main.log(Level.INFO, "Welcome Channel Exists: id:" + config.getString("Discord_Welcome_Channel"));
 
         if (!config.contains("Discord_Minecraft_Channel"))
             config.set("Discord_Minecraft_Channel", "");
@@ -79,16 +78,25 @@ public class ConfigFile extends AbstractFile {
             config.set("Discord_Online_Role_Name", "online in-game");
 
         if (!config.contains("Welcome_Message_Enabled"))
-            config.set("Welcome_Message_Enabled", false);
+            config.set("Welcome_Message_Enabled", true);
 
         if (!config.contains("Join_Message_Enabled"))
-            config.set("Join_Message-Enabled", false);
+            config.set("Join_Message_Enabled", true);
 
         if (!config.contains("Join_Message"))
             config.set("Join_Message", " has joined the game!");
 
         if (!config.contains("Discord_Command_Enabled"))
             config.set("Discord_Command_Enabled", true);
+
+        if (!config.contains("Discord_Join_Leave_Messages_Enabled"))
+            config.set("Discord_Join_Leave_Messages_Enabled", true);
+
+        if (!config.contains("Discord_Player_Join_Message"))
+            config.set("Discord_Player_Join_Message", " has joined the server");
+
+        if (!config.contains("Discord_Player_Leave_Message"))
+            config.set("Discord_Player_Leave_Message", " has left the server");
 
         save();
     }
@@ -105,6 +113,7 @@ public class ConfigFile extends AbstractFile {
 
         String minecraftChannelId = config.getString("Discord_Minecraft_Channel");
 
+        assert minecraftChannelId != null;
         if (minecraftChannelId.isEmpty()) {
             log(Level.SEVERE, "=============================================================================");
             log(Level.SEVERE, "Discord_Minecraft_Channel is blank in config.yml! This is required for this plugin to function!");
@@ -157,7 +166,7 @@ public class ConfigFile extends AbstractFile {
     public static String getDiscordBotID() {
         String ID = config.getString("DiscordBot_ID");
 
-        if (ID == null) {
+        if (!check(ID)) {
             log(Level.SEVERE, "=============================================================================");
             log(Level.SEVERE, "DiscordBot_ID is blank in plugin.yml! Shutting down...");
             log(Level.SEVERE, "In order to use this plugin you must create a discord bot.");
@@ -175,7 +184,7 @@ public class ConfigFile extends AbstractFile {
 
     public static String getBotStatus() {
         String status = config.getString("Bot_Status");
-        if (status == null) {
+        if (!check(status)) {
             return "Minecraft!";
         }
         return status;
@@ -215,8 +224,8 @@ public class ConfigFile extends AbstractFile {
 
     @Nullable
     public static String getOnlineRoleName() {
-        if (config.getString("Discord_Online_Role_Name") == null) {
-            Main.log(Level.SEVERE, "No Online Role set! Setting to default!");
+        if (!check(config.getString("Discord_Online_Role_Name"))) {
+            Main.log(Level.WARNING, "No Online Role set! Setting to default!");
             return "online in-game";
         } else {
             return config.getString("Discord_Online_Role_Name");
@@ -224,8 +233,8 @@ public class ConfigFile extends AbstractFile {
     }
 
     public static Boolean getWelcomeMessageEnabled() {
-        if ((Boolean) config.getBoolean("Welcome_Message_Enabled") == null) {
-            Main.log(Level.SEVERE, "No Welcome Message Option set! Defaulting to false!");
+        if (!check(config.getBoolean("Welcome_Message_Enabled"))) {
+            Main.log(Level.WARNING, "No Welcome Message Option set! Defaulting to false!");
             return false;
         } else {
             return config.getBoolean("Welcome_Message_Enabled");
@@ -233,8 +242,8 @@ public class ConfigFile extends AbstractFile {
     }
 
     public static Boolean getJoinMessageEnabled() {
-        if ((Boolean) config.getBoolean("Join_Message_Enabled") == null) {
-            Main.log(Level.SEVERE, "No Join Message Option set! Defaulting to false!");
+        if (!check(config.getBoolean("Join_Message_Enabled"))) {
+            Main.log(Level.WARNING, "No Join Message Option set! Defaulting to false!");
             return false;
         } else {
             return config.getBoolean("Join_Message_Enabled");
@@ -244,11 +253,12 @@ public class ConfigFile extends AbstractFile {
     @NotNull
     public static String getWelcomeMessage() {
         String m = config.getString("Join_Message");
-        if (m == null) {
-            Main.log(Level.SEVERE, "No Join Message set! Using Default Message!");
+        if (!check(m)) {
+            Main.log(Level.WARNING, "No Join Message set! Using Default Message!");
             config.set("Join_Message", " has joined the server!");
             m = getWelcomeMessage();
         }
+        assert m != null;
         return m;
     }
 
@@ -270,9 +280,9 @@ public class ConfigFile extends AbstractFile {
     }
 
     public static Boolean discordCommandEnabled() {
-        Boolean enabled = config.getBoolean("Discord_Command_Enabled");
-        if (enabled == null) {
-            Main.log(Level.SEVERE, "Discord command option not set! Defaulting to true!");
+        boolean enabled = config.getBoolean("Discord_Command_Enabled");
+        if (!check(enabled)) {
+            Main.log(Level.WARNING, "Discord command option not set! Defaulting to true!");
             config.set("Discord_Command_Enabled", true);
             enabled = true;
         }
@@ -283,9 +293,57 @@ public class ConfigFile extends AbstractFile {
         try {
             config.set("Discord_Command_Enabled", enabled);
         } catch (NullPointerException e) {
-            Main.log(Level.SEVERE, "Discord command option does not exist!");
+            Main.log(Level.WARNING, "Discord command option does not exist!");
             e.printStackTrace();
         }
+    }
+
+    public static Boolean discordJoinLeaveMessagesEnabled() {
+        boolean enabled = config.getBoolean("Discord_Join_Leave_Messages_Enabled");
+        if (!check(enabled)) {
+            Main.log(Level.WARNING, "Discord Join/Leave message option not set! Defaulting to true!");
+            config.set("Discord_Join_Leave_Messages_Enabled", true);
+            enabled = true;
+        }
+        return enabled;
+    }
+
+    public static String getDiscordPlayerJoinMessage() {
+        String m = config.getString("Discord_Player_Join_Message");
+        if (!check(m)) {
+            Main.log(Level.WARNING, "Discord join message not set! Setting to default!");
+            config.set("Discord_Player_Join_Message", " has joined the server");
+            m = " has joined the server";
+        }
+        return m;
+    }
+
+    public static String getDiscordPlayerLeaveMessage() {
+        String m = config.getString("Discord_Player_Leave_Message");
+        if (!check(m)) {
+            Main.log(Level.WARNING, "Discord leave message not set! Setting to default!");
+            config.set("Discord_Player_Leave_Message", " has left the server");
+            m = " has left the server";
+        }
+        return m;
+    }
+
+    /**
+     * Helper method to check if a Boolean from the config is null.
+     * @param b The Boolean to check.
+     * @return The result. True if the Boolean is not null, false if it is.
+     */
+    private static Boolean check(Boolean b) {
+        return b != null;
+    }
+
+    /**
+     * Helper method to check if a string from the config is empty or null.
+     * @param s The string to check.
+     * @return The result. True if the string is not empty or null, false if it is.
+     */
+    private static Boolean check(String s) {
+        return s != null && !s.isEmpty();
     }
 
     //TODO: Create Reload Function
