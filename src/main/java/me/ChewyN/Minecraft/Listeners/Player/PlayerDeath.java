@@ -33,7 +33,7 @@ public class PlayerDeath implements Listener {
         e.setDeathMessage(deathMessage);
 
         // get new non-centered message after replacing the mc death message
-        deathMessage = getDeathMessage(e, false);
+        deathMessage = getDeathMessage(e, false); //FIXME: i did a stupid and this gets a diff message for discord
 
         deathMap.put(e.getEntity(), new DeathStatus(e.getEntity().getLocation()));
 
@@ -60,7 +60,7 @@ public class PlayerDeath implements Listener {
         List<String> deathMessages = getDeathMessages();
         if (!(deathMessages == null)) {
             int messageNumber = new Random().nextInt(getDeathMessages().size());
-            randomDeathMessage = deathMessages.get(messageNumber);
+            randomDeathMessage = e.getEntity().getPlayerListName() + " " + deathMessages.get(messageNumber);
         }
 
         if (isEnabled) {
@@ -87,7 +87,7 @@ public class PlayerDeath implements Listener {
 
         EmbedBuilder message = new EmbedBuilder();
         EmbedBuilder mAdmin = new EmbedBuilder();
-        message.setTitle(name + " " + deathMessage);
+        message.setTitle(deathMessage);
         mAdmin.setTitle(name + " " + deathMessage);
         message.setColor(0x888888);
         mAdmin.setColor(0x888888);

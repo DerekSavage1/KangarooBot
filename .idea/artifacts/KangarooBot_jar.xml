@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="KangarooBot:jar">
-    <output-path>D:/FromCDrive/Minecraft Server for Tea Discord/TestServer/plugins</output-path>
+    <output-path>E:/spigot test server/plugins</output-path>
     <root id="archive" name="KangarooBot.jar">
       <element id="module-output" name="KangarooBot" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-collections4/4.1/commons-collections4-4.1.jar" path-in-jar="/" />
