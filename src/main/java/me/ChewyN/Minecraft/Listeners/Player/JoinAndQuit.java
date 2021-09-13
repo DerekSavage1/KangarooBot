@@ -58,8 +58,8 @@ public class JoinAndQuit implements Listener {
     public void setDiscordOnlineRole(String nickname, boolean setOnline) {
         String onlineRoleName = ConfigFile.getOnlineRoleName();
         List<Member> members = getGuild().loadMembers().get();
-        List<Role> role = getGuild().getRolesByName(onlineRoleName, true);
-        if ((role.contains(onlineRoleName))) {
+        List<Role> role = getGuild().getRolesByName(onlineRoleName, true); //FIXME
+        if ((role.contains(onlineRoleName))) { //FIXME
             Role onlineRole = getGuild().getRolesByName(onlineRoleName, true).get(0);
             Member match = null;
 
@@ -107,7 +107,7 @@ public class JoinAndQuit implements Listener {
         if (playerCount <= 0) {
             joinMessage.setDescription("No players online");
             assert DISCORD_MINECRAFT_CHANNEL != null;
-            DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
+            DISCORD_MINECRAFT_CHANNEL.sendMessageEmbeds(joinMessage.build()).queue();
             joinMessage.clear();
             return;
         }
@@ -124,7 +124,7 @@ public class JoinAndQuit implements Listener {
         joinMessage.setDescription(description.toString());
 
         assert DISCORD_MINECRAFT_CHANNEL != null;
-        DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
+        DISCORD_MINECRAFT_CHANNEL.sendMessageEmbeds(joinMessage.build()).queue();
 
         joinMessage.clear();
 

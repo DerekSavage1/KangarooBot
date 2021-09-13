@@ -3,10 +3,8 @@ package me.ChewyN.Data;
 import me.ChewyN.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
-import org.apache.commons.lang.ObjectUtils;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
@@ -146,7 +144,7 @@ public class ConfigFile extends AbstractFile {
 
     public static String getDiscordOnlineMessage() {
         try {
-            return (String) config.get("Discord_Server_Online_Message");
+            return config.getString("Discord_Server_Online_Message");
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -155,7 +153,7 @@ public class ConfigFile extends AbstractFile {
 
     public static String getDiscordOfflineMessage() {
         try {
-            return (String) config.get("Discord_Server_Offline_Message");
+            return config.getString("Discord_Server_Offline_Message");
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

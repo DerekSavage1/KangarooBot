@@ -11,7 +11,7 @@ import org.bukkit.Location;
  */
 public class DeathStatus {
 
-    private Location l;
+    private final Location l;
     private Boolean hasTeleported;
 
     /**

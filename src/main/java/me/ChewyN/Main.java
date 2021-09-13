@@ -84,8 +84,6 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // THIS STATEMENT NEEDS TO BE AT THE BEGINNING OF THE METHOD
-        //sendStartStopMessageToDiscord(false);
         clearOnlineRole();
         discordbot.shutdownNow();
         instance = null;
@@ -95,6 +93,7 @@ public class Main extends JavaPlugin {
     private void clearOnlineRole() {
         //Check if role exists
         String onlineRoleName = ConfigFile.getOnlineRoleName();
+        assert  onlineRoleName != null;
         //fetch members
         List<Member> members = getGuild().getMembers();
         try {
@@ -171,7 +170,7 @@ public class Main extends JavaPlugin {
         }
 
         assert DISCORD_MINECRAFT_CHANNEL != null;
-        Objects.requireNonNull(DISCORD_MINECRAFT_CHANNEL.sendMessage(message.build())).queue();
+        Objects.requireNonNull(DISCORD_MINECRAFT_CHANNEL.sendMessageEmbeds(message.build())).queue();
 
         message.clear();
 

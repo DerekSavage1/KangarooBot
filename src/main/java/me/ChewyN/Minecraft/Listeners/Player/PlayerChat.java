@@ -1,8 +1,6 @@
 package me.ChewyN.Minecraft.Listeners.Player;
 
 import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
-import me.ChewyN.Main;
-import net.dv8tion.jda.api.JDA;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,8 +9,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class PlayerChat implements Listener {
-
-    private static final JDA discordbot = Main.getDiscordbot();
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
