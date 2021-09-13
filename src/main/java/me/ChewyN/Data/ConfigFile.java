@@ -20,6 +20,9 @@ public class ConfigFile extends AbstractFile {
         super(main, "config.yml");
     }
 
+    /**
+     * Sets up the config file. Checks and makes sure the config contains everything that it needs. If it doesn't, fixes the config and sets defaults.
+     */
     public static void setup() {
 
         if (!config.contains("Discord_Welcome_Channel") ||
@@ -71,7 +74,25 @@ public class ConfigFile extends AbstractFile {
         if (!config.contains("Discord_Online_Role_Name"))
             config.set("Discord_Online_Role_Name", "online in-game");
 
+        if (!config.contains("Welcome_Message_Enabled"))
+            config.set("Welcome_Message_Enabled", false);
+
+        if (!config.contains("Join_Message_Enabled"))
+            config.set("Join_Message-Enabled", false);
+
+        if (!config.contains("Join_Message"))
+            config.set("Join_Message", " has joined the game!");
+
         save();
+    }
+
+    // TODO: MAKE THIS??
+    // Idk if this is needed btw -Skyla
+    /**
+     * Generates a new config file with defaults if one does not exist
+     */
+    public static void generateConfig() {
+
     }
 
     @NotNull
@@ -195,6 +216,35 @@ public class ConfigFile extends AbstractFile {
         } else {
             return config.getString("Discord_Online_Role_Name");
         }
+    }
+
+    public static Boolean getWelcomeMessageEnabled() {
+        if ((Boolean) config.getBoolean("Welcome_Message_Enabled") == null) {
+            Main.log(Level.SEVERE, "[KangarooBot] No Welcome Message Option set! Defaulting to false!");
+            return false;
+        } else {
+            return config.getBoolean("Welcome_Message_Enabled");
+        }
+    }
+
+    public static Boolean getJoinMessageEnabled() {
+        if ((Boolean) config.getBoolean("Join_Message_Enabled") == null) {
+            Main.log(Level.SEVERE, "[KangarooBot] No Join Message Option set! Defaulting to false!");
+            return false;
+        } else {
+            return config.getBoolean("Join_Message_Enabled");
+        }
+    }
+
+    @NotNull
+    public static String getWelcomeMessage() {
+        String m = config.getString("Join_Message");
+        if (m == null) {
+            Main.log(Level.SEVERE, "[KangarooBot] No Join Message set! Using Default Message!");
+            config.set("Join_Message", " has joined the server!");
+            m = getWelcomeMessage();
+        }
+        return m;
     }
 
     public boolean centeredDeathMessageEnabled() {

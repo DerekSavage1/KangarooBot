@@ -47,12 +47,14 @@ public class JoinAndQuit implements Listener {
 
         Player p = e.getPlayer();
         if (!p.hasPlayedBefore()) {
-            sendCenteredMessage(ChatColor.AQUA + "Please welcome " + p.getName() + " to our Chewy's Hub!"); //TODO: make this customizable, and togglebale
-            sendCenteredMessage(ChatColor.AQUA + "This is their first time playing!"); //TODO: make this customizable, and togglebale
+            if (ConfigFile.getWelcomeMessageEnabled()) {
+                sendCenteredMessage(ChatColor.AQUA + "Please welcome " + p.getName() + " to our Chewy's Hub!"); //TODO: make this customizable
+                sendCenteredMessage(ChatColor.AQUA + "This is their first time playing!"); //TODO: make this customizable
+            }
         }
 
-        sendCenteredMessage(ChatColor.YELLOW + p.getName() + ChatColor.AQUA + " has joined the game. Welcome back!"); //TODO: make this customizable, and togglebale
-
+        if (ConfigFile.getJoinMessageEnabled())
+            sendCenteredMessage(ChatColor.YELLOW + p.getName() + ChatColor.AQUA + ConfigFile.getWelcomeMessage());
     }
 
     public void setDiscordOnlineRole(String nickname, boolean setOnline) {
