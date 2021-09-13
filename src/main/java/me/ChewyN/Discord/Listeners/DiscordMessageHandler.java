@@ -10,8 +10,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.logging.Level;
 
-import static me.ChewyN.Main.getDiscordbot;
+import static me.ChewyN.Main.*;
 
 public class DiscordMessageHandler {
 
@@ -27,14 +28,34 @@ public class DiscordMessageHandler {
     }
 
     public static void sendToAdminChannel(String message) {
-        if(Main.getConfigFile().isAdminChannelEnabled()) {
+        if(Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.getAdminChannel(DISCORDBOT) == null) {
+            Main.getConfigFile().setAdminChannelEnabled(false);
+            Main.log(Level.SEVERE, "Admin channel enabled but not found! Disabling...");
+        }
+        else if (Main.getConfigFile().isAdminChannelEnabled()) {
                 ConfigFile.getAdminChannel(DISCORDBOT).sendMessage(message).queue();
         }
     }
 
     public static void sendToAdminChannel(String message, String username) {
-        if(Main.getConfigFile().isAdminChannelEnabled()) {
-            ConfigFile.getAdminChannel(DISCORDBOT).sendMessage("`" + username + " »` " + message).queue();
+        try{
+            if(Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.getAdminChannel(DISCORDBOT) == null) {
+                Main.getConfigFile().setAdminChannelEnabled(false);
+                Main.log(Level.SEVERE, "Admin channel enabled but not found! Disabling...");
+            }
+            else if (Main.getConfigFile().isAdminChannelEnabled()) {
+                ConfigFile.getAdminChannel(DISCORDBOT).sendMessage("`" + username + " »` " + message).queue();
+            }
+        }
+        catch(IllegalArgumentException e) {
+            log(Level.SEVERE, "Admin channel is enabled but " + e.getMessage());
+            Main.log(Level.SEVERE, "Admin channel enabled but not found! Disabling...");
+            Main.getConfigFile().setAdminChannelEnabled(false);
+        }
+        catch(NullPointerException e) {
+            log(Level.SEVERE, "Admin channel is enabled but " + e.getMessage());
+            Main.log(Level.SEVERE, "Admin channel enabled but not found! Disabling...");
+            Main.getConfigFile().setAdminChannelEnabled(false);
         }
     }
 

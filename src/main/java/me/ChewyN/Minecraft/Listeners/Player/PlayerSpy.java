@@ -1,6 +1,6 @@
 package me.ChewyN.Minecraft.Listeners.Player;
 
-import me.ChewyN.Data.ConfigFile;
+import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
 import me.ChewyN.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -9,9 +9,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import java.util.Objects;
-
-import static me.ChewyN.Main.discordbot;
 import static me.ChewyN.Main.instance;
 
 
@@ -30,7 +27,7 @@ public class PlayerSpy implements Listener {
         }
 
 
-        sendToAdminDiscord("(Sign) " + playerName, signMessage);
+        DiscordMessageHandler.sendToAdminChannel("(Sign) " + playerName, signMessage);
         Main.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + signMessage);
     }
 
@@ -51,11 +48,9 @@ public class PlayerSpy implements Listener {
             if (player.hasPermission("commandspy.see.commands") && !player.equals(e.getPlayer())) player.sendMessage(ChatColor.AQUA + playerName + " » " + commandMessage);
         }
 
-        sendToAdminDiscord(playerName, commandMessage);
+
+        DiscordMessageHandler.sendToAdminChannel(playerName, commandMessage);
     }
 
-    public static void sendToAdminDiscord(String username, String message) {
-        Objects.requireNonNull(ConfigFile.getAdminChannel(discordbot)).sendMessage("`" + username + " »` " + message).queue();
-    }
 
 }

@@ -179,12 +179,12 @@ public class Main extends JavaPlugin {
     }
 
     public static void log(Level level, String message) {
-        instance.getServer().getLogger().log(level, message);
+        instance.getServer().getLogger().log(level, "[KangarooBot] " + message);
     }
 
     public static void debug(String message) {
         if (configFile.isDebugEnabled()) {
-            instance.getServer().getLogger().log(Level.INFO, "Debug: " + message);
+            instance.getServer().getLogger().log(Level.INFO, "[KangarooBot] Debug: " + message);
         }
     }
 

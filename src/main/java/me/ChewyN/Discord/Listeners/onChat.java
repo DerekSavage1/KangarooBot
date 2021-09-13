@@ -44,10 +44,6 @@ public class onChat extends ListenerAdapter {
                 }
             }
         }
-
-
-
-
     }
 
     private String formatMessage(Message message) {
@@ -64,7 +60,6 @@ public class onChat extends ListenerAdapter {
 
             if(attachments.get(0).isVideo())
                 return "Video: " + attachments.get(0).getUrl();
-
 
             if(attachments.get(0).isSpoiler())
                 return "Spoiler: " + attachments.get(0).getUrl();

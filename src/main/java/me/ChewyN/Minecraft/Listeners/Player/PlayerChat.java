@@ -1,6 +1,6 @@
 package me.ChewyN.Minecraft.Listeners.Player;
 
-import me.ChewyN.Data.ConfigFile;
+import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
 import me.ChewyN.Main;
 import net.dv8tion.jda.api.JDA;
 import org.bukkit.Bukkit;
@@ -9,8 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-
-import java.util.Objects;
 
 public class PlayerChat implements Listener {
 
@@ -25,7 +23,7 @@ public class PlayerChat implements Listener {
         String      username = getUserName(p);
 
         Bukkit.broadcastMessage(username + ChatColor.GRAY + " » " + ChatColor.WHITE + message);
-        sendToDiscord(username, message);
+        DiscordMessageHandler.sendToBothDiscordChannels(username, message);
 
     }
 
@@ -35,11 +33,6 @@ public class PlayerChat implements Listener {
         } else {
             return p.getCustomName();
         }
-    }
-
-    public static void sendToDiscord(String username, String message) {
-        Objects.requireNonNull(ConfigFile.getMinecraftChannel(discordbot)).sendMessage("`" + username + " »` " + message).queue();
-        Objects.requireNonNull(ConfigFile.getAdminChannel(discordbot)).sendMessage("`" + username + " »` " + message).queue();
     }
 
 }
