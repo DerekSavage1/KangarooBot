@@ -35,6 +35,11 @@ public class Main extends JavaPlugin {
     //Inspirational quote of the day: what one developer can do in two days, two developers can do in four
     public static JDA discordbot;
     public static Main instance;
+
+    public static ConfigFile getConfigFile() {
+        return configFile;
+    }
+
     public static ConfigFile configFile;
 
 

@@ -64,7 +64,8 @@ public class ConfigFile extends AbstractFile{
         if(!config.contains("Discord_Server_Offline_Message"))
             config.set("Discord_Server_Offline_Message", "Server Stopped.");
 
-
+        if(!config.contains("Admin_Channel_Enabled"))
+            config.set("Admin_Channel_Enabled", false);
 
         save();
     }
@@ -102,8 +103,6 @@ public class ConfigFile extends AbstractFile{
         }
 
         return discordbot.getTextChannelById(channelID);
-
-
 
     }
 
@@ -173,6 +172,15 @@ public class ConfigFile extends AbstractFile{
 
     public boolean isDebugEnabled() {
         return config.getBoolean("Debug_Enabled");
+    }
+
+    public boolean isAdminChannelEnabled() {
+        return config.getBoolean("Admin_Channel_Enabled");
+    }
+
+    public void setAdminChannelEnabled(boolean enabled) {
+        config.set("Admin_Channel_Enabled",enabled);
+        save();
     }
 
     //TODO: Create Reload Function
