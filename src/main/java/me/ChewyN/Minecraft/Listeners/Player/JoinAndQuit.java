@@ -2,7 +2,9 @@ package me.ChewyN.Minecraft.Listeners.Player;
 
 
 //import me.ChewyN.Minecraft.Packets.packet;
+
 import me.ChewyN.Data.ConfigFile;
+import me.ChewyN.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -16,6 +18,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import static me.ChewyN.Main.*;
 import static me.ChewyN.Minecraft.Util.MinecraftMessageHandler.sendCenteredMessage;
@@ -24,10 +27,10 @@ public class JoinAndQuit implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        Player  p = e.getPlayer();
+        Player p = e.getPlayer();
 
         modifyJoinMessage(e);
-        sendJoinOrQuitMessageToDiscord(p,true);
+        sendJoinOrQuitMessageToDiscord(p, true);
         setDiscordOnlineRole(p.getPlayerListName(), true);
     }
 
@@ -36,7 +39,7 @@ public class JoinAndQuit implements Listener {
         Player p = e.getPlayer();
 
         setDiscordOnlineRole(p.getPlayerListName(), false);
-        sendJoinOrQuitMessageToDiscord(p,false);
+        sendJoinOrQuitMessageToDiscord(p, false);
     }
 
     private void modifyJoinMessage(PlayerJoinEvent e) {
@@ -53,42 +56,47 @@ public class JoinAndQuit implements Listener {
     }
 
     public void setDiscordOnlineRole(String nickname, boolean setOnline) {
+        String onlineRoleName = ConfigFile.getOnlineRoleName();
         List<Member> members = getGuild().loadMembers().get();
-        Role onlineRole = getGuild().getRolesByName("online in-game", true).get(0); //FIXME: this throws null pointer exception if online in-game role doesn't exist
-        Member			match = null;
+        List<Role> role = getGuild().getRolesByName(onlineRoleName, true);
+        if ((role.contains(onlineRoleName))) {
+            Role onlineRole = getGuild().getRolesByName(onlineRoleName, true).get(0);
+            Member match = null;
 
-        for( Member member : members ) {
-            if(member.getNickname() == null) continue;
+            for (Member member : members) {
+                if (member.getNickname() == null) continue;
 
-            if(member.getNickname().equalsIgnoreCase(nickname)) {
-                match = member;
-                break;
+                if (member.getNickname().equalsIgnoreCase(nickname)) {
+                    match = member;
+                    break;
+                }
             }
-        }
 
-        if(match == null) {
-            debug("No match found!");
-            return;
-        }
+            if (match == null) {
+                debug("No match found!");
+                return;
+            }
 
-        if(setOnline) {
-            getGuild().addRoleToMember(match, onlineRole).complete();
+            if (setOnline) {
+                getGuild().addRoleToMember(match, onlineRole).complete();
+            } else {
+                getGuild().removeRoleFromMember(match, onlineRole).complete();
+            }
         } else {
-            getGuild().removeRoleFromMember(match, onlineRole).complete();
+            Main.log(Level.SEVERE, "Online role: " + onlineRoleName + ", does not exist!");
         }
-
     }
 
     private void sendJoinOrQuitMessageToDiscord(Player player, boolean isJoining) {
-        String			playerUUID = player.getUniqueId().toString().replaceAll("-","");
-        String			faceURL = "https://minotar.net/avatar/"+playerUUID+"/25"; //discord wants as string
-        String			playerName = player.getPlayerListName();
-        int				playerCount = Bukkit.getOnlinePlayers().size();
-        final TextChannel     DISCORD_MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(discordbot);
+        String playerUUID = player.getUniqueId().toString().replaceAll("-", "");
+        String faceURL = "https://minotar.net/avatar/" + playerUUID + "/25"; //discord wants as string
+        String playerName = player.getPlayerListName();
+        int playerCount = Bukkit.getOnlinePlayers().size();
+        final TextChannel DISCORD_MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(discordbot);
 
         EmbedBuilder joinMessage = new EmbedBuilder();
         joinMessage.setThumbnail(faceURL);
-        if(isJoining) {
+        if (isJoining) {
             joinMessage.setTitle(playerName + " has joined the server");
             joinMessage.setColor(0x42f545);
         } else {
@@ -96,7 +104,7 @@ public class JoinAndQuit implements Listener {
             joinMessage.setColor(0xeb4034);
         }
 
-        if(playerCount <= 0) {
+        if (playerCount <= 0) {
             joinMessage.setDescription("No players online");
             assert DISCORD_MINECRAFT_CHANNEL != null;
             DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
@@ -106,8 +114,9 @@ public class JoinAndQuit implements Listener {
 
         //Building description
         StringBuilder description = new StringBuilder("Now " + playerCount + " players online: \n");
-        for( Player p : Bukkit.getOnlinePlayers()) {
-            if(!isJoining && p.getPlayerListName().equals(player.getPlayerListName())) continue; //if they are quitting leave out their name
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (!isJoining && p.getPlayerListName().equals(player.getPlayerListName()))
+                continue; //if they are quitting leave out their name
             description.append("`").append(p.getPlayerListName()).append("`, ");
         }
 
@@ -120,7 +129,5 @@ public class JoinAndQuit implements Listener {
         joinMessage.clear();
 
     } //discord message
-
-
 
 }

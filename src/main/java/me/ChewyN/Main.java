@@ -93,13 +93,17 @@ public class Main extends JavaPlugin {
     }
 
     private void clearOnlineRole() {
+        //Check if role exists
+        String onlineRoleName = ConfigFile.getOnlineRoleName();
         //fetch members
         List<Member> members = getGuild().getMembers();
         try {
-            Role onlineRole = getGuild().getRolesByName("online in-game", true).get(0);
-            for (Member user : members) {
-                if (user.getRoles().contains(onlineRole)) {
-                    getGuild().removeRoleFromMember(user, onlineRole).complete();
+            Role onlineRole = getGuild().getRolesByName(onlineRoleName, true).get(0);
+            if (onlineRole != null) {
+                for (Member user : members) {
+                    if (user.getRoles().contains(onlineRole)) {
+                        getGuild().removeRoleFromMember(user, onlineRole).complete();
+                    }
                 }
             }
         } catch (IndexOutOfBoundsException e) {
@@ -113,7 +117,6 @@ public class Main extends JavaPlugin {
         gatewayIntents.add(GatewayIntent.GUILD_PRESENCES);
 
         JDABuilder jdaBuilder = JDABuilder.createDefault(ConfigFile.getDiscordBotID());
-
 
 
         jdaBuilder.enableIntents(gatewayIntents);
@@ -180,7 +183,7 @@ public class Main extends JavaPlugin {
     }
 
     public static void debug(String message) {
-        if(configFile.isDebugEnabled()) {
+        if (configFile.isDebugEnabled()) {
             instance.getServer().getLogger().log(Level.INFO, "Debug: " + message);
         }
     }

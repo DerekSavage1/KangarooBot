@@ -3,8 +3,10 @@ package me.ChewyN.Data;
 import me.ChewyN.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.apache.commons.lang.ObjectUtils;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -66,6 +68,9 @@ public class ConfigFile extends AbstractFile{
 
         if(!config.contains("Admin_Channel_Enabled"))
             config.set("Admin_Channel_Enabled", false);
+
+        if (!config.contains("Discord_Online_Role_Name"))
+            config.set("Discord_Online_Role_Name", "online in-game");
 
         save();
     }
@@ -163,6 +168,16 @@ public class ConfigFile extends AbstractFile{
             Main.log(Level.SEVERE, "Incorrect config.yml!");
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @NotNull
+    public static String getOnlineRoleName() {
+        try {
+            return config.getString("Discord_Online_Role_Name");
+            } catch (NullPointerException e) {
+            Main.log(Level.SEVERE, "No Online Role set! Setting to default!");
+            return "online in-game";
         }
     }
 
