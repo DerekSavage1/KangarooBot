@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -59,8 +61,15 @@ public class ConfigFile extends AbstractFile {
                     "debug messages will appear until you set this to false.");
 
         //TODO: set default death messages (List<String>)
-        if (!config.contains("Death_Messages"))
-            config.set("Death_Messages", "");
+        // I tried making this but because of the custom file structure i got confused...
+        if (!config.contains("Death_Messages")) {
+            List<String> mess = new ArrayList<String>();
+            mess.add("has passed away");
+            mess.add("got lost in the sauce");
+            for (String s : mess) {
+                config.set("Death_Messages", s);
+            }
+        }
 
         if (!config.contains("Center_Death_Messages"))
             config.set("Center_Death_Messages", true);

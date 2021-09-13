@@ -63,8 +63,8 @@ public class JoinAndQuit implements Listener {
     public void setDiscordOnlineRole(String nickname, boolean setOnline) {
         String onlineRoleName = ConfigFile.getOnlineRoleName();
         List<Member> members = getGuild().loadMembers().get();
-        List<Role> role = getGuild().getRolesByName(onlineRoleName, true); //FIXME
-        if ((role.contains(onlineRoleName))) { //FIXME
+        List<Role> role = getGuild().getRolesByName(onlineRoleName, true); //FIXME warning
+        if ((role.contains(onlineRoleName))) { //FIXME warning
             Role onlineRole = getGuild().getRolesByName(onlineRoleName, true).get(0);
             Member match = null;
 
