@@ -170,7 +170,7 @@ public class Main extends JavaPlugin {
         }
 
         assert DISCORD_MINECRAFT_CHANNEL != null;
-        Objects.requireNonNull(DISCORD_MINECRAFT_CHANNEL.sendMessageEmbeds(message.build())).queue();
+        Objects.requireNonNull(DISCORD_MINECRAFT_CHANNEL.sendMessage(message.build())).queue();
 
         message.clear();
 

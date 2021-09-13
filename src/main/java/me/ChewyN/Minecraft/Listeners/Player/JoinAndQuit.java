@@ -107,7 +107,7 @@ public class JoinAndQuit implements Listener {
         if (playerCount <= 0) {
             joinMessage.setDescription("No players online");
             assert DISCORD_MINECRAFT_CHANNEL != null;
-            DISCORD_MINECRAFT_CHANNEL.sendMessageEmbeds(joinMessage.build()).queue();
+            DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
             joinMessage.clear();
             return;
         }
@@ -124,7 +124,7 @@ public class JoinAndQuit implements Listener {
         joinMessage.setDescription(description.toString());
 
         assert DISCORD_MINECRAFT_CHANNEL != null;
-        DISCORD_MINECRAFT_CHANNEL.sendMessageEmbeds(joinMessage.build()).queue();
+        DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
 
         joinMessage.clear();
 
