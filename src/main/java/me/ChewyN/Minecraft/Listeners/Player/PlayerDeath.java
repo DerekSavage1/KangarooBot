@@ -32,6 +32,9 @@ public class PlayerDeath implements Listener {
 
         e.setDeathMessage(deathMessage);
 
+        // get new non-centered message after replacing the mc death message
+        deathMessage = getDeathMessage(e, false);
+
         deathMap.put(e.getEntity(), new DeathStatus(e.getEntity().getLocation()));
 
         String cOD = Objects.requireNonNull(e.getEntity().getLastDamageCause()).getCause().name();
@@ -84,11 +87,11 @@ public class PlayerDeath implements Listener {
 
         EmbedBuilder message = new EmbedBuilder();
         EmbedBuilder mAdmin = new EmbedBuilder();
-        message.setTitle(":skull:");
-        mAdmin.setTitle(":skull:");
+        message.setTitle(name + " " + deathMessage);
+        mAdmin.setTitle(name + " " + deathMessage);
         message.setColor(0x888888);
         mAdmin.setColor(0x888888);
-        message.setDescription(deathMessage);
+        message.setDescription("I forgor " + ":skull:");
         mAdmin.setDescription(name + " died from " + c + ". Location: " + l);
 
 

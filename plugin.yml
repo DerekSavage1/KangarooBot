@@ -22,7 +22,7 @@ commands:
     kgrl:
         description: Reloads bukkit
         usage: Reload bukkit
-    wiener:
+    weiner:
       description: idk try it
       usage: heh
 libraries:
