@@ -28,14 +28,16 @@ public class PlayerDeath implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
 
-        e.setDeathMessage(getDeathMessage(e, configFile.centeredDeathMessageEnabled()));
+        String deathMessage = getDeathMessage(e, configFile.centeredDeathMessageEnabled());
+
+        e.setDeathMessage(deathMessage);
 
         deathMap.put(e.getEntity(), new DeathStatus(e.getEntity().getLocation()));
 
         String cOD = Objects.requireNonNull(e.getEntity().getLastDamageCause()).getCause().name();
         String l  = ("X:" + e.getEntity().getLocation().getBlockX() + ", Y: " + e.getEntity().getLocation().getBlockY() + ", Z: " + e.getEntity().getLocation().getBlockZ());
 
-        sendDeathMessageToDiscord(e.getEntity().getName(), cOD, l);
+        sendDeathMessageToDiscord(e.getEntity().getName(), cOD, l, deathMessage);
 
         if (ConfigFile.backCommandEnabled()) {
             new BukkitRunnable() {
@@ -75,7 +77,7 @@ public class PlayerDeath implements Listener {
      * @param c The death cause
      * @param l The death location
      */
-    private void sendDeathMessageToDiscord(String name, String c, String l) {
+    private void sendDeathMessageToDiscord(String name, String c, String l, String deathMessage) {
         final TextChannel DISCORD_MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(Main.getDiscordbot());
         final TextChannel DISCORD_ADMIN_CHANNEL = ConfigFile.getAdminChannel(Main.getDiscordbot());
 
@@ -86,7 +88,7 @@ public class PlayerDeath implements Listener {
         mAdmin.setTitle(":skull:");
         message.setColor(0x888888);
         mAdmin.setColor(0x888888);
-        message.setDescription(name + " died");
+        message.setDescription(deathMessage);
         mAdmin.setDescription(name + " died from " + c + ". Location: " + l);
 
 
