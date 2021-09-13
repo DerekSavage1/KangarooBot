@@ -1,8 +1,7 @@
 package me.ChewyN.Minecraft.Listeners.Player;
 
 import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import me.ChewyN.Minecraft.Util.MinecraftMessageHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,9 +17,8 @@ public class PlayerChat implements Listener {
         String      message = e.getMessage();
         String      username = getUserName(p);
 
-        Bukkit.broadcastMessage(username + ChatColor.GRAY + " » " + ChatColor.WHITE + message);
+        MinecraftMessageHandler.broadcastMessage(p, message); //TODO
         DiscordMessageHandler.sendToBothDiscordChannels(username, message);
-
     }
 
     private String getUserName(Player p) {

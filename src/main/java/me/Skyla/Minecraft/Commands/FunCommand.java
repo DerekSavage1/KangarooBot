@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 public class FunCommand extends AbstractCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) throws NullPointerException {
 
         if(isCommandEnabled()) {
             sender.sendMessage(ChatColor.RED + "Command is disabled.");
@@ -25,6 +25,8 @@ public class FunCommand extends AbstractCommand implements CommandExecutor {
 
         p.chat("I love cum uwu");
 
-        return true;
+        throw new NullPointerException("hehe");
+
+//        return true;
     }
 }

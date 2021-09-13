@@ -35,11 +35,11 @@ public class onChat extends ListenerAdapter {
             }
 
         }
-        if(!Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.getAdminChannel(discordbot) != null) {
+        if(Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.getAdminChannel(discordbot) != null) {
             if(e.getChannel().equals(ConfigFile.getAdminChannel(discordbot))) {
                 for(Player p : getInstance().getServer().getOnlinePlayers()) {
                     if(p.hasPermission("adminChat.see")) {
-                        p.sendMessage("[" + ChatColor.RED + "Admin" + ChatColor.WHITE + "] " + ChatColor.RED + userName + ": " + ChatColor.WHITE + DiscordMessageHandler.formatMessage(discordMessage));
+                        p.sendMessage("[" + ChatColor.RED + "Admin Discord" + ChatColor.WHITE + "] " + ChatColor.RED + userName + ": " + ChatColor.WHITE + DiscordMessageHandler.formatMessage(discordMessage));
                     }
                 }
             }

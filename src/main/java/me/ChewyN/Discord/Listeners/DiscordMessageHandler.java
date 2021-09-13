@@ -23,7 +23,7 @@ public class DiscordMessageHandler {
         MINECRAFT_CHANNEL.sendMessage(message).queue();
     }
 
-    public static void sendToMinecraftChannel(String message, String username) {
+    public static void sendToMinecraftChannel(String username, String message) {
         MINECRAFT_CHANNEL.sendMessage("`" + username + " »` " + message).queue(); //TODO: make text format customizable in config
     }
 
@@ -37,7 +37,7 @@ public class DiscordMessageHandler {
         }
     }
 
-    public static void sendToAdminChannel(String message, String username) {
+    public static void sendToAdminChannel(String username, String message) {
         try{
             if(Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.getAdminChannel(DISCORDBOT) == null) {
                 Main.getConfigFile().setAdminChannelEnabled(false);
@@ -65,8 +65,8 @@ public class DiscordMessageHandler {
     }
 
     public static void sendToBothDiscordChannels(String username, String message) {
-        sendToAdminChannel(message,username);
-        sendToMinecraftChannel(message, username);
+        sendToAdminChannel(username, message);
+        sendToMinecraftChannel(username, message);
     }
 
     public static void sendJoinOrQuitMessageToDiscord(Player player, boolean isJoining) {

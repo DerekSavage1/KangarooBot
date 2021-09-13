@@ -97,8 +97,10 @@ public class PlayerDeath implements Listener {
 
         assert DISCORD_MINECRAFT_CHANNEL != null;
         Objects.requireNonNull(DISCORD_MINECRAFT_CHANNEL.sendMessage(message.build())).queue();
-        assert DISCORD_ADMIN_CHANNEL != null;
-        Objects.requireNonNull(DISCORD_ADMIN_CHANNEL.sendMessage(mAdmin.build())).queue();
+
+        if(Main.getConfigFile().isAdminChannelEnabled()) {
+            Objects.requireNonNull(DISCORD_ADMIN_CHANNEL.sendMessage(mAdmin.build())).queue();
+        }
 
         message.clear();
         mAdmin.clear();

@@ -5,6 +5,7 @@ package me.ChewyN.Minecraft.Listeners.Player;
 
 import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Main;
+import me.ChewyN.Minecraft.Util.MinecraftMessageHandler;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import static me.ChewyN.Main.*;
-import static me.ChewyN.Minecraft.Util.MinecraftMessageHandler.sendCenteredMessage;
+import static me.ChewyN.Minecraft.Util.MinecraftMessageHandler.broadcastCenteredMessage;
 
 public class JoinAndQuit implements Listener {
 
@@ -48,13 +49,13 @@ public class JoinAndQuit implements Listener {
         Player p = e.getPlayer();
         if (!p.hasPlayedBefore()) {
             if (ConfigFile.getWelcomeMessageEnabled()) {
-                sendCenteredMessage(ChatColor.AQUA + "Please welcome " + p.getName() + " to our Chewy's Hub!"); //TODO: make this customizable
-                sendCenteredMessage(ChatColor.AQUA + "This is their first time playing!"); //TODO: make this customizable
+                MinecraftMessageHandler.broadcastCenteredMessage(ChatColor.AQUA + "Please welcome " + p.getName() + " to our Chewy's Hub!"); //TODO: make this customizable
+                MinecraftMessageHandler.broadcastCenteredMessage(ChatColor.AQUA + "This is their first time playing!"); //TODO: make this customizable
             }
         }
 
         if (ConfigFile.getJoinMessageEnabled())
-            sendCenteredMessage(ChatColor.YELLOW + p.getName() + ChatColor.AQUA + ConfigFile.getWelcomeMessage());
+            MinecraftMessageHandler.broadcastCenteredMessage(ChatColor.YELLOW + p.getName() + ChatColor.AQUA + ConfigFile.getWelcomeMessage());
     }
 
     public void setDiscordOnlineRole(String nickname, boolean setOnline) {
