@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.logging.Level;
 
 import static me.ChewyN.Main.*;
-import static me.ChewyN.Minecraft.Util.MinecraftMessageHandler.broadcastCenteredMessage;
 
 public class JoinAndQuit implements Listener {
 
@@ -58,6 +57,7 @@ public class JoinAndQuit implements Listener {
             MinecraftMessageHandler.broadcastCenteredMessage(ChatColor.YELLOW + p.getName() + ChatColor.AQUA + ConfigFile.getWelcomeMessage());
     }
 
+    //TODO put in discord handler
     public void setDiscordOnlineRole(String nickname, boolean setOnline) {
         String onlineRoleName = ConfigFile.getOnlineRoleName();
         List<Member> members = getGuild().loadMembers().get();
@@ -90,6 +90,7 @@ public class JoinAndQuit implements Listener {
         }
     }
 
+    //TODO: Put in discord message handler
     private void sendJoinOrQuitMessageToDiscord(Player player, boolean isJoining) {
         String playerUUID = player.getUniqueId().toString().replaceAll("-", "");
         String faceURL = "https://minotar.net/avatar/" + playerUUID + "/25"; //discord wants as string
@@ -100,10 +101,10 @@ public class JoinAndQuit implements Listener {
         EmbedBuilder joinMessage = new EmbedBuilder();
         joinMessage.setThumbnail(faceURL);
         if (isJoining) {
-            joinMessage.setTitle(playerName + " has joined the server"); //TODO: make this customizable, and togglebale
+            joinMessage.setTitle(playerName + " has joined the server"); //TODO: make this customizable and toggleable
             joinMessage.setColor(0x42f545);
         } else {
-            joinMessage.setTitle(playerName + " has left the server"); //TODO: make this customizable, and togglebale
+            joinMessage.setTitle(playerName + " has left the server"); //TODO: make this customizable and toggleable
             joinMessage.setColor(0xeb4034);
         }
 

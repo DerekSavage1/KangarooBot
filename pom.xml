@@ -44,11 +44,11 @@
       <scope>provided</scope>
     </dependency>
 
-<!--url-parser-->
+<!--    url-parser https://engineering.linkedin.com/blog/2016/06/open-sourcing-url-detector&#45;&#45;a-java-library-to-detect-and-normali-->
     <dependency>
-      <groupId>io.mola.galimatias</groupId>
-      <artifactId>galimatias</artifactId>
-      <version>0.2.1</version>
+      <groupId>com.linkedin.urls</groupId>
+      <artifactId>url-detector</artifactId>
+      <version>0.1.17</version>
     </dependency>
 
 
