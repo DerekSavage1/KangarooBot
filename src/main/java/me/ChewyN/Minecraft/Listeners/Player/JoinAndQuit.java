@@ -47,19 +47,19 @@ public class JoinAndQuit implements Listener {
 
         Player p = e.getPlayer();
         if (!p.hasPlayedBefore()) {
-            sendCenteredMessage(ChatColor.AQUA + "Please welcome " + p.getName() + " to our Chewy's Hub!");
-            sendCenteredMessage(ChatColor.AQUA + "This is their first time playing!");
+            sendCenteredMessage(ChatColor.AQUA + "Please welcome " + p.getName() + " to our Chewy's Hub!"); //TODO: make this customizable, and togglebale
+            sendCenteredMessage(ChatColor.AQUA + "This is their first time playing!"); //TODO: make this customizable, and togglebale
         }
 
-        sendCenteredMessage(ChatColor.YELLOW + p.getName() + ChatColor.AQUA + " has joined the game. Welcome back!");
+        sendCenteredMessage(ChatColor.YELLOW + p.getName() + ChatColor.AQUA + " has joined the game. Welcome back!"); //TODO: make this customizable, and togglebale
 
     }
 
     public void setDiscordOnlineRole(String nickname, boolean setOnline) {
         String onlineRoleName = ConfigFile.getOnlineRoleName();
         List<Member> members = getGuild().loadMembers().get();
-        List<Role> role = getGuild().getRolesByName(onlineRoleName, true);
-        if ((role.contains(onlineRoleName))) {
+        List<Role> role = getGuild().getRolesByName(onlineRoleName, true); //FIXME
+        if ((role.contains(onlineRoleName))) { //FIXME
             Role onlineRole = getGuild().getRolesByName(onlineRoleName, true).get(0);
             Member match = null;
 
@@ -83,7 +83,7 @@ public class JoinAndQuit implements Listener {
                 getGuild().removeRoleFromMember(match, onlineRole).complete();
             }
         } else {
-            Main.log(Level.SEVERE, "Online role: " + onlineRoleName + ", does not exist!");
+            Main.log(Level.SEVERE, "[KangarooBot] Online role: " + onlineRoleName + ", does not exist!");
         }
     }
 
@@ -97,17 +97,17 @@ public class JoinAndQuit implements Listener {
         EmbedBuilder joinMessage = new EmbedBuilder();
         joinMessage.setThumbnail(faceURL);
         if (isJoining) {
-            joinMessage.setTitle(playerName + " has joined the server");
+            joinMessage.setTitle(playerName + " has joined the server"); //TODO: make this customizable, and togglebale
             joinMessage.setColor(0x42f545);
         } else {
-            joinMessage.setTitle(playerName + " has left the server");
+            joinMessage.setTitle(playerName + " has left the server"); //TODO: make this customizable, and togglebale
             joinMessage.setColor(0xeb4034);
         }
 
         if (playerCount <= 0) {
             joinMessage.setDescription("No players online");
             assert DISCORD_MINECRAFT_CHANNEL != null;
-            DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
+            DISCORD_MINECRAFT_CHANNEL.sendMessageEmbeds(joinMessage.build()).queue();
             joinMessage.clear();
             return;
         }
@@ -124,7 +124,7 @@ public class JoinAndQuit implements Listener {
         joinMessage.setDescription(description.toString());
 
         assert DISCORD_MINECRAFT_CHANNEL != null;
-        DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
+        DISCORD_MINECRAFT_CHANNEL.sendMessageEmbeds(joinMessage.build()).queue();
 
         joinMessage.clear();
 

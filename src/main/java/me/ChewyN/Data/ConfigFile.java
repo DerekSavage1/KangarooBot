@@ -158,7 +158,7 @@ public class ConfigFile extends AbstractFile {
 
     public static String getDiscordOnlineMessage() {
         try {
-            return (String) config.get("Discord_Server_Online_Message");
+            return config.getString("Discord_Server_Online_Message");
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -167,7 +167,7 @@ public class ConfigFile extends AbstractFile {
 
     public static String getDiscordOfflineMessage() {
         try {
-            return (String) config.get("Discord_Server_Offline_Message");
+            return config.getString("Discord_Server_Offline_Message");
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -187,7 +187,7 @@ public class ConfigFile extends AbstractFile {
     @Nullable
     public static String getOnlineRoleName() {
         if(config.getString("Discord_Online_Role_Name") == null) {
-            Main.log(Level.SEVERE, "No Online Role set! Setting to default!");
+            Main.log(Level.SEVERE, "[KangarooBot] No Online Role set! Setting to default!");
             return "online in-game";
         } else {
             return config.getString("Discord_Online_Role_Name");
