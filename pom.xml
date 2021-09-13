@@ -44,6 +44,13 @@
       <scope>provided</scope>
     </dependency>
 
+<!--url-parser-->
+    <dependency>
+      <groupId>io.mola.galimatias</groupId>
+      <artifactId>galimatias</artifactId>
+      <version>0.2.1</version>
+    </dependency>
+
 
   </dependencies>
 
