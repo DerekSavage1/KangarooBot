@@ -87,7 +87,6 @@ public class Main extends JavaPlugin {
         clearOnlineRole();
         discordbot.shutdownNow();
         instance = null;
-        //FIXME this breaks
     }
 
     private void clearOnlineRole() {

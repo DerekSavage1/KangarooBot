@@ -46,5 +46,4 @@ public class centerMessage {
     }
 
 
-
 } // end of method
