@@ -175,7 +175,7 @@ public class ConfigFile extends AbstractFile {
     @Nullable
     public static String getOnlineRoleName() {
         if(config.getString("Discord_Online_Role_Name") == null) {
-            Main.log(Level.SEVERE, "No Online Role set! Setting to default!");
+            Main.log(Level.SEVERE, "[KangarooBot] No Online Role set! Setting to default!");
             return "online in-game";
         } else {
             return config.getString("Discord_Online_Role_Name");

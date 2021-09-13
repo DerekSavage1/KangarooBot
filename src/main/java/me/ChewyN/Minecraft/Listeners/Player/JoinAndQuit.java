@@ -47,11 +47,11 @@ public class JoinAndQuit implements Listener {
 
         Player p = e.getPlayer();
         if (!p.hasPlayedBefore()) {
-            sendCenteredMessage(ChatColor.AQUA + "Please welcome " + p.getName() + " to our Chewy's Hub!");
-            sendCenteredMessage(ChatColor.AQUA + "This is their first time playing!");
+            sendCenteredMessage(ChatColor.AQUA + "Please welcome " + p.getName() + " to our Chewy's Hub!"); //TODO: make this customizable, and togglebale
+            sendCenteredMessage(ChatColor.AQUA + "This is their first time playing!"); //TODO: make this customizable, and togglebale
         }
 
-        sendCenteredMessage(ChatColor.YELLOW + p.getName() + ChatColor.AQUA + " has joined the game. Welcome back!");
+        sendCenteredMessage(ChatColor.YELLOW + p.getName() + ChatColor.AQUA + " has joined the game. Welcome back!"); //TODO: make this customizable, and togglebale
 
     }
 
@@ -83,7 +83,7 @@ public class JoinAndQuit implements Listener {
                 getGuild().removeRoleFromMember(match, onlineRole).complete();
             }
         } else {
-            Main.log(Level.SEVERE, "Online role: " + onlineRoleName + ", does not exist!");
+            Main.log(Level.SEVERE, "[KangarooBot] Online role: " + onlineRoleName + ", does not exist!");
         }
     }
 
@@ -97,10 +97,10 @@ public class JoinAndQuit implements Listener {
         EmbedBuilder joinMessage = new EmbedBuilder();
         joinMessage.setThumbnail(faceURL);
         if (isJoining) {
-            joinMessage.setTitle(playerName + " has joined the server");
+            joinMessage.setTitle(playerName + " has joined the server"); //TODO: make this customizable, and togglebale
             joinMessage.setColor(0x42f545);
         } else {
-            joinMessage.setTitle(playerName + " has left the server");
+            joinMessage.setTitle(playerName + " has left the server"); //TODO: make this customizable, and togglebale
             joinMessage.setColor(0xeb4034);
         }
 
