@@ -169,7 +169,6 @@ public class Main extends JavaPlugin {
             message.setDescription(ConfigFile.getDiscordOfflineMessage());
         }
 
-        assert DISCORD_MINECRAFT_CHANNEL != null;
         Objects.requireNonNull(DISCORD_MINECRAFT_CHANNEL.sendMessage(message.build())).queue();
 
         message.clear();
