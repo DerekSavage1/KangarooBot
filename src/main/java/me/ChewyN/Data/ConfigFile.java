@@ -76,7 +76,10 @@ public class ConfigFile extends AbstractFile {
 
     @NotNull
     public static TextChannel getMinecraftChannel(JDA discordbot) {
-        if(config.getString("Discord_Minecraft_Channel") == null) {
+
+        String minecraftChannelId = config.getString("Discord_Minecraft_Channel");
+
+        if(minecraftChannelId.isEmpty()) {
             log(Level.SEVERE, "=============================================================================");
             log(Level.SEVERE, "Discord_Minecraft_Channel is blank in config.yml! This is required for this plugin to function!");
             log(Level.SEVERE, "Discord bot needs a welcome channel to know where to send minecraft messages!");
@@ -84,21 +87,21 @@ public class ConfigFile extends AbstractFile {
             log(Level.SEVERE, "Disabling plugin...");
             log(Level.SEVERE, "=============================================================================");
             instance.getServer().getPluginManager().disablePlugin(instance);
+        } else {
+            if(discordbot.getTextChannelById(minecraftChannelId) == null) {
+                log(Level.SEVERE, "=============================================================================");
+                log(Level.SEVERE, "Discord_Minecraft_Channel is filled out, but that channel does not exist or is invalid!");
+                log(Level.SEVERE, "Discord bot needs a welcome channel to know where to send minecraft messages!");
+                log(Level.SEVERE, "Enable developer mode in the discord settings and right click the channel you want the minecraft messages to go");
+                log(Level.SEVERE, "Disabling plugin...");
+                log(Level.SEVERE, "=============================================================================");
+                instance.getServer().getPluginManager().disablePlugin(instance);
+            }
+            TextChannel minecraftChannel = discordbot.getTextChannelById(minecraftChannelId);
+            assert minecraftChannel != null;
+            return minecraftChannel;
         }
-        String minecraftChannelId = config.getString("Discord_Minecraft_Channel");
-        assert minecraftChannelId != null;
-
-        if(discordbot.getTextChannelById(minecraftChannelId) == null) {
-            log(Level.SEVERE, "=============================================================================");
-            log(Level.SEVERE, "Discord_Minecraft_Channel is filled out, but that channel does not exist or is invalid!");
-            log(Level.SEVERE, "Discord bot needs a welcome channel to know where to send minecraft messages!");
-            log(Level.SEVERE, "Enable developer mode in the discord settings and right click the channel you want the minecraft messages to go");
-            log(Level.SEVERE, "Disabling plugin...");
-            log(Level.SEVERE, "=============================================================================");
-        }
-        TextChannel minecraftChannel = discordbot.getTextChannelById(minecraftChannelId);
-        assert minecraftChannel != null;
-        return minecraftChannel;
+        throw new NullPointerException("No Minecraft Channel Provided!");
     }
 
     //TODO: Make getAdminChannel @Notnull

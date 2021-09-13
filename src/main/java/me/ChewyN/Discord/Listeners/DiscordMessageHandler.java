@@ -125,7 +125,6 @@ public class DiscordMessageHandler {
             if(attachments.get(0).isVideo())
                 return "Video: " + attachments.get(0).getUrl();
 
-
             if(attachments.get(0).isSpoiler())
                 return "Spoiler: " + attachments.get(0).getUrl();
 
