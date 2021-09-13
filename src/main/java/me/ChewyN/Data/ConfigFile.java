@@ -1,6 +1,7 @@
 package me.ChewyN.Data;
 
 import me.ChewyN.Main;
+import me.ChewyN.Minecraft.Commands.DiscordCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
@@ -26,12 +27,15 @@ public class ConfigFile extends AbstractFile {
     public static void setup() {
 
         if (!config.contains("Discord_Welcome_Channel") ||
-                config.getString("Discord_Welcome_Channel") == null) {
+                config.getString("Discord_Welcome_Channel") == null || config.getString("Discord_Welcome_Channel").equals("")) {
             log(Level.WARNING, "Welcome channel is missing in config.yml.");
             log(Level.WARNING, "We don't know which channel to send new players to.");
-            log(Level.WARNING, "Disabling /discord command..."); //TODO: disable discord command
-            config.set("Discord_Welcome_Channel", null);
+            log(Level.WARNING, "Disabling /discord command...");
+            setDiscordCommand(false); // Disables discord command
+            config.set("Discord_Welcome_Channel", "");
         }
+
+        Main.log(Level.INFO, "Welcome Channel Exists: id:" + config.getString("Discord_Welcome_Channel"));
 
         if (!config.contains("Discord_Minecraft_Channel"))
             config.set("Discord_Minecraft_Channel", "");
@@ -83,6 +87,9 @@ public class ConfigFile extends AbstractFile {
         if (!config.contains("Join_Message"))
             config.set("Join_Message", " has joined the game!");
 
+        if (!config.contains("Discord_Command_Enabled"))
+            config.set("Discord_Command_Enabled", true);
+
         save();
     }
 
@@ -98,7 +105,7 @@ public class ConfigFile extends AbstractFile {
 
         String minecraftChannelId = config.getString("Discord_Minecraft_Channel");
 
-        if(minecraftChannelId.isEmpty()) {
+        if (minecraftChannelId.isEmpty()) {
             log(Level.SEVERE, "=============================================================================");
             log(Level.SEVERE, "Discord_Minecraft_Channel is blank in config.yml! This is required for this plugin to function!");
             log(Level.SEVERE, "Discord bot needs a welcome channel to know where to send minecraft messages!");
@@ -107,7 +114,7 @@ public class ConfigFile extends AbstractFile {
             log(Level.SEVERE, "=============================================================================");
             instance.getServer().getPluginManager().disablePlugin(instance);
         } else {
-            if(discordbot.getTextChannelById(minecraftChannelId) == null) {
+            if (discordbot.getTextChannelById(minecraftChannelId) == null) {
                 log(Level.SEVERE, "=============================================================================");
                 log(Level.SEVERE, "Discord_Minecraft_Channel is filled out, but that channel does not exist or is invalid!");
                 log(Level.SEVERE, "Discord bot needs a welcome channel to know where to send minecraft messages!");
@@ -208,8 +215,8 @@ public class ConfigFile extends AbstractFile {
 
     @Nullable
     public static String getOnlineRoleName() {
-        if(config.getString("Discord_Online_Role_Name") == null) {
-            Main.log(Level.SEVERE, "[KangarooBot] No Online Role set! Setting to default!");
+        if (config.getString("Discord_Online_Role_Name") == null) {
+            Main.log(Level.SEVERE, "No Online Role set! Setting to default!");
             return "online in-game";
         } else {
             return config.getString("Discord_Online_Role_Name");
@@ -218,7 +225,7 @@ public class ConfigFile extends AbstractFile {
 
     public static Boolean getWelcomeMessageEnabled() {
         if ((Boolean) config.getBoolean("Welcome_Message_Enabled") == null) {
-            Main.log(Level.SEVERE, "[KangarooBot] No Welcome Message Option set! Defaulting to false!");
+            Main.log(Level.SEVERE, "No Welcome Message Option set! Defaulting to false!");
             return false;
         } else {
             return config.getBoolean("Welcome_Message_Enabled");
@@ -227,7 +234,7 @@ public class ConfigFile extends AbstractFile {
 
     public static Boolean getJoinMessageEnabled() {
         if ((Boolean) config.getBoolean("Join_Message_Enabled") == null) {
-            Main.log(Level.SEVERE, "[KangarooBot] No Join Message Option set! Defaulting to false!");
+            Main.log(Level.SEVERE, "No Join Message Option set! Defaulting to false!");
             return false;
         } else {
             return config.getBoolean("Join_Message_Enabled");
@@ -238,7 +245,7 @@ public class ConfigFile extends AbstractFile {
     public static String getWelcomeMessage() {
         String m = config.getString("Join_Message");
         if (m == null) {
-            Main.log(Level.SEVERE, "[KangarooBot] No Join Message set! Using Default Message!");
+            Main.log(Level.SEVERE, "No Join Message set! Using Default Message!");
             config.set("Join_Message", " has joined the server!");
             m = getWelcomeMessage();
         }
@@ -262,8 +269,26 @@ public class ConfigFile extends AbstractFile {
         save();
     }
 
-    //TODO: Create Reload Function
+    public static Boolean discordCommandEnabled() {
+        Boolean enabled = config.getBoolean("Discord_Command_Enabled");
+        if (enabled == null) {
+            Main.log(Level.SEVERE, "Discord command option not set! Defaulting to true!");
+            config.set("Discord_Command_Enabled", true);
+            enabled = true;
+        }
+        return enabled;
+    }
 
+    public static void setDiscordCommand(Boolean enabled) {
+        try {
+            config.set("Discord_Command_Enabled", enabled);
+        } catch (NullPointerException e) {
+            Main.log(Level.SEVERE, "Discord command option does not exist!");
+            e.printStackTrace();
+        }
+    }
+
+    //TODO: Create Reload Function
 
 
 }

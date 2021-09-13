@@ -86,7 +86,7 @@ public class JoinAndQuit implements Listener {
                 getGuild().removeRoleFromMember(match, onlineRole).complete();
             }
         } else {
-            Main.log(Level.SEVERE, "[KangarooBot] Online role: " + onlineRoleName + ", does not exist!");
+            Main.log(Level.WARNING, "[KangarooBot] Online role: " + onlineRoleName + ", does not exist!");
         }
     }
 

@@ -25,7 +25,7 @@ public class DiscordCommand extends AbstractCommand implements CommandExecutor{
     @Override
     public boolean onCommand(@NotNull CommandSender s, @NotNull Command cmd, @NotNull String label, String[] args) {
 
-        if(isCommandEnabled()) {
+        if(!isCommandEnabled()) {
             s.sendMessage(ChatColor.RED + "Command is disabled.");
             return true;
         }
@@ -55,6 +55,20 @@ public class DiscordCommand extends AbstractCommand implements CommandExecutor{
         }
 
         return false;
+    }
+
+    /**
+     * Checks the config file to see if the discord command is enabled.
+     * @return True if the command is enabled, false if it is not
+     */
+    @Override
+    public boolean isCommandEnabled() {
+        return ConfigFile.discordCommandEnabled();
+    }
+
+    @Override
+    public void setCommandEnabled(boolean commandEnabled) {
+        ConfigFile.setDiscordCommand(commandEnabled);
     }
 
     public static HashMap<String, String> getPlayerInvite() {
