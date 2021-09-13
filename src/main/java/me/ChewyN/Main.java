@@ -32,7 +32,7 @@ import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
 
-    //Inspirational quote of the day: what one developer can do in two days, two developers can do in four
+    //Inspirational quote of the day: Don't let anyone ruin your day. It's your day! Ruin it yourself by using IntelliJ! <3
     public static JDA discordbot;
     public static Main instance;
 
