@@ -86,14 +86,12 @@ public class ConfigFile extends AbstractFile {
         save();
     }
 
-    // TODO: MAKE THIS??
-    // Idk if this is needed btw -Skyla
-    /**
-     * Generates a new config file with defaults if one does not exist
-     */
-    public static void generateConfig() {
-
+    /*
+    @Override
+    public static void generateDefaultFile() {
+        System.out.print("e");
     }
+    */
 
     @NotNull
     public static TextChannel getMinecraftChannel(JDA discordbot) {
