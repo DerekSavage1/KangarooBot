@@ -39,7 +39,7 @@ public class onChat extends ListenerAdapter {
             if(e.getChannel().equals(ConfigFile.getAdminChannel(discordbot))) {
                 for(Player p : getInstance().getServer().getOnlinePlayers()) {
                     if(p.hasPermission("adminChat.see")) {
-                        p.sendMessage("[" + ChatColor.RED + "Admin" + ChatColor.WHITE + "] " + ChatColor.RED + userName + ": " + ChatColor.WHITE + discordMessage);
+                        p.sendMessage("[" + ChatColor.RED + "Admin" + ChatColor.WHITE + "] " + ChatColor.RED + userName + ": " + ChatColor.WHITE + DiscordMessageHandler.formatMessage(discordMessage));
                     }
                 }
             }
