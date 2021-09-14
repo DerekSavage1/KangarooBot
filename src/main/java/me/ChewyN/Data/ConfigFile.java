@@ -71,6 +71,15 @@ public class ConfigFile extends AbstractFile {
             }
         }
 
+        if (!config.contains("Discord_Death_Message_Description"))
+            config.set("Discord_Death_Message_Description", "I forgor :skull:");
+
+        if (!config.contains("Send_Death_Messages_To_Discord"))
+            config.set("Send_Death_Messages_To_Discord", true);
+
+        if (!config.contains("Log_Death_Info_In_Admin_Channel"))
+            config.set("Log_Death_Info_In_Admin_Channel", true);
+
         if (!config.contains("Center_Death_Messages"))
             config.set("Center_Death_Messages", true);
 
@@ -107,6 +116,7 @@ public class ConfigFile extends AbstractFile {
         if (!config.contains("Discord_Player_Leave_Message"))
             config.set("Discord_Player_Leave_Message", " has left the server");
 
+
         save();
     }
 
@@ -116,6 +126,8 @@ public class ConfigFile extends AbstractFile {
         System.out.print("e");
     }
     */
+
+    //TODO: Add javadoc comments to all of these methods
 
     @NotNull
     public static TextChannel getMinecraftChannel(JDA discordbot) {
@@ -335,6 +347,48 @@ public class ConfigFile extends AbstractFile {
             m = " has left the server";
         }
         return m;
+    }
+
+    /**
+     * Gets the discord death message description from the config file.
+     * @return The discord death message description.
+     */
+    public static String getDiscordDeathDescription() {
+        String m = config.getString("Discord_Death_Message_Description");
+            if (!check(m)) {
+                Main.log(Level.WARNING, "No discord death message description set! Setting to default!");
+                config.set("Discord_Death_Message_Description", "I forgor :skull:");
+                m = "I forgor :skull:";
+            }
+            return m;
+    }
+
+    /**
+     * Checks the config to see if the plugin should send death messages to discord.
+     * @return True if messages should send. False if they shouldn't.
+     */
+    public static Boolean sendDeathToDiscord() {
+        boolean enabled = config.getBoolean("Send_Death_Messages_To_Discord");
+        if (!check(enabled)) {
+            Main.log(Level.WARNING, "No discord death message sending option set! Setting to default!");
+            config.set("Send_Death_Messages_To_Discord", true);
+            enabled = true;
+        }
+        return enabled;
+    }
+
+    /**
+     * Checks to config to see if the plugin should log death info in the admin channel as well.
+     * @return True if it should log. False if it shouldn't.
+     */
+    public static Boolean logDeathInAdmin() {
+        boolean enabled = config.getBoolean("Log_Death_Info_In_Admin_Channel");
+        if (!check(enabled)) {
+            Main.log(Level.WARNING, "No discord death info admin option set! Setting to default!");
+            config.set("Log_Death_Info_In_Admin_Channel", true);
+            enabled = true;
+        }
+        return enabled;
     }
 
     /**
