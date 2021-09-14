@@ -2,6 +2,7 @@ package me.ChewyN.Minecraft.Listeners.Player;
 
 import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
 import me.ChewyN.Minecraft.Util.MinecraftMessageHandler;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,14 +12,12 @@ public class PlayerChat implements Listener {
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
-        e.setCancelled(true);
+        e.setCancelled(true);//TODO
 
-        Player      p = e.getPlayer();
-        String      message = e.getMessage();
-        String      username = getUserName(p);
+        String message = ChatColor.AQUA + getUserName(e.getPlayer()) + ChatColor.GRAY + " » " + ChatColor.WHITE + e.getMessage();
 
-        MinecraftMessageHandler.broadcastMessage(p, message); //TODO
-        DiscordMessageHandler.sendToBothDiscordChannels(username, message);
+        MinecraftMessageHandler.broadcastMessage(message);
+        DiscordMessageHandler.sendToBothDiscordChannels(getUserName(e.getPlayer()), e.getMessage());
     }
 
     private String getUserName(Player p) {
