@@ -25,8 +25,7 @@ public class FunCommand extends AbstractCommand implements CommandExecutor {
 
         p.chat("I love cum uwu");
 
-        throw new NullPointerException("hehe");
 
-//        return true;
+        return true;
     }
 }

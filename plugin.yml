@@ -25,5 +25,8 @@ commands:
     weiner:
       description: idk try it
       usage: heh
+    exception:
+      description: throws a fat error
+      usage: debug
 libraries:
   - com.squareup.okhttp3:okhttp:4.9.0
