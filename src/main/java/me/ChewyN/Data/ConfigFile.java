@@ -5,8 +5,6 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -243,14 +241,15 @@ public class ConfigFile extends AbstractFile {
         }
     }
 
-    @Nullable
+    @NotNull
     public static String getOnlineRoleName() {
-        if (!check(config.getString("Discord_Online_Role_Name"))) {
+        String roleName = config.getString("Discord_Online_Role_Name");
+
+        if (roleName == null) {
             Main.log(Level.WARNING, "No Online Role set! Setting to default!");
             return "online in-game";
-        } else {
-            return config.getString("Discord_Online_Role_Name");
         }
+        return roleName;
     }
 
     public static Boolean getWelcomeMessageEnabled() {
