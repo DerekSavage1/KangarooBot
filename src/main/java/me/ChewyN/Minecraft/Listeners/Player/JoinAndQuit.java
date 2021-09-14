@@ -5,7 +5,6 @@ package me.ChewyN.Minecraft.Listeners.Player;
 
 import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
-import me.ChewyN.Main;
 import me.ChewyN.Minecraft.Util.MinecraftMessageHandler;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
@@ -64,33 +63,34 @@ public class JoinAndQuit implements Listener {
     public void setDiscordOnlineRole(String nickname, boolean setOnline) {
         String onlineRoleName = ConfigFile.getOnlineRoleName();
         List<Member> members = getGuild().loadMembers().get();
-        List<Role> role = getGuild().getRolesByName(onlineRoleName, true); //FIXME warning
-        if ((role.contains(onlineRoleName))) { //FIXME warning
-            Role onlineRole = getGuild().getRolesByName(onlineRoleName, true).get(0);
-            Member match = null;
 
-            for (Member member : members) {
-                if (member.getNickname() == null) continue;
-
-                if (member.getNickname().equalsIgnoreCase(nickname)) {
-                    match = member;
-                    break;
-                }
-            }
-
-            if (match == null) {
-                debug("No match found!");
-                return;
-            }
-
-            if (setOnline) {
-                getGuild().addRoleToMember(match, onlineRole).complete();
-            } else {
-                getGuild().removeRoleFromMember(match, onlineRole).complete();
-            }
-        } else {
-            Main.log(Level.WARNING, "Online role: " + onlineRoleName + ", does not exist!");
+        if(getGuild().getRolesByName(onlineRoleName, true).get(0) == null) {
+            log(Level.WARNING, "No role found with name " + onlineRoleName);
         }
+        Role onlineRole = getGuild().getRolesByName(onlineRoleName, true).get(0);
+
+        Member match = null;
+
+        for (Member member : members) {
+            if (member.getNickname() == null) continue;
+
+            if (member.getNickname().equalsIgnoreCase(nickname)) {
+                match = member;
+                break;
+            }
+        }
+
+        if (match == null) {
+            debug("No match found!");
+            return;
+        }
+
+        if (setOnline) {
+            getGuild().addRoleToMember(match, onlineRole).complete();
+        } else {
+            getGuild().removeRoleFromMember(match, onlineRole).complete();
+        }
+
     }
 
     //TODO: Put in discord message handler
