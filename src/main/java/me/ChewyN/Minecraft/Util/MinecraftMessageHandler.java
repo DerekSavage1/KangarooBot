@@ -18,9 +18,9 @@ public class MinecraftMessageHandler {
     private static final Main instance = Main.getInstance();
 
     public static void broadcastMessage(Player p, String message) {
-        if(containsUrl(message)) {
-            formatUrl(getFirstUrl(message));
-        }
+//        if(containsUrl(message)) {
+//            formatUrl(getFirstUrl(message));
+//        }//TODO derek
         p.sendMessage(getUsedName(p) + org.bukkit.ChatColor.GRAY + " » " + org.bukkit.ChatColor.WHITE + message); //todo customizable in config.yml
 
     }
