@@ -13,7 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import javax.annotation.Nullable;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -91,7 +91,7 @@ public class PlayerDeath implements Listener {
         }
 
         if (isEnabled) {
-           randomDeathMessage = centerMessage.center(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() + " " + randomDeathMessage + ChatColor.RED + " ☠");
+           randomDeathMessage = centerMessage.center(ChatColor.RED + "☠ " + Color.WHITE + randomDeathMessage + ChatColor.RED + " ☠");
         }
 
         return randomDeathMessage;
