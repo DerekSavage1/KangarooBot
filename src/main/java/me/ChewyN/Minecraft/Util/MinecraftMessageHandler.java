@@ -21,12 +21,12 @@ public class MinecraftMessageHandler {
 //        if(containsUrl(message)) {
 //            formatUrl(getFirstUrl(message));
 //        }//TODO derek
-        p.sendMessage(getUsedName(p) + org.bukkit.ChatColor.GRAY + " » " + org.bukkit.ChatColor.WHITE + message); //todo customizable in config.yml
+        p.sendMessage( p.getName() + org.bukkit.ChatColor.GRAY + " » " + org.bukkit.ChatColor.WHITE + message); //todo customizable in config.yml
 
     }
 
     public static void broadcastCenteredMessage(Player p, String message) {
-        p.sendMessage(getUsedName(p) + org.bukkit.ChatColor.GRAY + " » " + org.bukkit.ChatColor.WHITE + message); //todo customizable in config.yml
+        p.sendMessage(p.getName() + org.bukkit.ChatColor.GRAY + " » " + org.bukkit.ChatColor.WHITE + message); //todo customizable in config.yml
     }
 
     public static void broadcastMessage(String message) {
@@ -51,7 +51,7 @@ public class MinecraftMessageHandler {
             return p.getName();
         }
         return p.getCustomName();
-    }
+    }//FIXME
 
     private static String getFirstUrl(String str) {
         List<Url> urls = new UrlDetector(str, UrlDetectorOptions.Default).detect();
