@@ -103,7 +103,6 @@ public class DiscordMessageHandler {
 
         if(playerCount <= 0) {
             joinMessage.setDescription("No players online");
-            assert DISCORD_MINECRAFT_CHANNEL != null;
             DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
             joinMessage.clear();
             return;
@@ -119,7 +118,6 @@ public class DiscordMessageHandler {
         description = new StringBuilder(description.substring(0, description.length() - 2)); //removing the space and comma at the end
         joinMessage.setDescription(description.toString());
 
-        assert DISCORD_MINECRAFT_CHANNEL != null;
         DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
 
         joinMessage.clear();
@@ -151,5 +149,8 @@ public class DiscordMessageHandler {
 
     }
 
-
+    public static void sendToDebugChannel(String message) {
+        discordbot.getTextChannelById("887460231876083735").sendMessage(message).queue();
+        //FIXME hardcoded text channel ID
+    }
 }
