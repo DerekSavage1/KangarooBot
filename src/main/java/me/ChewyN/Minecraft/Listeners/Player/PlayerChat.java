@@ -1,5 +1,4 @@
 package me.ChewyN.Minecraft.Listeners.Player;
-
 import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
 import me.ChewyN.Minecraft.Util.MinecraftMessageHandler;
 import org.bukkit.ChatColor;
