@@ -5,6 +5,7 @@ import me.ChewyN.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,6 +24,10 @@ public class DiscordMessageHandler {
         MINECRAFT_CHANNEL.sendMessage(message).queue();
     }
 
+    public static void sendToMinecraftChannel(MessageEmbed message) {
+        MINECRAFT_CHANNEL.sendMessage(message).queue();
+    }
+
     public static void sendToMinecraftChannel(String username, String message) {
         MINECRAFT_CHANNEL.sendMessage("`" + username + " »` " + message).queue(); //TODO: make text format customizable in config
     }
@@ -37,6 +42,16 @@ public class DiscordMessageHandler {
         }
     }
 
+    public static void sendToAdminChannel(MessageEmbed message) {
+        if(Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.getAdminChannel(DISCORDBOT) == null) {
+            Main.getConfigFile().setAdminChannelEnabled(false);
+            Main.log(Level.SEVERE, "Admin channel enabled but not found! Disabling...");
+        }
+        else if (Main.getConfigFile().isAdminChannelEnabled()) {
+            ConfigFile.getAdminChannel(DISCORDBOT).sendMessage(message).queue();
+        }
+    }
+
     public static void sendToAdminChannel(String username, String message) {
         try{
             if(Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.getAdminChannel(DISCORDBOT) == null) {
@@ -47,12 +62,7 @@ public class DiscordMessageHandler {
                 ConfigFile.getAdminChannel(DISCORDBOT).sendMessage("`" + username + " »` " + message).queue();
             }
         }
-        catch(IllegalArgumentException e) {
-            log(Level.SEVERE, "Admin channel is enabled but " + e.getMessage());
-            Main.log(Level.SEVERE, "Admin channel enabled but not found! Disabling...");
-            Main.getConfigFile().setAdminChannelEnabled(false);
-        }
-        catch(NullPointerException e) {
+        catch(IllegalArgumentException | NullPointerException e) {
             log(Level.SEVERE, "Admin channel is enabled but " + e.getMessage());
             Main.log(Level.SEVERE, "Admin channel enabled but not found! Disabling...");
             Main.getConfigFile().setAdminChannelEnabled(false);
@@ -62,6 +72,11 @@ public class DiscordMessageHandler {
     public static void sendToBothDiscordChannels(String message) {
         sendToAdminChannel(message);
         sendToMinecraftChannel(message);
+    }
+
+    public static void sendToBothDiscordChannels(MessageEmbed embed) {
+        sendToAdminChannel(embed);
+        sendToMinecraftChannel(embed);
     }
 
     public static void sendToBothDiscordChannels(String username, String message) {
