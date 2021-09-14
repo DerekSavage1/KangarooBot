@@ -109,7 +109,6 @@ public class PlayerDeath implements Listener {
     /**
      * Method that returns the players DeathStatus
      * @param p
-     * @return
      */
     public static DeathStatus getPlayerDeathStatus(Player p) {
         return deathMap.get(p);
@@ -123,7 +122,6 @@ public class PlayerDeath implements Listener {
      */
     private void sendDeathMessageToDiscord(String name, String c, String l, String deathMessage) {
         final TextChannel DISCORD_MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(Main.getDiscordbot());
-        final TextChannel DISCORD_ADMIN_CHANNEL = ConfigFile.getAdminChannel(Main.getDiscordbot());
 
 
         EmbedBuilder message = new EmbedBuilder();
@@ -136,12 +134,11 @@ public class PlayerDeath implements Listener {
         mAdmin.setDescription(name + " died from " + c + ". Location: " + l);
 
 
-        assert DISCORD_MINECRAFT_CHANNEL != null;
         Objects.requireNonNull(DISCORD_MINECRAFT_CHANNEL.sendMessage(message.build())).queue();
 
         // Check if admin channel is enabled and check if we should send death data to the admin channel
         if(Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.logDeathInAdmin()) {
-            Objects.requireNonNull(DISCORD_ADMIN_CHANNEL.sendMessage(mAdmin.build())).queue();
+            Objects.requireNonNull(ConfigFile.getAdminChannel(Main.getDiscordbot()).sendMessage(mAdmin.build())).queue();
         }
 
         message.clear();
