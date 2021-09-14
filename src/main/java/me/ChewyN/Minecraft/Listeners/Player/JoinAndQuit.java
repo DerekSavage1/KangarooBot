@@ -105,6 +105,7 @@ public class JoinAndQuit implements Listener {
         if (isJoining) {
             joinMessage.setTitle(playerName + ConfigFile.getDiscordPlayerJoinMessage());
             joinMessage.setColor(0x42f545);
+            playerCount--; //I removed this thinking it was unnecessary and it is very necessary
         } else {
             joinMessage.setTitle(playerName + ConfigFile.getDiscordPlayerLeaveMessage());
             joinMessage.setColor(0xeb4034);
