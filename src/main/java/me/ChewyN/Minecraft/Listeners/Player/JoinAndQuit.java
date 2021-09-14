@@ -4,6 +4,7 @@ package me.ChewyN.Minecraft.Listeners.Player;
 //import me.ChewyN.Minecraft.Packets.packet;
 
 import me.ChewyN.Data.ConfigFile;
+import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
 import me.ChewyN.Main;
 import me.ChewyN.Minecraft.Util.MinecraftMessageHandler;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -114,7 +115,7 @@ public class JoinAndQuit implements Listener {
 
         if (playerCount <= 0) {
             joinMessage.setDescription("No players online");
-            DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
+            DiscordMessageHandler.sendToBothDiscordChannels(joinMessage.build());
             joinMessage.clear();
             return;
         }
@@ -130,8 +131,7 @@ public class JoinAndQuit implements Listener {
         description = new StringBuilder(description.substring(0, description.length() - 2)); //removing the space and comma at the end
         joinMessage.setDescription(description.toString());
 
-        assert DISCORD_MINECRAFT_CHANNEL != null;
-        DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
+        DiscordMessageHandler.sendToBothDiscordChannels(joinMessage.build());
 
         joinMessage.clear();
 
