@@ -2,6 +2,7 @@ package me.ChewyN.Discord.Listeners;
 
 import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Main;
+import me.ChewyN.Minecraft.Util.MinecraftMessageHandler;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -28,13 +29,12 @@ public class onChat extends ListenerAdapter {
         if(e.getChannel().equals(ConfigFile.getMinecraftChannel(discordbot))) {
             String formattedMessage = formatMessage(e.getMessage());
 
-            getInstance().getServer().broadcastMessage("[" + ChatColor.AQUA + "Discord" + ChatColor.WHITE + "] " + ChatColor.AQUA + userName + ": " + ChatColor.WHITE + formattedMessage);
+            MinecraftMessageHandler.broadcastMessage("[" + ChatColor.AQUA + "Discord" + ChatColor.WHITE + "] " + ChatColor.AQUA + userName + ": " + ChatColor.WHITE + formattedMessage);
 
-            if(!Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.getAdminChannel(discordbot) != null) {
-                ConfigFile.getAdminChannel(discordbot).sendMessage("[Discord] " + userName + ": " + formattedMessage).queue();
-            }
+            DiscordMessageHandler.sendToAdminChannel("[Discord] " + userName + ": " + formattedMessage);
 
         }
+
         if(Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.getAdminChannel(discordbot) != null) {
             if(e.getChannel().equals(ConfigFile.getAdminChannel(discordbot))) {
                 for(Player p : getInstance().getServer().getOnlinePlayers()) {
