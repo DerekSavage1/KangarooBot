@@ -47,7 +47,7 @@ public class MinecraftMessageHandler {
     }
 
     private static String getUsedName(Player p) {
-        if(p.getCustomName().isEmpty()){
+        if(p.getCustomName() != null){
             return p.getName();
         }
         return p.getCustomName();
