@@ -21,12 +21,12 @@ public class MinecraftMessageHandler {
 //        if(containsUrl(message)) {
 //            formatUrl(getFirstUrl(message));
 //        }//TODO derek
-        p.sendMessage( p.getName() + org.bukkit.ChatColor.GRAY + " » " + org.bukkit.ChatColor.WHITE + message); //todo customizable in config.yml
+        p.sendMessage( p.getDisplayName() + org.bukkit.ChatColor.GRAY + " » " + org.bukkit.ChatColor.WHITE + message); //todo customizable in config.yml
 
     }
 
     public static void broadcastCenteredMessage(Player p, String message) {
-        p.sendMessage(p.getName() + org.bukkit.ChatColor.GRAY + " » " + org.bukkit.ChatColor.WHITE + message); //todo customizable in config.yml
+        p.sendMessage(p.getDisplayName() + org.bukkit.ChatColor.GRAY + " » " + org.bukkit.ChatColor.WHITE + message); //todo customizable in config.yml
     }
 
     public static void broadcastMessage(String message) {
