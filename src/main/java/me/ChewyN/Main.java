@@ -1,9 +1,11 @@
 package me.ChewyN;
 
 import me.ChewyN.Data.ConfigFile;
+import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
 import me.ChewyN.Discord.Listeners.onChat;
 import me.ChewyN.Discord.Listeners.onGuildJoin;
 import me.ChewyN.Minecraft.Commands.DiscordCommand;
+import me.ChewyN.Minecraft.Commands.ExceptionCommand;
 import me.ChewyN.Minecraft.Commands.GrapplingHook;
 import me.ChewyN.Minecraft.Listeners.GrappleListener;
 import me.ChewyN.Minecraft.Listeners.Player.JoinAndQuit;
@@ -19,7 +21,10 @@ import me.Skyla.Minecraft.Listeners.ServerCommandListener;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -32,7 +37,7 @@ import java.util.logging.Level;
 
 public class Main extends JavaPlugin {
 
-    //Inspirational quote of the day: Don't let anyone ruin your day. It's your day! Ruin it yourself by using IntelliJ! <3
+    //bad quote nerd
     public static JDA discordbot;
     public static Main instance;
 
@@ -48,7 +53,6 @@ public class Main extends JavaPlugin {
 
         instance = this;
 
-
         if (!getDataFolder().exists())
             getDataFolder().mkdir();
 
@@ -56,9 +60,6 @@ public class Main extends JavaPlugin {
         ConfigFile.setup();
 
         awakenTheKangaroo();
-
-
-        super.onEnable();
 
         //listeners
         getServer().getPluginManager().registerEvents(new JoinAndQuit(), this);
@@ -77,6 +78,8 @@ public class Main extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("trashcan")).setExecutor(new TrashcanCommand());
         Objects.requireNonNull(this.getCommand("kgrl")).setExecutor(new ReloadCommand());
         Objects.requireNonNull(this.getCommand("weiner")).setExecutor(new FunCommand());
+        Objects.requireNonNull(this.getCommand("exception")).setExecutor(new ExceptionCommand());
+
 
         // THIS STATEMENT NEEDS TO REMAIN AT THE END OF THE METHOD
         sendStartStopMessageToDiscord(true);
@@ -155,7 +158,6 @@ public class Main extends JavaPlugin {
      * @param isStarting If the server is starting or stopping
      */
     public static void sendStartStopMessageToDiscord(boolean isStarting) {
-        final TextChannel DISCORD_MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(discordbot);
 
         EmbedBuilder message = new EmbedBuilder();
         if (isStarting) {
@@ -168,7 +170,7 @@ public class Main extends JavaPlugin {
             message.setDescription(ConfigFile.getDiscordOfflineMessage());
         }
 
-        Objects.requireNonNull(DISCORD_MINECRAFT_CHANNEL.sendMessage(message.build())).queue();
+        DiscordMessageHandler.sendToBothDiscordChannels(message.build());
 
         message.clear();
 
