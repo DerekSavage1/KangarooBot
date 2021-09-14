@@ -4,9 +4,9 @@ package me.Skyla.Minecraft.Objects;
 import org.bukkit.Location;
 
 
-
 /**
- * Class that holds the death information of a player.
+ * Class that holds the death information of a player. Holds the location of the death and if the player has teleported back or not.
+ *
  * @Author Skyla
  */
 public class DeathStatus {
@@ -16,15 +16,17 @@ public class DeathStatus {
 
     /**
      * Constructor.
+     *
      * @param loc A player's death location
      */
-    public DeathStatus (Location loc) {
+    public DeathStatus(Location loc) {
         l = loc;
         hasTeleported = false;
     }
 
     /**
      * Gets a player's death location
+     *
      * @return the player's death location
      */
     public Location getLocation() {
@@ -33,6 +35,7 @@ public class DeathStatus {
 
     /**
      * Get the teleportation status of a player
+     *
      * @return A player's tp status
      */
     public Boolean getTPStatus() {
@@ -41,6 +44,7 @@ public class DeathStatus {
 
     /**
      * Sets the tp status of a player
+     *
      * @param status true if the player has teleported, false if not
      */
     public void setTPStatus(Boolean status) {

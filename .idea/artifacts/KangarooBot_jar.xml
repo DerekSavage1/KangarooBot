@@ -29,6 +29,14 @@
       <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.10.1" />
       <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.10.1" />
       <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.10.1" />
+      <element id="library" level="project" name="Maven: com.linkedin.urls:url-detector:0.1.17" />
+      <element id="library" level="project" name="Maven: com.neovisionaries:nv-websocket-client:2.14" />
+      <element id="library" level="project" name="Maven: com.beust:jcommander:1.12" />
+      <element id="library" level="project" name="Maven: net.dv8tion:JDA:4.3.0_324" />
+      <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.3.1" />
+      <element id="library" level="project" name="Maven: org.beanshell:bsh:2.0b4" />
+      <element id="library" level="project" name="Maven: org.testng:testng:6.1.1" />
+      <element id="library" level="project" name="Maven: org.yaml:snakeyaml:1.28" />
     </root>
   </artifact>
 </component>
