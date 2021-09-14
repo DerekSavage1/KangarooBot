@@ -26,6 +26,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.security.auth.login.LoginException;
@@ -62,14 +63,18 @@ public class Main extends JavaPlugin {
         awakenTheKangaroo();
 
         //listeners
-        getServer().getPluginManager().registerEvents(new JoinAndQuit(), this);
-        getServer().getPluginManager().registerEvents(new PlayerChat(), this);
-        getServer().getPluginManager().registerEvents(new PlayerDeath(), this);
-        getServer().getPluginManager().registerEvents(new PlayerSpy(), this);
-        getServer().getPluginManager().registerEvents(new GrappleListener(), this);
-        getServer().getPluginManager().registerEvents(new CommandListener(), this);
-        getServer().getPluginManager().registerEvents(new ServerCommandListener(), this);
+        List<Listener> listeners = new ArrayList();;
+        listeners.add(new JoinAndQuit());
+        listeners.add(new PlayerChat());
+        listeners.add(new PlayerDeath());
+        listeners.add(new PlayerSpy());
+        listeners.add(new GrappleListener());
+        listeners.add(new CommandListener());
+        listeners.add(new ServerCommandListener());
 
+        for(Listener event : listeners) {
+            getServer().getPluginManager().registerEvents(event, this);
+        }
 
         //commands
         Objects.requireNonNull(this.getCommand("discord")).setExecutor(new DiscordCommand());
