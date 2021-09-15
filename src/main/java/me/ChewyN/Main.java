@@ -1,6 +1,7 @@
 package me.ChewyN;
 
 import me.ChewyN.Data.ApacheTest;
+import me.ChewyN.Data.Configuration.PluginConfigAPI;
 import me.ChewyN.Data.Configuration.PluginConfigYml;
 import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
 import me.ChewyN.Discord.Listeners.onChat;
@@ -46,11 +47,15 @@ public class Main extends JavaPlugin {
     //bad quote nerd
     private static JDA discordbot;
     private static Main instance;
-    private static PluginConfigYml configFile;
+    private static PluginConfigYml pluginConfig;
     private static LastDeathFile deathFile;
 
-    public static PluginConfigYml getConfigFile() {
-        return configFile;
+    public static PluginConfigYml getPluginConfig() {
+        return pluginConfig;
+    }
+
+    public static PluginConfigAPI getPluginConfigApi(){
+        return pluginConfig.getConfigApi();
     }
 
     @Override
@@ -58,7 +63,7 @@ public class Main extends JavaPlugin {
 
         instance = this;
 
-        PluginConfigYml pluginConfig = new PluginConfigYml(instance,"config.yml");
+        pluginConfig = new PluginConfigYml(instance,"config.yml");
 
         if (!getDataFolder().exists())
             getDataFolder().mkdir();
@@ -117,7 +122,7 @@ public class Main extends JavaPlugin {
 
     private void clearOnlineRole() {
         //Check if role exists
-        String onlineRoleName = ConfigFile.getOnlineRoleName(getConfigFile());
+        String onlineRoleName = getPluginConfigApi().getDiscordOnlineRoleName(getPluginConfig());
         //fetch members
         List<Member> members = getGuild().getMembers();
         try {
@@ -139,14 +144,14 @@ public class Main extends JavaPlugin {
         gatewayIntents.add(GatewayIntent.GUILD_MEMBERS);
         gatewayIntents.add(GatewayIntent.GUILD_PRESENCES);
 
-        JDABuilder jdaBuilder = JDABuilder.createDefault(ConfigFile.getDiscordBotID(getConfigFile()));
+        JDABuilder jdaBuilder = JDABuilder.createDefault(getPluginConfigApi().getDiscordBotToken(getPluginConfig()));
 
 
         jdaBuilder.enableIntents(gatewayIntents);
         jdaBuilder.addEventListeners(new onGuildJoin());
         jdaBuilder.addEventListeners(new onChat());
 
-        jdaBuilder.setActivity(Activity.playing(ConfigFile.getBotStatus(getConfigFile())));
+        jdaBuilder.setActivity(Activity.playing(getPluginConfigApi().getCustomDiscordBotStatus(getPluginConfig())));
 
         try {
             discordbot = jdaBuilder.build();
@@ -185,11 +190,11 @@ public class Main extends JavaPlugin {
         if (isStarting) {
             message.setTitle("Server Online!");
             message.setColor(0x42f545);
-            message.setDescription(ConfigFile.getDiscordOnlineMessage(getConfigFile()));
+            message.setDescription(ConfigFile.getDiscordOnlineMessage(getPluginConfig()));
         } else {
             message.setTitle("Server Offline.");
             message.setColor(0xeb4034);
-            message.setDescription(ConfigFile.getDiscordOfflineMessage(getConfigFile()));
+            message.setDescription(ConfigFile.getDiscordOfflineMessage(getPluginConfig()));
         }
 
         DiscordMessageHandler.sendToBothDiscordChannels(message.build());
@@ -204,7 +209,7 @@ public class Main extends JavaPlugin {
     }
 
     public static void debug(String message) {
-        if (configFile.isDebugEnabled(getConfigFile())) {
+        if (pluginConfig.isDebugEnabled(getPluginConfig())) {
             instance.getServer().getLogger().log(Level.INFO, "[KangarooBot] Debug: " + message);
         }
     }

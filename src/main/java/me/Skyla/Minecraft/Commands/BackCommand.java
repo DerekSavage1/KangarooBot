@@ -17,7 +17,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 
-import static me.ChewyN.Main.getConfigFile;
+import static me.ChewyN.Main.getPluginConfig;
 
 /**
  * A command that allows players to teleport to their death point once after death.
@@ -43,7 +43,7 @@ public class BackCommand extends AbstractCommand implements CommandExecutor {
         Player p = (Player) sender;
 
         // If command is enabled or if the player has not teleported back once yet, run the command
-        if (ConfigFile.backCommandEnabled(getConfigFile()) && !PlayerDeath.getPlayerDeathStatus(p).getTPStatus()) {
+        if (ConfigFile.backCommandEnabled(getPluginConfig()) && !PlayerDeath.getPlayerDeathStatus(p).getTPStatus()) {
 
             Location l = PlayerDeath.getPlayerDeathStatus(p).getLocation();
             Block b = l.subtract(0, 1, 0).getBlock();

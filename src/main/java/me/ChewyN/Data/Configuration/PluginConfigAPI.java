@@ -57,21 +57,21 @@ public class PluginConfigAPI {
      *         private boolean debugEnabled;
      */
 
-    public String getDiscordWelcomeChannel(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("getDiscordWelcomeChannel");
+    public String getDiscordWelcomeChannelID(@NotNull PluginConfigYml pluginConfig) {
+        return pluginConfig.getYamlConfig().getString("getDiscordWelcomeChannelID");
     }
 
-    public void setDiscordWelcomeChannel(String discordWelcomeChannel, @NotNull PluginConfigYml pluginConfig) {
-        pluginConfig.getYamlConfig().set("discordWelcomeChannel", discordWelcomeChannel);
+    public void setDiscordWelcomeChannelID(String discordWelcomeChannelID, @NotNull PluginConfigYml pluginConfig) {
+        pluginConfig.getYamlConfig().set("discordWelcomeChannelID", discordWelcomeChannelID);
         AbstractFile.save(pluginConfig);
     }
 
-    public String getDiscordMinecraftChannel(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("getDiscordMinecraftChannel");
+    public String getDiscordMinecraftChannelID(@NotNull PluginConfigYml pluginConfig) {
+        return pluginConfig.getYamlConfig().getString("getDiscordMinecraftChannelID");
     }
 
-    public void setDiscordMinecraftChannel(String discordMinecraftChannel, @NotNull PluginConfigYml pluginConfig) {
-        pluginConfig.getYamlConfig().set("discordMinecraftChannel", discordMinecraftChannel);
+    public void setDiscordMinecraftChannelID(String discordMinecraftChannelID, @NotNull PluginConfigYml pluginConfig) {
+        pluginConfig.getYamlConfig().set("discordMinecraftChannelID", discordMinecraftChannelID);
         AbstractFile.save(pluginConfig);
     }
 
@@ -84,12 +84,12 @@ public class PluginConfigAPI {
         AbstractFile.save(pluginConfig);
     }
 
-    public String getDiscordAdminChannel(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("getDiscordAdminChannel");
+    public String getDiscordAdminChannelID(@NotNull PluginConfigYml pluginConfig) {
+        return pluginConfig.getYamlConfig().getString("getDiscordAdminChannelID");
     }
 
-    public void setDiscordAdminChannel(String discordAdminChannel, @NotNull PluginConfigYml pluginConfig) {
-        pluginConfig.getYamlConfig().set("discordAdminChannel", discordAdminChannel);
+    public void setDiscordAdminChannelID(String discordAdminChannelID, @NotNull PluginConfigYml pluginConfig) {
+        pluginConfig.getYamlConfig().set("discordAdminChannelID", discordAdminChannelID);
         AbstractFile.save(pluginConfig);
     }
 
@@ -112,11 +112,11 @@ public class PluginConfigAPI {
     }
 
     public boolean isLogDeathInfoInAdminChannel(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getBoolean("isLogDeathInfoInAdminChannel");
+        return pluginConfig.getYamlConfig().getBoolean("isLogDeathInfoInAdminChannelID");
     }
 
     public void setLogDeathInfoInAdminChannel(boolean logDeathInfoInAdminChannel, @NotNull PluginConfigYml pluginConfig) {
-        pluginConfig.getYamlConfig().set("logDeathInfoInAdminChannel", logDeathInfoInAdminChannel);
+        pluginConfig.getYamlConfig().set("logDeathInfoInAdminChannelID", logDeathInfoInAdminChannel);
         AbstractFile.save(pluginConfig);
     }
 
@@ -138,11 +138,11 @@ public class PluginConfigAPI {
         AbstractFile.save(pluginConfig);
     }
 
-    public boolean isSendDeathMessagesToDiscord(@NotNull PluginConfigYml pluginConfig) {
+    public boolean isSendDeathMessagesToDiscordEnabled(@NotNull PluginConfigYml pluginConfig) {
         return pluginConfig.getYamlConfig().getBoolean("isSendDeathMessagesToDiscord");
     }
 
-    public void setSendDeathMessagesToDiscord(boolean sendDeathMessagesToDiscord, @NotNull PluginConfigYml pluginConfig) {
+    public void setSendDeathMessagesToDiscordEnabled(boolean sendDeathMessagesToDiscord, @NotNull PluginConfigYml pluginConfig) {
         pluginConfig.getYamlConfig().set("sendDeathMessagesToDiscord", sendDeathMessagesToDiscord);
         AbstractFile.save(pluginConfig);
     }
@@ -262,6 +262,14 @@ public class PluginConfigAPI {
     public void setDebugEnabled(boolean debugEnabled, @NotNull PluginConfigYml pluginConfig) {
         pluginConfig.getYamlConfig().set("debugEnabled", debugEnabled);
         AbstractFile.save(pluginConfig);
+    }
+
+    public String getDiscordDebugGuildID(PluginConfigYml pluginConfig) {
+        return pluginConfig.getYamlConfig().getString("DiscordDebugGuildID");
+    }
+
+    public String getDiscordDebugChannelID(PluginConfigYml pluginConfig) {
+        return pluginConfig.getYamlConfig().getString("DiscordDebugGuildID");
     }
 
 }

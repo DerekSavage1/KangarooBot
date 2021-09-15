@@ -2,6 +2,7 @@ package me.ChewyN.Discord.Listeners;
 
 import me.ChewyN.Main;
 import me.ChewyN.Minecraft.Util.MinecraftMessageHandler;
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -12,7 +13,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static me.ChewyN.Main.*;
+import static me.ChewyN.Main.getInstance;
+import static me.ChewyN.Main.getPluginConfig;
 
 public class onChat extends ListenerAdapter {
 
@@ -20,11 +22,12 @@ public class onChat extends ListenerAdapter {
         Message     discordMessage = e.getMessage();
         User        user = e.getAuthor();
         String      userName = user.getName();
+        JDA discordbot = Main.getDiscordbot();
 
         if(user.isBot())
             return;
 
-        if(e.getChannel().equals(ConfigFile.getMinecraftChannel(Main.getConfigFile(), discordbot))) {
+        if(e.getChannel().equals(DiscordChannelHandler.getDiscordMinecraftChannel(Main.getPluginConfig(), discordbot))) {
             String formattedMessage = formatMessage(e.getMessage());
 
             MinecraftMessageHandler.broadcastMessage("[" + ChatColor.AQUA + "Discord" + ChatColor.WHITE + "] " + ChatColor.AQUA + userName + ": " + ChatColor.WHITE + formattedMessage);
@@ -33,8 +36,8 @@ public class onChat extends ListenerAdapter {
 
         }
 
-        if(Main.getConfigFile().isAdminChannelEnabled(getConfigFile()) && ConfigFile.getAdminChannel(getConfigFile(), discordbot) != null) {
-            if(e.getChannel().equals(ConfigFile.getAdminChannel(Main.getConfigFile(), discordbot))) {
+        if(Main.getPluginConfigApi().isDiscordAdminChannelEnabled(getPluginConfig())) {
+            if(e.getChannel().equals(DiscordChannelHandler.getDiscordAdminChannel(Main.getPluginConfig(), discordbot))) {
                 for(Player p : getInstance().getServer().getOnlinePlayers()) {
                     if(p.hasPermission("adminChat.see")) {
                         p.sendMessage("[" + ChatColor.RED + "Admin Discord" + ChatColor.WHITE + "] " + ChatColor.RED + userName + ": " + ChatColor.WHITE + DiscordMessageHandler.formatMessage(discordMessage));

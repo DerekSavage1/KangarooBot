@@ -29,7 +29,7 @@ public class JoinAndQuit implements Listener {
         Player p = e.getPlayer();
 
         modifyJoinMessage(e);
-        if (ConfigFile.discordJoinLeaveMessagesEnabled(getConfigFile()))
+        if (ConfigFile.discordJoinLeaveMessagesEnabled(getPluginConfig()))
             sendJoinOrQuitMessageToDiscord(p, true);
         setDiscordOnlineRole(p.getPlayerListName(), true);
     }
@@ -39,7 +39,7 @@ public class JoinAndQuit implements Listener {
         Player p = e.getPlayer();
 
         setDiscordOnlineRole(p.getPlayerListName(), false);
-        if(ConfigFile.discordJoinLeaveMessagesEnabled(getConfigFile()))
+        if(ConfigFile.discordJoinLeaveMessagesEnabled(getPluginConfig()))
             sendJoinOrQuitMessageToDiscord(p, false);
     }
 
@@ -48,19 +48,19 @@ public class JoinAndQuit implements Listener {
 
         Player p = e.getPlayer();
         if (!p.hasPlayedBefore()) {
-            if (ConfigFile.getWelcomeMessageEnabled(getConfigFile())) {
+            if (ConfigFile.getWelcomeMessageEnabled(getPluginConfig())) {
                 MinecraftMessageHandler.broadcastCenteredMessage(ChatColor.AQUA + "Please welcome " + p.getName() + " to our Chewy's Hub!"); //TODO: make this customizable
                 MinecraftMessageHandler.broadcastCenteredMessage(ChatColor.AQUA + "This is their first time playing!"); //TODO: make this customizable
             }
         }
 
-        if (ConfigFile.getJoinMessageEnabled(getConfigFile()))
-            MinecraftMessageHandler.broadcastCenteredMessage(ChatColor.YELLOW + p.getName() + ChatColor.AQUA + ConfigFile.getWelcomeMessage(getConfigFile()));
+        if (ConfigFile.getJoinMessageEnabled(getPluginConfig()))
+            MinecraftMessageHandler.broadcastCenteredMessage(ChatColor.YELLOW + p.getName() + ChatColor.AQUA + ConfigFile.getWelcomeMessage(getPluginConfig()));
     }
 
     //TODO put in discord handler
     public void setDiscordOnlineRole(String nickname, boolean setOnline) {
-        String onlineRoleName = ConfigFile.getOnlineRoleName(getConfigFile());
+        String onlineRoleName = ConfigFile.getOnlineRoleName(getPluginConfig());
         List<Member> members = getGuild().loadMembers().get();
 
         if(getGuild().getRolesByName(onlineRoleName, true).get(0) == null) {

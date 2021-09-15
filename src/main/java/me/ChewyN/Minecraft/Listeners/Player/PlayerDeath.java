@@ -1,5 +1,7 @@
 package me.ChewyN.Minecraft.Listeners.Player;
 
+import me.ChewyN.Discord.Listeners.DiscordChannelHandler;
+import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
 import me.ChewyN.Main;
 import me.ChewyN.Minecraft.Util.centerMessage;
 import me.Skyla.Minecraft.Objects.DeathStatus;
@@ -17,7 +19,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-import static me.ChewyN.Data.Configuration.ConfigFile.getDeathMessages;
 import static me.ChewyN.Main.*;
 
 public class PlayerDeath implements Listener {
@@ -34,7 +35,7 @@ public class PlayerDeath implements Listener {
         int deathMessageID = getDeathMessageID();
 
         // Construct the death message
-        String deathMessage = getDeathMessage(e, configFile.centeredDeathMessageEnabled(getConfigFile()), deathMessageID);
+        String deathMessage = getDeathMessage(e, Main.getPluginConfigApi().isMinecraftCenterDeathMessages(getPluginConfig()), deathMessageID);
 
         // replace the death message
         e.setDeathMessage(deathMessage);
@@ -56,11 +57,11 @@ public class PlayerDeath implements Listener {
         String l  = ("X:" + e.getEntity().getLocation().getBlockX() + ", Y: " + e.getEntity().getLocation().getBlockY() + ", Z: " + e.getEntity().getLocation().getBlockZ());
 
         // Send the death to discord if enabled
-        if (ConfigFile.sendDeathToDiscord(getConfigFile()))
+        if (Main.getPluginConfigApi().isSendDeathMessagesToDiscordEnabled(getPluginConfig()))
             sendDeathMessageToDiscord(e.getEntity().getName(), cOD, l, deathMessage);
 
         // Send the player info about the back command if enabled
-        if (ConfigFile.backCommandEnabled(getConfigFile())) {
+        if (Main.getPluginConfigApi().isMinecraftBackCommandEnabled(getPluginConfig())) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -82,7 +83,7 @@ public class PlayerDeath implements Listener {
     private String getDeathMessage(PlayerDeathEvent e, boolean isEnabled, Integer id) {
         String randomDeathMessage = " passed away :(";
 
-        List<String> deathMessages = getDeathMessages(getConfigFile());
+        List<String> deathMessages = getPluginConfigApi().getDeathMessages(getPluginConfig());
         if (!(deathMessages == null)) {
             int messageNumber = id;
             randomDeathMessage = deathMessages.get(messageNumber);
@@ -100,7 +101,7 @@ public class PlayerDeath implements Listener {
      * @return The id of the death message in the deathMessages list.
      */
     private int getDeathMessageID() {
-         int messageNumber = new Random().nextInt(getDeathMessages(getConfigFile()).size()); //TODO throw a warning and disable if message list is empty
+         int messageNumber = new Random().nextInt(getPluginConfigApi().getDeathMessages((getPluginConfig())).size()); //TODO throw a warning and disable if message list is empty
          return messageNumber;
     }
 
@@ -120,29 +121,29 @@ public class PlayerDeath implements Listener {
      * @param l The death location
      */
     private void sendDeathMessageToDiscord(String name, String c, String l, String deathMessage) {
-        final TextChannel DISCORD_MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(getConfigFile(),getDiscordbot());
-        final TextChannel DISCORD_ADMIN_CHANNEL = ConfigFile.getAdminChannel(getConfigFile(),getDiscordbot());
 
+        final TextChannel DISCORD_MINECRAFT_CHANNEL = DiscordChannelHandler.getDiscordMinecraftChannel(getPluginConfig(),getDiscordbot());
+        EmbedBuilder minecraftEmbed = new EmbedBuilder();
+        minecraftEmbed.setTitle(deathMessage);
+        minecraftEmbed.setColor(0x888888);
 
-        EmbedBuilder message = new EmbedBuilder();
-        EmbedBuilder mAdmin = new EmbedBuilder();
-        message.setTitle(deathMessage);
-        mAdmin.setTitle(deathMessage);
-        message.setColor(0x888888);
-        mAdmin.setColor(0x888888);
-        message.setDescription(ConfigFile.getDiscordDeathDescription(getConfigFile()));
-        mAdmin.setDescription(name + " died from " + c + ". Location: " + l);
-
-
-        Objects.requireNonNull(DISCORD_MINECRAFT_CHANNEL.sendMessage(message.build())).queue();
-
-        // Check if admin channel is enabled and check if we should send death data to the admin channel
-        if(Main.getConfigFile().isAdminChannelEnabled(getConfigFile()) && ConfigFile.logDeathInAdmin(getConfigFile())) {
-            Objects.requireNonNull(DISCORD_ADMIN_CHANNEL.sendMessage(mAdmin.build())).queue();
+        if(Main.getPluginConfigApi().getCustomDiscordDeathMessageDescription(getPluginConfig()) != null) {
+            minecraftEmbed.setDescription(Main.getPluginConfigApi().getCustomDiscordDeathMessageDescription(getPluginConfig()));
         }
 
-        message.clear();
-        mAdmin.clear();
+        if(Main.getPluginConfigApi().isDiscordAdminChannelEnabled(getPluginConfig())
+                && Main.getPluginConfigApi().isLogDeathInfoInAdminChannel(getPluginConfig())) {
+            final TextChannel DISCORD_ADMIN_CHANNEL = DiscordChannelHandler.getDiscordMinecraftChannel(getPluginConfig(),getDiscordbot());
+            EmbedBuilder adminEmbed = new EmbedBuilder();
+            adminEmbed.copyFrom(minecraftEmbed);
+            adminEmbed.setDescription(name + " died from " + c + ". Location: " + l);
+            DiscordMessageHandler.sendToAdminChannel(adminEmbed.build());
+            adminEmbed.clear();
+        }
+
+        DiscordMessageHandler.sendToMinecraftChannel(minecraftEmbed.build());
+
+        minecraftEmbed.clear();
     }
 
     public static void setDeathInfo(Player p, DeathStatus status) {

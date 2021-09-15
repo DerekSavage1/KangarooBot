@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 
 import static me.ChewyN.Main.discordbot;
-import static me.ChewyN.Main.getConfigFile;
+import static me.ChewyN.Main.getPluginConfig;
 
 public class DiscordCommand extends AbstractCommand implements CommandExecutor{
 
@@ -31,7 +31,7 @@ public class DiscordCommand extends AbstractCommand implements CommandExecutor{
         }
 
         //creates discord link
-        GuildChannel welcomeChannel =  ConfigFile.getWelcomeChannel(getConfigFile(), discordbot);
+        GuildChannel welcomeChannel =  ConfigFile.getWelcomeChannel(getPluginConfig(), discordbot);
         assert welcomeChannel != null;
         Invite invite = welcomeChannel.createInvite().setMaxAge(100).setMaxUses(1).setUnique(true).setTemporary(true).complete();
 
@@ -63,12 +63,12 @@ public class DiscordCommand extends AbstractCommand implements CommandExecutor{
      */
     @Override
     public boolean isCommandEnabled() {
-        return ConfigFile.discordCommandEnabled(getConfigFile());
+        return ConfigFile.discordCommandEnabled(getPluginConfig());
     }
 
     @Override
     public void setCommandEnabled(boolean commandEnabled) {
-        ConfigFile.setDiscordCommand(getConfigFile(), commandEnabled);
+        ConfigFile.setDiscordCommand(getPluginConfig(), commandEnabled);
     }
 
     public static HashMap<String, String> getPlayerInvite() {

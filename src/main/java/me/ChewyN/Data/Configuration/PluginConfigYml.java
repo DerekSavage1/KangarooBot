@@ -30,12 +30,12 @@ public class PluginConfigYml extends AbstractFile {
 //      These terms are in the same order as readConfigFile so please keep that in mind too
 
 //            =====Mandatory===
-        params.put("discordMinecraftChannel", null);
+        params.put("discordMinecraftChannelID", null);
         params.put("discordBotToken", null);
 
 //            ====Extra functionality====
-        params.put("discordWelcomeChannel", null);
-        params.put("discordAdminChannel", null);
+        params.put("discordWelcomeChannelID", null);
+        params.put("discordAdminChannelID", null);
         params.put("deathMessages", new ArrayList<>().add("is no longer with us"));
         params.put("discordOnlineRoleName", "online in-game");
         params.put("logDeathInfoInAdminChannel", true);
@@ -65,6 +65,9 @@ public class PluginConfigYml extends AbstractFile {
 
 //            ====Dev tools====
         params.put("debugEnabled", true);
+        params.put("DiscordDebugGuildID", "");
+        params.put("DiscordDebugChannelID", "");
+
 
         writeDefaultsToConfig(pluginConfig, params);
 
