@@ -21,11 +21,14 @@ public class DiscordMessageHandler {
         DiscordChannelHandler.getDiscordMinecraftChannel(getPluginConfig(), discordbot).sendMessage(message).queue();
     }
 
-    public static void sendToMinecraftChannel(String message) {
-        DiscordChannelHandler.getDiscordMinecraftChannel(getPluginConfig(), discordbot).sendMessage(message).queue();
+    public static void sendToMinecraftChannel(String username, String message) {
+        DiscordChannelHandler.getDiscordMinecraftChannel(getPluginConfig(), discordbot).sendMessage("`" + username + " :`" + message);
     }
 
     public static void sendToAdminChannel(String message) {
+        if(!Main.getPluginConfigApi().isDiscordAdminChannelEnabled(Main.getPluginConfig()))
+            return;
+
         TextChannel adminChannel = DiscordChannelHandler.getDiscordAdminChannel(getPluginConfig(), discordbot);
 
         Main.getPluginConfigApi().isDiscordAdminChannelEnabled(getPluginConfig());
@@ -34,7 +37,22 @@ public class DiscordMessageHandler {
         }
     }
 
+    public static void sendToAdminChannel(String username, String message) {
+        if(!Main.getPluginConfigApi().isDiscordAdminChannelEnabled(Main.getPluginConfig()))
+            return;
+
+        TextChannel adminChannel = DiscordChannelHandler.getDiscordAdminChannel(getPluginConfig(), discordbot);
+
+        Main.getPluginConfigApi().isDiscordAdminChannelEnabled(getPluginConfig());
+        if (Main.getPluginConfigApi().isDiscordAdminChannelEnabled(getPluginConfig())) {
+            adminChannel.sendMessage("`" + username + " :`" + message);
+        }
+    }
+
     public static void sendToAdminChannel(MessageEmbed message) {
+        if(!Main.getPluginConfigApi().isDiscordAdminChannelEnabled(Main.getPluginConfig()))
+            return;
+
         TextChannel adminChannel = DiscordChannelHandler.getDiscordAdminChannel(getPluginConfig(), discordbot);
         Main.getPluginConfigApi().isDiscordAdminChannelEnabled(getPluginConfig());
         if (Main.getPluginConfigApi().isDiscordAdminChannelEnabled(getPluginConfig())) {
@@ -45,6 +63,11 @@ public class DiscordMessageHandler {
     public static void sendToBothDiscordChannels(MessageEmbed embed) {
         sendToAdminChannel(embed);
         sendToMinecraftChannel(embed);
+    }
+
+    public static void sendToBothDiscordChannels(String username, String message) {
+        sendToAdminChannel(username, message);
+        sendToMinecraftChannel(username, message);
     }
 
     public static String formatMessage(Message message) {

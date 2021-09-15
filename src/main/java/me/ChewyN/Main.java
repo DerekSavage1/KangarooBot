@@ -190,11 +190,11 @@ public class Main extends JavaPlugin {
         if (isStarting) {
             message.setTitle("Server Online!");
             message.setColor(0x42f545);
-            message.setDescription(ConfigFile.getDiscordOnlineMessage(getPluginConfig()));
+            message.setDescription(Main.getPluginConfigApi().getCustomDiscordMessageOnStartup(getPluginConfig()));
         } else {
             message.setTitle("Server Offline.");
             message.setColor(0xeb4034);
-            message.setDescription(ConfigFile.getDiscordOfflineMessage(getPluginConfig()));
+            message.setDescription(Main.getPluginConfigApi().getCustomDiscordMessageOnShutdown(getPluginConfig()));
         }
 
         DiscordMessageHandler.sendToBothDiscordChannels(message.build());
@@ -209,7 +209,7 @@ public class Main extends JavaPlugin {
     }
 
     public static void debug(String message) {
-        if (pluginConfig.isDebugEnabled(getPluginConfig())) {
+        if (getPluginConfigApi().isDebugEnabled(getPluginConfig())) {
             instance.getServer().getLogger().log(Level.INFO, "[KangarooBot] Debug: " + message);
         }
     }

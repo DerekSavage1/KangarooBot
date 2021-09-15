@@ -3,6 +3,7 @@ package me.ChewyN.Discord.Listeners;
 import me.ChewyN.Data.Configuration.PluginConfigYml;
 import me.ChewyN.Main;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +32,20 @@ public class DiscordChannelHandler {
 
         if(textChannel == null) {
             Main.log(Level.SEVERE, "You must fill out all mandatory fields in config.yml!");
-            Main.log(Level.SEVERE, "Shutting down...");
+            Main.log(Level.SEVERE, "Minecraft Channel invalid! Shutting down...");
+            Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
+        }
+
+        assert textChannel != null;
+        return textChannel;
+    }
+
+    public static GuildChannel getDiscordWelcomeChannel(@NotNull PluginConfigYml pluginConfig, @NotNull JDA discordbot) {
+        TextChannel textChannel = discordbot.getTextChannelById(pluginConfig.getConfigApi().getDiscordMinecraftChannelID(Main.getPluginConfig()));
+
+        if(textChannel == null) {
+            Main.log(Level.SEVERE, "You must fill out all mandatory fields in config.yml!");
+            Main.log(Level.SEVERE, "Welcome Channel invalid! Shutting down...");
             Main.getInstance().getServer().getPluginManager().disablePlugin(Main.getInstance());
         }
 

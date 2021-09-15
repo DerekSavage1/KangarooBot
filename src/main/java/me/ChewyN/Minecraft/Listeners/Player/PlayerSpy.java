@@ -9,9 +9,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import static me.ChewyN.Main.instance;
-
-
 public class PlayerSpy implements Listener {
 
 
@@ -22,7 +19,7 @@ public class PlayerSpy implements Listener {
         String      playerName = p.getName();
 
 
-        for(Player player : instance.getServer().getOnlinePlayers()) {
+        for(Player player : Main.getInstance().getServer().getOnlinePlayers()) {
             if (player.hasPermission("commandspy.see.signs") & !player.equals(e.getPlayer())) player.sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + signMessage);
         }
 
@@ -44,7 +41,7 @@ public class PlayerSpy implements Listener {
             playerName = p.getCustomName();
         }
 
-        for(Player player : instance.getServer().getOnlinePlayers()) {
+        for(Player player : Main.getInstance().getServer().getOnlinePlayers()) {
             if (player.hasPermission("commandspy.see.commands") && !player.equals(e.getPlayer())) player.sendMessage(ChatColor.AQUA + playerName + " » " + commandMessage);
         }
 

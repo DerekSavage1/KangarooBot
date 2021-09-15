@@ -1,5 +1,6 @@
 package me.ChewyN.Minecraft.Commands;
 
+import me.ChewyN.Discord.Listeners.DiscordChannelHandler;
 import me.ChewyN.Main;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Invite;
@@ -15,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-import static me.ChewyN.Main.discordbot;
 import static me.ChewyN.Main.getPluginConfig;
 
 public class DiscordCommand extends AbstractCommand implements CommandExecutor{
@@ -31,7 +31,7 @@ public class DiscordCommand extends AbstractCommand implements CommandExecutor{
         }
 
         //creates discord link
-        GuildChannel welcomeChannel =  ConfigFile.getWelcomeChannel(getPluginConfig(), discordbot);
+        GuildChannel welcomeChannel = DiscordChannelHandler.getDiscordWelcomeChannel(getPluginConfig(), Main.getDiscordbot());
         assert welcomeChannel != null;
         Invite invite = welcomeChannel.createInvite().setMaxAge(100).setMaxUses(1).setUnique(true).setTemporary(true).complete();
 
@@ -57,19 +57,6 @@ public class DiscordCommand extends AbstractCommand implements CommandExecutor{
         return false;
     }
 
-    /**
-     * Checks the config file to see if the discord command is enabled.
-     * @return True if the command is enabled, false if it is not
-     */
-    @Override
-    public boolean isCommandEnabled() {
-        return ConfigFile.discordCommandEnabled(getPluginConfig());
-    }
-
-    @Override
-    public void setCommandEnabled(boolean commandEnabled) {
-        ConfigFile.setDiscordCommand(getPluginConfig(), commandEnabled);
-    }
 
     public static HashMap<String, String> getPlayerInvite() {
         return playerInvite;
