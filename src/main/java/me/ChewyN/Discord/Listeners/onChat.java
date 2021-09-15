@@ -1,6 +1,5 @@
 package me.ChewyN.Discord.Listeners;
 
-import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Main;
 import me.ChewyN.Minecraft.Util.MinecraftMessageHandler;
 import net.dv8tion.jda.api.entities.Message;

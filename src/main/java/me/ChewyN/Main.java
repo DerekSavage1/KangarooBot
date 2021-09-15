@@ -1,7 +1,7 @@
 package me.ChewyN;
 
 import me.ChewyN.Data.ApacheTest;
-import me.ChewyN.Data.ConfigFile;
+import me.ChewyN.Data.Configuration.PluginConfigYml;
 import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
 import me.ChewyN.Discord.Listeners.onChat;
 import me.ChewyN.Discord.Listeners.onGuildJoin;
@@ -44,12 +44,12 @@ public class Main extends JavaPlugin {
 
 
     //bad quote nerd
-    public static JDA discordbot;
-    public static Main instance;
-    public static ConfigFile configFile;
-    public static LastDeathFile deathFile;
+    private static JDA discordbot;
+    private static Main instance;
+    private static PluginConfigYml configFile;
+    private static LastDeathFile deathFile;
 
-    public static ConfigFile getConfigFile() {
+    public static PluginConfigYml getConfigFile() {
         return configFile;
     }
 
@@ -58,11 +58,12 @@ public class Main extends JavaPlugin {
 
         instance = this;
 
+        PluginConfigYml pluginConfig = new PluginConfigYml(instance,"config.yml");
+
         if (!getDataFolder().exists())
             getDataFolder().mkdir();
 
-        configFile = new ConfigFile(instance);
-        ConfigFile.setup(configFile);
+
 
        deathFile = new LastDeathFile(instance);
 

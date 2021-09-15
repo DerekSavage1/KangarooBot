@@ -1,7 +1,6 @@
 package me.ChewyN.Discord.Listeners;
 
 import me.ChewyN.Data.AbstractFile;
-import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;

@@ -3,7 +3,6 @@ package me.ChewyN.Minecraft.Listeners.Player;
 
 //import me.ChewyN.Minecraft.Packets.packet;
 
-import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
 import me.ChewyN.Minecraft.Util.MinecraftMessageHandler;
 import net.dv8tion.jda.api.EmbedBuilder;

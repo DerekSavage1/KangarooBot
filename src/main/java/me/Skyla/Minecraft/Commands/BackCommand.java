@@ -1,6 +1,5 @@
 package me.Skyla.Minecraft.Commands;
 
-import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Main;
 import me.ChewyN.Minecraft.Commands.AbstractCommand;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;

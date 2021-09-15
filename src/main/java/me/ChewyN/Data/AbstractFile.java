@@ -9,8 +9,8 @@ import java.io.IOException;
 
 public class AbstractFile {
 
-    private File file;
-    private FileConfiguration config;
+    private final File file;
+    private final FileConfiguration config;
 
     public AbstractFile(Main _main, String fileName) {
         file = new File(_main.getDataFolder(), fileName);
@@ -32,21 +32,13 @@ public class AbstractFile {
         return file;
     }
 
-    public void setFile(File file) {
-        this.file = file;
-    }
-
-    public FileConfiguration getConfig() {
+    public FileConfiguration getYamlConfig() {
         return config;
     }
 
-    public void setGetConfig(FileConfiguration getConfig) {
-        this.config = getConfig;
-    }
-
-    public static void save(ConfigFile file) {
+    public static void save(AbstractFile file) {
         try {
-            file.getConfig().save(file.getFile());
+            file.getYamlConfig().save(file.getFile());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,5 @@
 package me.ChewyN.Minecraft.Listeners.Player;
 
-import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Main;
 import me.ChewyN.Minecraft.Util.centerMessage;
 import me.Skyla.Minecraft.Objects.DeathStatus;
@@ -18,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-import static me.ChewyN.Data.ConfigFile.getDeathMessages;
+import static me.ChewyN.Data.Configuration.ConfigFile.getDeathMessages;
 import static me.ChewyN.Main.*;
 
 public class PlayerDeath implements Listener {
