@@ -5,9 +5,7 @@ package me.ChewyN.Minecraft.Listeners.Player;
 
 import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
-import me.ChewyN.Main;
 import me.ChewyN.Minecraft.Util.MinecraftMessageHandler;
-import me.Skyla.Data.PlayerDataFile;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -30,9 +28,6 @@ public class JoinAndQuit implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-
-        PlayerDataFile playerDataFile = new PlayerDataFile(p, Main.getInstance());
-        playerDataFile.setPlayerName(p);
 
         modifyJoinMessage(e);
         if (ConfigFile.discordJoinLeaveMessagesEnabled())

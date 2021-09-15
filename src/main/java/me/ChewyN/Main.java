@@ -89,7 +89,7 @@ public class Main extends JavaPlugin {
         ((org.apache.logging.log4j.core.Logger) getRootLogger()).addFilter(new ApacheTest());
 
         //listeners
-        List<Listener> listeners = new ArrayList<>();;
+        List<Listener> listeners = new ArrayList<>();
         listeners.add(new JoinAndQuit());
         listeners.add(new PlayerChat());
         listeners.add(new PlayerDeath());
@@ -126,7 +126,6 @@ public class Main extends JavaPlugin {
     private void clearOnlineRole() {
         //Check if role exists
         String onlineRoleName = ConfigFile.getOnlineRoleName();
-        assert  onlineRoleName != null;
         //fetch members
         List<Member> members = getGuild().getMembers();
         try {

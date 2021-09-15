@@ -20,10 +20,6 @@ public class DiscordMessageHandler {
     final private static JDA DISCORDBOT = Main.getDiscordbot();
     final private static TextChannel MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(DISCORDBOT);
 
-    public static void sendToMinecraftChannel(String message) {
-        MINECRAFT_CHANNEL.sendMessage(message).queue();
-    }
-
     public static void sendToMinecraftChannel(MessageEmbed message) {
         MINECRAFT_CHANNEL.sendMessage(message).queue();
     }
@@ -33,22 +29,24 @@ public class DiscordMessageHandler {
     }
 
     public static void sendToAdminChannel(String message) {
-        if(Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.getAdminChannel(DISCORDBOT) == null) {
+        TextChannel adminChannel = ConfigFile.getAdminChannel(DISCORDBOT);
+        if(Main.getConfigFile().isAdminChannelEnabled() && adminChannel == null) {
             Main.getConfigFile().setAdminChannelEnabled(false);
             Main.log(Level.SEVERE, "Admin channel enabled but not found! Disabling...");
         }
         else if (Main.getConfigFile().isAdminChannelEnabled()) {
-                ConfigFile.getAdminChannel(DISCORDBOT).sendMessage(message).queue();
+            adminChannel.sendMessage(message);
         }
     }
 
     public static void sendToAdminChannel(MessageEmbed message) {
-        if(Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.getAdminChannel(DISCORDBOT) == null) {
+        TextChannel adminChannel = ConfigFile.getAdminChannel(discordbot);
+        if(Main.getConfigFile().isAdminChannelEnabled() && adminChannel == null) {
             Main.getConfigFile().setAdminChannelEnabled(false);
             Main.log(Level.SEVERE, "Admin channel enabled but not found! Disabling...");
         }
         else if (Main.getConfigFile().isAdminChannelEnabled()) {
-            ConfigFile.getAdminChannel(DISCORDBOT).sendMessage(message).queue();
+            adminChannel.sendMessage(message).queue();
         }
     }
 
@@ -69,11 +67,6 @@ public class DiscordMessageHandler {
         }
     }
 
-    public static void sendToBothDiscordChannels(String message) {
-        sendToAdminChannel(message);
-        sendToMinecraftChannel(message);
-    }
-
     public static void sendToBothDiscordChannels(MessageEmbed embed) {
         sendToAdminChannel(embed);
         sendToMinecraftChannel(embed);
@@ -82,45 +75,6 @@ public class DiscordMessageHandler {
     public static void sendToBothDiscordChannels(String username, String message) {
         sendToAdminChannel(username, message);
         sendToMinecraftChannel(username, message);
-    }
-
-    public static void sendJoinOrQuitMessageToDiscord(Player player, boolean isJoining) {
-        String			playerUUID = player.getUniqueId().toString().replaceAll("-","");
-        String			faceURL = "https://minotar.net/avatar/"+playerUUID+"/25"; //discord wants as string
-        String			playerName = player.getPlayerListName();
-        int				playerCount = Bukkit.getOnlinePlayers().size();
-        final TextChannel     DISCORD_MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(getDiscordbot());
-
-        EmbedBuilder joinMessage = new EmbedBuilder();
-        joinMessage.setThumbnail(faceURL);
-        if(isJoining) {
-            joinMessage.setTitle(playerName + " has joined the server");
-            joinMessage.setColor(0x42f545);
-        } else {
-            joinMessage.setTitle(playerName + " has left the server");
-            joinMessage.setColor(0xeb4034);
-        }
-
-        if(playerCount <= 0) {
-            joinMessage.setDescription("No players online");
-            DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
-            joinMessage.clear();
-            return;
-        }
-
-        //Building description
-        StringBuilder description = new StringBuilder("Now " + playerCount + " players online: \n");
-        for( Player p : Bukkit.getOnlinePlayers()) {
-            if(!isJoining && p.getPlayerListName().equals(player.getPlayerListName())) continue; //if they are quitting leave out their name
-            description.append("`").append(p.getPlayerListName()).append("`, ");
-        }
-
-        description = new StringBuilder(description.substring(0, description.length() - 2)); //removing the space and comma at the end
-        joinMessage.setDescription(description.toString());
-
-        DISCORD_MINECRAFT_CHANNEL.sendMessage(joinMessage.build()).queue();
-
-        joinMessage.clear();
     }
 
     public static String formatMessage(Message message) {
@@ -158,4 +112,46 @@ public class DiscordMessageHandler {
         getDiscordbot().getGuildById("885683010123497494").getTextChannelById("887460231876083735").sendMessage(message).queue();
         //FIXME hardcoded text channel ID
     }
+
+    public static void sendJoinOrQuitMessageToDiscord(Player player, boolean isJoining) {
+        String playerUUID = player.getUniqueId().toString().replaceAll("-", "");
+        String faceURL = "https://minotar.net/avatar/" + playerUUID + "/25"; //discord wants as string
+        String playerName = player.getPlayerListName();
+        int playerCount = Bukkit.getOnlinePlayers().size();
+
+        EmbedBuilder joinMessage = new EmbedBuilder();
+        joinMessage.setThumbnail(faceURL);
+        if (isJoining) {
+            joinMessage.setTitle(playerName + ConfigFile.getDiscordPlayerJoinMessage());
+            joinMessage.setColor(0x42f545);
+
+        } else { //is leaving
+            joinMessage.setTitle(playerName + ConfigFile.getDiscordPlayerLeaveMessage());
+            joinMessage.setColor(0xeb4034);
+            playerCount--; //I removed this thinking it was unnecessary, and it is very necessary
+        }
+
+        if (playerCount <= 0) {
+            joinMessage.setDescription("No players online");
+            DiscordMessageHandler.sendToBothDiscordChannels(joinMessage.build());
+            joinMessage.clear();
+            return;
+        }
+
+        //Building description
+        StringBuilder description = new StringBuilder("Now " + playerCount + " players online: \n");
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (!isJoining && p.getPlayerListName().equals(player.getPlayerListName()))
+                continue; //if they are quitting leave out their name
+            description.append("`").append(p.getPlayerListName()).append("`, ");
+        }
+
+        description = new StringBuilder(description.substring(0, description.length() - 2)); //removing the space and comma at the end
+        joinMessage.setDescription(description.toString());
+
+        DiscordMessageHandler.sendToBothDiscordChannels(joinMessage.build());
+
+        joinMessage.clear();
+
+    } //discord message
 }

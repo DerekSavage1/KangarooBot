@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 
+import static me.ChewyN.Main.configFile;
 import static me.ChewyN.Main.log;
 
 public class ConfigFile extends AbstractFile {
@@ -58,15 +59,11 @@ public class ConfigFile extends AbstractFile {
             Main.log(Level.INFO, "debug-mode is enabled in the config.yml," +
                     "debug messages will appear until you set this to false.");
 
-        //TODO: set default death messages (List<String>)
-        // I tried making this but because of the custom file structure i got confused...
         if (!config.contains("Death_Messages")) {
-            List<String> mess = new ArrayList<String>();
-            mess.add("has passed away");
-            mess.add("got lost in the sauce");
-            for (String s : mess) {
-                config.set("Death_Messages", s);
-            }
+            ArrayList<String> messages = new ArrayList<>();
+            messages.add("has passed away");
+            messages.add("got lost in the sauce");
+            config.set("Death_Messages", messages);
         }
 
         if (!config.contains("Discord_Death_Message_Description"))
@@ -118,13 +115,6 @@ public class ConfigFile extends AbstractFile {
         save();
     }
 
-    /*
-    @Override
-    public static void generateDefaultFile() {
-        System.out.print("e");
-    }
-    */
-
     //TODO: Add javadoc comments to all of these methods
 
     @NotNull
@@ -158,14 +148,15 @@ public class ConfigFile extends AbstractFile {
         throw new NullPointerException("No Minecraft Channel Provided!");
     }
 
-    //TODO: Make getAdminChannel @Notnull
     public static TextChannel getAdminChannel(JDA discordbot) {
-        try {
-            return discordbot.getTextChannelById((String) Objects.requireNonNull(config.get("Discord_Admin_Channel")));
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+        String channelID = config.getString("Discord_Welcome_Channel");
+
+        if (channelID == null || configFile.isAdminChannelEnabled()) {
+            log(Level.WARNING, "Admin chat not found! Disabling...");
         }
-        return null;
+
+        assert channelID != null;
+        return discordbot.getTextChannelById(channelID);
     }
 
     public static TextChannel getWelcomeChannel(JDA discordbot) {
@@ -173,12 +164,10 @@ public class ConfigFile extends AbstractFile {
 
         if (channelID == null) {
             log(Level.WARNING, "Discord command disabled! No welcome channel found!");
-
             return null;
         }
 
         return discordbot.getTextChannelById(channelID);
-
     }
 
     @NotNull
