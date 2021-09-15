@@ -43,7 +43,7 @@ public class BackCommand extends AbstractCommand implements CommandExecutor {
         Player p = (Player) sender;
 
         // If command is enabled or if the player has not teleported back once yet, run the command
-        if (ConfigFile.backCommandEnabled(getPluginConfig()) && !PlayerDeath.getPlayerDeathStatus(p).getTPStatus()) {
+        if (Main.getPluginConfigApi().isMinecraftBackCommandEnabled(getPluginConfig()) && !PlayerDeath.getPlayerDeathStatus(p).getTPStatus()) {
 
             Location l = PlayerDeath.getPlayerDeathStatus(p).getLocation();
             Block b = l.subtract(0, 1, 0).getBlock();
