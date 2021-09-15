@@ -13,6 +13,7 @@ import me.ChewyN.Minecraft.Listeners.Player.JoinAndQuit;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerChat;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerSpy;
+import me.Skyla.Data.LastDeathFile;
 import me.Skyla.Minecraft.Commands.BackCommand;
 import me.Skyla.Minecraft.Commands.FunCommand;
 import me.Skyla.Minecraft.Commands.ReloadCommand;
@@ -51,6 +52,7 @@ public class Main extends JavaPlugin {
     }
 
     public static ConfigFile configFile;
+    public static LastDeathFile deathFile;
 
 
     @Override
@@ -63,6 +65,17 @@ public class Main extends JavaPlugin {
 
         configFile = new ConfigFile(instance);
         ConfigFile.setup();
+
+       deathFile = new LastDeathFile(instance);
+
+       /* FIXME breaks
+       try {
+           LastDeathFile.loadDeathInfoFromFile();
+           log(Level.INFO, "Deaths loaded");
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+       */
 
         awakenTheKangaroo();
 

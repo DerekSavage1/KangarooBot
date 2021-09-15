@@ -13,7 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.awt.*;
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -91,7 +91,7 @@ public class PlayerDeath implements Listener {
         }
 
         if (isEnabled) {
-           randomDeathMessage = centerMessage.center(ChatColor.RED + "☠ " + Color.WHITE + randomDeathMessage + ChatColor.RED + " ☠");
+           randomDeathMessage = centerMessage.center(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() + " " + randomDeathMessage + ChatColor.RED + " ☠");
         }
 
         return randomDeathMessage;
@@ -109,6 +109,7 @@ public class PlayerDeath implements Listener {
     /**
      * Method that returns the players DeathStatus
      * @param p
+     * @return
      */
     public static DeathStatus getPlayerDeathStatus(Player p) {
         return deathMap.get(p);
@@ -122,6 +123,7 @@ public class PlayerDeath implements Listener {
      */
     private void sendDeathMessageToDiscord(String name, String c, String l, String deathMessage) {
         final TextChannel DISCORD_MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(Main.getDiscordbot());
+        final TextChannel DISCORD_ADMIN_CHANNEL = ConfigFile.getAdminChannel(Main.getDiscordbot());
 
 
         EmbedBuilder message = new EmbedBuilder();
@@ -134,15 +136,20 @@ public class PlayerDeath implements Listener {
         mAdmin.setDescription(name + " died from " + c + ". Location: " + l);
 
 
+        assert DISCORD_MINECRAFT_CHANNEL != null;
         Objects.requireNonNull(DISCORD_MINECRAFT_CHANNEL.sendMessage(message.build())).queue();
 
         // Check if admin channel is enabled and check if we should send death data to the admin channel
         if(Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.logDeathInAdmin()) {
-            Objects.requireNonNull(ConfigFile.getAdminChannel(Main.getDiscordbot()).sendMessage(mAdmin.build())).queue();
+            Objects.requireNonNull(DISCORD_ADMIN_CHANNEL.sendMessage(mAdmin.build())).queue();
         }
 
         message.clear();
         mAdmin.clear();
+    }
+
+    public static void setDeathInfo(Player p, DeathStatus status) {
+        deathMap.put(p, status);
     }
 
 }

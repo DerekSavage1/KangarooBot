@@ -24,6 +24,11 @@ public class DeathStatus {
         hasTeleported = false;
     }
 
+    public DeathStatus(boolean tpStatus, Location loc) {
+        l = loc;
+        hasTeleported = tpStatus;
+    }
+
     /**
      * Gets a player's death location
      *
