@@ -63,13 +63,6 @@ public class Main extends JavaPlugin {
 
         instance = this;
 
-        pluginConfig = new PluginConfigYml(instance,"config.yml");
-
-        if (!getDataFolder().exists())
-            getDataFolder().mkdir();
-
-
-
        deathFile = new LastDeathFile(instance);
 
        /* FIXME breaks
@@ -81,7 +74,16 @@ public class Main extends JavaPlugin {
        }
        */
 
+        if (!getDataFolder().exists())
+            getDataFolder().mkdir();
+
+        pluginConfig = new PluginConfigYml(instance,"config.yml");
+
         awakenTheKangaroo();
+
+
+
+
 
         ((org.apache.logging.log4j.core.Logger) getRootLogger()).addFilter(new ApacheTest());
 

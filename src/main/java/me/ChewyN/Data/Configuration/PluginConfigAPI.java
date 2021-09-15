@@ -58,7 +58,7 @@ public class PluginConfigAPI {
      */
 
     public String getDiscordWelcomeChannelID(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("getDiscordWelcomeChannelID");
+        return pluginConfig.getYamlConfig().getString("discordWelcomeChannelID");
     }
 
     public void setDiscordWelcomeChannelID(String discordWelcomeChannelID, @NotNull PluginConfigYml pluginConfig) {
@@ -67,7 +67,7 @@ public class PluginConfigAPI {
     }
 
     public String getDiscordMinecraftChannelID(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("getDiscordMinecraftChannelID");
+        return pluginConfig.getYamlConfig().getString("discordMinecraftChannelID");
     }
 
     public void setDiscordMinecraftChannelID(String discordMinecraftChannelID, @NotNull PluginConfigYml pluginConfig) {
@@ -76,7 +76,7 @@ public class PluginConfigAPI {
     }
 
     public String getDiscordBotToken(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("getDiscordBotToken");
+        return pluginConfig.getYamlConfig().getString("discordBotToken");
     }
 
     public void setDiscordBotToken(String discordBotToken, @NotNull PluginConfigYml pluginConfig) {
@@ -85,7 +85,7 @@ public class PluginConfigAPI {
     }
 
     public String getDiscordAdminChannelID(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("getDiscordAdminChannelID");
+        return pluginConfig.getYamlConfig().getString("discordAdminChannelID");
     }
 
     public void setDiscordAdminChannelID(String discordAdminChannelID, @NotNull PluginConfigYml pluginConfig) {
@@ -94,7 +94,7 @@ public class PluginConfigAPI {
     }
 
     public List<String> getDeathMessages(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getStringList("getDeathMessages");
+        return pluginConfig.getYamlConfig().getStringList("deathMessages");
     }
 
     public void setDeathMessages(List<String> deathMessages, @NotNull PluginConfigYml pluginConfig) {
@@ -103,7 +103,7 @@ public class PluginConfigAPI {
     }
 
     public String getDiscordOnlineRoleName(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("getDiscordOnlineRoleName");
+        return pluginConfig.getYamlConfig().getString("discordOnlineRoleName");
     }
 
     public void setDiscordOnlineRoleName(String discordOnlineRoleName, @NotNull PluginConfigYml pluginConfig) {
@@ -112,16 +112,16 @@ public class PluginConfigAPI {
     }
 
     public boolean isLogDeathInfoInAdminChannel(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getBoolean("isLogDeathInfoInAdminChannelID");
+        return pluginConfig.getYamlConfig().getBoolean("logDeathInfoInAdminChannel");
     }
 
     public void setLogDeathInfoInAdminChannel(boolean logDeathInfoInAdminChannel, @NotNull PluginConfigYml pluginConfig) {
-        pluginConfig.getYamlConfig().set("logDeathInfoInAdminChannelID", logDeathInfoInAdminChannel);
+        pluginConfig.getYamlConfig().set("logDeathInfoInAdminChannel", logDeathInfoInAdminChannel);
         AbstractFile.save(pluginConfig);
     }
 
     public boolean isMinecraftJoinMessageEnabled(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getBoolean("isMinecraftJoinMessageEnabled");
+        return pluginConfig.getYamlConfig().getBoolean("minecraftJoinMessageEnabled");
     }
 
     public void setMinecraftJoinMessageEnabled(boolean minecraftJoinMessageEnabled, @NotNull PluginConfigYml pluginConfig) {
@@ -130,7 +130,7 @@ public class PluginConfigAPI {
     }
 
     public boolean isDiscordAdminChannelEnabled(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getBoolean("isDiscordAdminChannelEnabled");
+        return pluginConfig.getYamlConfig().getBoolean("discordAdminChannelEnabled");
     }
 
     public void setDiscordAdminChannelEnabled(boolean discordAdminChannelEnabled, @NotNull PluginConfigYml pluginConfig) {
@@ -139,7 +139,7 @@ public class PluginConfigAPI {
     }
 
     public boolean isSendDeathMessagesToDiscordEnabled(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getBoolean("isSendDeathMessagesToDiscord");
+        return pluginConfig.getYamlConfig().getBoolean("sendDeathMessagesToDiscord");
     }
 
     public void setSendDeathMessagesToDiscordEnabled(boolean sendDeathMessagesToDiscord, @NotNull PluginConfigYml pluginConfig) {
@@ -148,7 +148,7 @@ public class PluginConfigAPI {
     }
 
     public boolean isDiscordCommandEnabled(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getBoolean("isDiscordCommandEnabled");
+        return pluginConfig.getYamlConfig().getBoolean("discordCommandEnabled");
     }
 
     public void setDiscordCommandEnabled(boolean discordCommandEnabled, @NotNull PluginConfigYml pluginConfig) {
@@ -157,7 +157,7 @@ public class PluginConfigAPI {
     }
 
     public boolean isDiscordJoinLeaveMessagesEnabled(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getBoolean("isDiscordJoinLeaveMessagesEnabled");
+        return pluginConfig.getYamlConfig().getBoolean("discordJoinLeaveMessagesEnabled");
     }
 
     public void setDiscordJoinLeaveMessagesEnabled(boolean discordJoinLeaveMessagesEnabled, @NotNull PluginConfigYml pluginConfig) {
@@ -166,7 +166,7 @@ public class PluginConfigAPI {
     }
 
     public String getCustomDiscordBotStatus(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("getCustomDiscordBotStatus");
+        return pluginConfig.getYamlConfig().getString("customDiscordBotStatus");
     }
 
     public void setCustomDiscordBotStatus(String customDiscordBotStatus, @NotNull PluginConfigYml pluginConfig) {
@@ -175,7 +175,7 @@ public class PluginConfigAPI {
     }
 
     public String getCustomDiscordDeathMessageDescription(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("getCustomDiscordDeathMessageDescription");
+        return pluginConfig.getYamlConfig().getString("customDiscordDeathMessageDescription");
     }
 
     public void setCustomDiscordDeathMessageDescription(String customDiscordDeathMessageDescription, @NotNull PluginConfigYml pluginConfig) {
@@ -184,7 +184,7 @@ public class PluginConfigAPI {
     }
 
     public String getCustomDiscordMessageOnStartup(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("getCustomDiscordMessageOnStartup");
+        return pluginConfig.getYamlConfig().getString("customDiscordMessageOnStartup");
     }
 
     public void setCustomDiscordMessageOnStartup(String customDiscordMessageOnStartup, @NotNull PluginConfigYml pluginConfig) {
@@ -193,7 +193,7 @@ public class PluginConfigAPI {
     }
 
     public String getCustomDiscordMessageOnShutdown(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("getCustomDiscordMessageOnShutdown");
+        return pluginConfig.getYamlConfig().getString("customDiscordMessageOnShutdown");
     }
 
     public void setCustomDiscordMessageOnShutdown(String customDiscordMessageOnShutdown, @NotNull PluginConfigYml pluginConfig) {
@@ -202,7 +202,7 @@ public class PluginConfigAPI {
     }
 
     public String getCustomDiscordPlayerJoinMessage(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("getCustomDiscordPlayerJoinMessage");
+        return pluginConfig.getYamlConfig().getString("customDiscordPlayerJoinMessage");
     }
 
     public void setCustomDiscordPlayerJoinMessage(String customDiscordPlayerJoinMessage, @NotNull PluginConfigYml pluginConfig) {
@@ -211,7 +211,7 @@ public class PluginConfigAPI {
     }
 
     public String getCustomDiscordPlayerLeaveMessage(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("getCustomDiscordPlayerLeaveMessage");
+        return pluginConfig.getYamlConfig().getString("customDiscordPlayerLeaveMessage");
     }
 
     public void setCustomDiscordPlayerLeaveMessage(String customDiscordPlayerLeaveMessage, @NotNull PluginConfigYml pluginConfig) {
@@ -220,7 +220,7 @@ public class PluginConfigAPI {
     }
 
     public String getMinecraftJoinMessage(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("getMinecraftJoinMessage");
+        return pluginConfig.getYamlConfig().getString("minecraftJoinMessage");
     }
 
     public void setMinecraftJoinMessage(String minecraftJoinMessage, @NotNull PluginConfigYml pluginConfig) {
@@ -229,7 +229,7 @@ public class PluginConfigAPI {
     }
 
     public boolean isMinecraftBackCommandEnabled(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getBoolean("isMinecraftBackCommandEnabled");
+        return pluginConfig.getYamlConfig().getBoolean("minecraftBackCommandEnabled");
     }
 
     public void setMinecraftBackCommandEnabled(boolean minecraftBackCommandEnabled, @NotNull PluginConfigYml pluginConfig) {
@@ -238,7 +238,7 @@ public class PluginConfigAPI {
     }
 
     public boolean isMinecraftCenterDeathMessages(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getBoolean("isMinecraftCenterDeathMessages");
+        return pluginConfig.getYamlConfig().getBoolean("minecraftCenterDeathMessages");
     }
 
     public void setMinecraftCenterDeathMessages(boolean minecraftCenterDeathMessages, @NotNull PluginConfigYml pluginConfig) {
@@ -247,7 +247,7 @@ public class PluginConfigAPI {
     }
 
     public boolean isMinecraftWelcomeMessageEnabled(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getBoolean("isMinecraftWelcomeMessageEnabled");
+        return pluginConfig.getYamlConfig().getBoolean("minecraftWelcomeMessageEnabled");
     }
 
     public void setMinecraftWelcomeMessageEnabled(boolean minecraftWelcomeMessageEnabled, @NotNull PluginConfigYml pluginConfig) {
@@ -256,7 +256,7 @@ public class PluginConfigAPI {
     }
 
     public boolean isDebugEnabled(@NotNull PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getBoolean("isDebugEnabled");
+        return pluginConfig.getYamlConfig().getBoolean("debugEnabled");
     }
 
     public void setDebugEnabled(boolean debugEnabled, @NotNull PluginConfigYml pluginConfig) {
@@ -265,11 +265,11 @@ public class PluginConfigAPI {
     }
 
     public String getDiscordDebugGuildID(PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("DiscordDebugGuildID");
+        return pluginConfig.getYamlConfig().getString("discordDebugGuildID");
     }
 
     public String getDiscordDebugChannelID(PluginConfigYml pluginConfig) {
-        return pluginConfig.getYamlConfig().getString("DiscordDebugGuildID");
+        return pluginConfig.getYamlConfig().getString("discordDebugChannelID");
     }
 
 }

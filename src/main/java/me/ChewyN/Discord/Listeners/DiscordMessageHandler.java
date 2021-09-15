@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import static me.ChewyN.Main.*;
 
@@ -22,7 +23,7 @@ public class DiscordMessageHandler {
     }
 
     public static void sendToMinecraftChannel(String username, String message) {
-        DiscordChannelHandler.getDiscordMinecraftChannel(getPluginConfig(), discordbot).sendMessage("`" + username + " :`" + message);
+        DiscordChannelHandler.getDiscordMinecraftChannel(getPluginConfig(), discordbot).sendMessage("`" + username + " :`" + message).queue();
     }
 
     public static void sendToAdminChannel(String message) {
@@ -33,11 +34,12 @@ public class DiscordMessageHandler {
 
         Main.getPluginConfigApi().isDiscordAdminChannelEnabled(getPluginConfig());
         if (Main.getPluginConfigApi().isDiscordAdminChannelEnabled(getPluginConfig())) {
-            adminChannel.sendMessage(message);
+            adminChannel.sendMessage(message).queue();
         }
     }
 
     public static void sendToAdminChannel(String username, String message) {
+        Main.log(Level.INFO, "Log!");
         if(!Main.getPluginConfigApi().isDiscordAdminChannelEnabled(Main.getPluginConfig()))
             return;
 
@@ -45,7 +47,7 @@ public class DiscordMessageHandler {
 
         Main.getPluginConfigApi().isDiscordAdminChannelEnabled(getPluginConfig());
         if (Main.getPluginConfigApi().isDiscordAdminChannelEnabled(getPluginConfig())) {
-            adminChannel.sendMessage("`" + username + " :`" + message);
+            adminChannel.sendMessage("`" + username + " :`" + message).queue();
         }
     }
 

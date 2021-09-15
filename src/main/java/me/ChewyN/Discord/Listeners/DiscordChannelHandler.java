@@ -14,7 +14,7 @@ public class DiscordChannelHandler {
 
     @NotNull
     public static TextChannel getDiscordAdminChannel(@NotNull PluginConfigYml pluginConfig, @NotNull JDA discordbot) {
-        TextChannel textChannel = discordbot.getTextChannelById(pluginConfig.getConfigApi().getDiscordMinecraftChannelID(Main.getPluginConfig()));
+        TextChannel textChannel = discordbot.getTextChannelById(pluginConfig.getConfigApi().getDiscordAdminChannelID(Main.getPluginConfig()));
 
         if(textChannel == null && Main.getPluginConfigApi().isDiscordAdminChannelEnabled(Main.getPluginConfig())) {
             Main.log(Level.WARNING, "Admin channel is enabled, but admin chat is not found!");
