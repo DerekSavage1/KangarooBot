@@ -148,4 +148,8 @@ public class PlayerDeath implements Listener {
         mAdmin.clear();
     }
 
+    public static void setDeathInfo(Player p, DeathStatus status) {
+        deathMap.put(p, status);
+    }
+
 }
