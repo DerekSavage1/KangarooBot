@@ -86,7 +86,7 @@ public class PlayerDeath implements Listener {
         List<String> deathMessages = getDeathMessages(getConfigFile());
         if (!(deathMessages == null)) {
             int messageNumber = id;
-            randomDeathMessage = e.getEntity().getPlayerListName() + " " + deathMessages.get(messageNumber);
+            randomDeathMessage = deathMessages.get(messageNumber);
         }
 
         if (isEnabled) {
