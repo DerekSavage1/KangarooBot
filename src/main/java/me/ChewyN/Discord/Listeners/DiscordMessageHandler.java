@@ -153,4 +153,9 @@ public class DiscordMessageHandler {
         discordbot.getTextChannelById("887460231876083735").sendMessage(message).queue();
         //FIXME hardcoded text channel ID
     }
+
+    public static void sendToDebugChannel(MessageEmbed message) {
+        getDiscordbot().getGuildById("885683010123497494").getTextChannelById("887460231876083735").sendMessage(message).queue();
+        //FIXME hardcoded text channel ID
+    }
 }
