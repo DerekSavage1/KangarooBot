@@ -1,5 +1,6 @@
 package me.ChewyN;
 
+import me.ChewyN.Data.ApacheTest;
 import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
 import me.ChewyN.Discord.Listeners.onChat;
@@ -36,8 +37,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 
+import static org.apache.logging.log4j.LogManager.getRootLogger;
 
 public class Main extends JavaPlugin {
+
+
 
     //bad quote nerd
     public static JDA discordbot;
@@ -75,8 +79,10 @@ public class Main extends JavaPlugin {
 
         awakenTheKangaroo();
 
+        ((org.apache.logging.log4j.core.Logger) getRootLogger()).addFilter(new ApacheTest());
+
         //listeners
-        List<Listener> listeners = new ArrayList();;
+        List<Listener> listeners = new ArrayList<>();;
         listeners.add(new JoinAndQuit());
         listeners.add(new PlayerChat());
         listeners.add(new PlayerDeath());
