@@ -32,6 +32,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.security.auth.login.LoginException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -53,6 +54,7 @@ public class Main extends JavaPlugin {
 
     public static ConfigFile configFile;
     public static LastDeathFile deathFile;
+    public static File playerDataFolder;
 
 
     @Override
@@ -62,6 +64,11 @@ public class Main extends JavaPlugin {
 
         if (!getDataFolder().exists())
             getDataFolder().mkdir();
+
+        playerDataFolder = new File(getDataFolder() + "/playerData");
+        if (!playerDataFolder.exists())
+            playerDataFolder.mkdir();
+
 
         configFile = new ConfigFile(instance);
         ConfigFile.setup();
