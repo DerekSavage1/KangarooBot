@@ -152,10 +152,10 @@ public class ConfigFile extends AbstractFile {
         String channelID = config.getString("Discord_Welcome_Channel");
 
         if (channelID == null || configFile.isAdminChannelEnabled()) {
-            log(Level.WARNING, "Discord command disabled! No welcome channel found!");
-            return null;
+            log(Level.WARNING, "Admin chat not found! Disabling...");
         }
 
+        assert channelID != null;
         return discordbot.getTextChannelById(channelID);
     }
 
