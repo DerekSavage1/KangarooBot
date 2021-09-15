@@ -3,6 +3,7 @@ package me.ChewyN.Minecraft.Listeners.Player;
 import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Main;
 import me.ChewyN.Minecraft.Util.centerMessage;
+import me.Skyla.Data.LastDeathFile;
 import me.Skyla.Minecraft.Objects.DeathStatus;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -44,7 +45,14 @@ public class PlayerDeath implements Listener {
         // get new non-centered message after replacing the mc death message
         deathMessage = getDeathMessage(e, false, deathMessageID);
 
-        deathMap.put(e.getEntity(), new DeathStatus(e.getEntity().getLocation()));
+        // Death Status
+        DeathStatus deathStatus = new DeathStatus(e.getEntity().getLocation());
+
+        // Add to map
+        deathMap.put(e.getEntity(), deathStatus);
+
+        // save to file
+        LastDeathFile.saveDeath(e.getEntity().getUniqueId().toString(), e.getEntity().getLocation(), deathStatus.getTPStatus());
 
         // players cause of death
         String cOD = Objects.requireNonNull(e.getEntity().getLastDamageCause()).getCause().toString();
@@ -55,7 +63,7 @@ public class PlayerDeath implements Listener {
         //    cOD = Objects.requireNonNull(e.getEntity().getKiller().getPlayerListName());
 
         // location of the death
-        String l  = ("X:" + e.getEntity().getLocation().getBlockX() + ", Y: " + e.getEntity().getLocation().getBlockY() + ", Z: " + e.getEntity().getLocation().getBlockZ());
+        String l = ("X:" + e.getEntity().getLocation().getBlockX() + ", Y: " + e.getEntity().getLocation().getBlockY() + ", Z: " + e.getEntity().getLocation().getBlockZ());
 
         // Send the death to discord if enabled
         if (ConfigFile.sendDeathToDiscord())
@@ -76,9 +84,10 @@ public class PlayerDeath implements Listener {
 
     /**
      * Gets the new death message when a player dies
-     * @param e The death event that occurred.
+     *
+     * @param e         The death event that occurred.
      * @param isEnabled For centered text. True if it is enabled, false if not.
-     * @param id The id of the death message. Used in death message selection.
+     * @param id        The id of the death message. Used in death message selection.
      * @return The completed death message String.
      */
     private String getDeathMessage(PlayerDeathEvent e, boolean isEnabled, Integer id) {
@@ -91,7 +100,7 @@ public class PlayerDeath implements Listener {
         }
 
         if (isEnabled) {
-           randomDeathMessage = centerMessage.center(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() + " " + randomDeathMessage + ChatColor.RED + " ☠");
+            randomDeathMessage = centerMessage.center(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() + " " + randomDeathMessage + ChatColor.RED + " ☠");
         }
 
         return randomDeathMessage;
@@ -99,15 +108,17 @@ public class PlayerDeath implements Listener {
 
     /**
      * Helper method to get a death message ID. Used to send the same message sent in MC chat to Discord.
+     *
      * @return The id of the death message in the deathMessages list.
      */
     private int getDeathMessageID() {
-         int messageNumber = new Random().nextInt(getDeathMessages().size()); //TODO throw a warning and disable if message list is empty
-         return messageNumber;
+        int messageNumber = new Random().nextInt(getDeathMessages().size()); //TODO throw a warning and disable if message list is empty
+        return messageNumber;
     }
 
     /**
      * Method that returns the players DeathStatus
+     *
      * @param p
      * @return
      */
@@ -115,11 +126,16 @@ public class PlayerDeath implements Listener {
         return deathMap.get(p);
     }
 
+    public static void setDeathInfo(Player p, DeathStatus s) {
+        deathMap.put(p, s);
+    }
+
     /**
      * Sends death messages to discord. Will send a normal message to the minecraft channel, and a message with extra info to the admin channel.
+     *
      * @param name The players name
-     * @param c The death cause
-     * @param l The death location
+     * @param c    The death cause
+     * @param l    The death location
      */
     private void sendDeathMessageToDiscord(String name, String c, String l, String deathMessage) {
         final TextChannel DISCORD_MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(Main.getDiscordbot());
@@ -140,7 +156,7 @@ public class PlayerDeath implements Listener {
         Objects.requireNonNull(DISCORD_MINECRAFT_CHANNEL.sendMessage(message.build())).queue();
 
         // Check if admin channel is enabled and check if we should send death data to the admin channel
-        if(Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.logDeathInAdmin()) {
+        if (Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.logDeathInAdmin()) {
             Objects.requireNonNull(DISCORD_ADMIN_CHANNEL.sendMessage(mAdmin.build())).queue();
         }
 

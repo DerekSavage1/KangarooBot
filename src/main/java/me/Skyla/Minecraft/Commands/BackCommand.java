@@ -4,6 +4,7 @@ import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Main;
 import me.ChewyN.Minecraft.Commands.AbstractCommand;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;
+import me.Skyla.Data.LastDeathFile;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -58,11 +59,13 @@ public class BackCommand extends AbstractCommand implements CommandExecutor {
                 }, 100L);
                 // set tp status to true
                 PlayerDeath.getPlayerDeathStatus(p).setTPStatus(true);
+                LastDeathFile.saveTPStatus(p.getUniqueId().toString(), true);
                 return true;
             }
             p.teleport(l.add(0,1,0));
             // set tp status to true
             PlayerDeath.getPlayerDeathStatus(p).setTPStatus(true);
+            LastDeathFile.saveTPStatus(p.getUniqueId().toString(), true);
             return true;
         }
         p.sendMessage(ChatColor.RED + "This command has been disabled, or you have already teleported back!");
