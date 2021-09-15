@@ -46,14 +46,12 @@ public class Main extends JavaPlugin {
     //bad quote nerd
     public static JDA discordbot;
     public static Main instance;
+    public static ConfigFile configFile;
+    public static LastDeathFile deathFile;
 
     public static ConfigFile getConfigFile() {
         return configFile;
     }
-
-    public static ConfigFile configFile;
-    public static LastDeathFile deathFile;
-
 
     @Override
     public void onEnable() {
@@ -64,7 +62,7 @@ public class Main extends JavaPlugin {
             getDataFolder().mkdir();
 
         configFile = new ConfigFile(instance);
-        ConfigFile.setup();
+        ConfigFile.setup(configFile);
 
        deathFile = new LastDeathFile(instance);
 
@@ -118,7 +116,7 @@ public class Main extends JavaPlugin {
 
     private void clearOnlineRole() {
         //Check if role exists
-        String onlineRoleName = ConfigFile.getOnlineRoleName();
+        String onlineRoleName = ConfigFile.getOnlineRoleName(getConfigFile());
         //fetch members
         List<Member> members = getGuild().getMembers();
         try {
@@ -140,14 +138,14 @@ public class Main extends JavaPlugin {
         gatewayIntents.add(GatewayIntent.GUILD_MEMBERS);
         gatewayIntents.add(GatewayIntent.GUILD_PRESENCES);
 
-        JDABuilder jdaBuilder = JDABuilder.createDefault(ConfigFile.getDiscordBotID());
+        JDABuilder jdaBuilder = JDABuilder.createDefault(ConfigFile.getDiscordBotID(getConfigFile()));
 
 
         jdaBuilder.enableIntents(gatewayIntents);
         jdaBuilder.addEventListeners(new onGuildJoin());
         jdaBuilder.addEventListeners(new onChat());
 
-        jdaBuilder.setActivity(Activity.playing(ConfigFile.getBotStatus()));
+        jdaBuilder.setActivity(Activity.playing(ConfigFile.getBotStatus(getConfigFile())));
 
         try {
             discordbot = jdaBuilder.build();
@@ -186,11 +184,11 @@ public class Main extends JavaPlugin {
         if (isStarting) {
             message.setTitle("Server Online!");
             message.setColor(0x42f545);
-            message.setDescription(ConfigFile.getDiscordOnlineMessage());
+            message.setDescription(ConfigFile.getDiscordOnlineMessage(getConfigFile()));
         } else {
             message.setTitle("Server Offline.");
             message.setColor(0xeb4034);
-            message.setDescription(ConfigFile.getDiscordOfflineMessage());
+            message.setDescription(ConfigFile.getDiscordOfflineMessage(getConfigFile()));
         }
 
         DiscordMessageHandler.sendToBothDiscordChannels(message.build());
@@ -205,7 +203,7 @@ public class Main extends JavaPlugin {
     }
 
     public static void debug(String message) {
-        if (configFile.isDebugEnabled()) {
+        if (configFile.isDebugEnabled(getConfigFile())) {
             instance.getServer().getLogger().log(Level.INFO, "[KangarooBot] Debug: " + message);
         }
     }

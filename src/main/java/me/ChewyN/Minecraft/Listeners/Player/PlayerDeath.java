@@ -13,14 +13,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
 import static me.ChewyN.Data.ConfigFile.getDeathMessages;
-import static me.ChewyN.Main.configFile;
+import static me.ChewyN.Main.*;
 
 public class PlayerDeath implements Listener {
 
@@ -36,7 +35,7 @@ public class PlayerDeath implements Listener {
         int deathMessageID = getDeathMessageID();
 
         // Construct the death message
-        String deathMessage = getDeathMessage(e, configFile.centeredDeathMessageEnabled(), deathMessageID);
+        String deathMessage = getDeathMessage(e, configFile.centeredDeathMessageEnabled(getConfigFile()), deathMessageID);
 
         // replace the death message
         e.setDeathMessage(deathMessage);
@@ -58,11 +57,11 @@ public class PlayerDeath implements Listener {
         String l  = ("X:" + e.getEntity().getLocation().getBlockX() + ", Y: " + e.getEntity().getLocation().getBlockY() + ", Z: " + e.getEntity().getLocation().getBlockZ());
 
         // Send the death to discord if enabled
-        if (ConfigFile.sendDeathToDiscord())
+        if (ConfigFile.sendDeathToDiscord(getConfigFile()))
             sendDeathMessageToDiscord(e.getEntity().getName(), cOD, l, deathMessage);
 
         // Send the player info about the back command if enabled
-        if (ConfigFile.backCommandEnabled()) {
+        if (ConfigFile.backCommandEnabled(getConfigFile())) {
             new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -84,7 +83,7 @@ public class PlayerDeath implements Listener {
     private String getDeathMessage(PlayerDeathEvent e, boolean isEnabled, Integer id) {
         String randomDeathMessage = " passed away :(";
 
-        List<String> deathMessages = getDeathMessages();
+        List<String> deathMessages = getDeathMessages(getConfigFile());
         if (!(deathMessages == null)) {
             int messageNumber = id;
             randomDeathMessage = e.getEntity().getPlayerListName() + " " + deathMessages.get(messageNumber);
@@ -102,7 +101,7 @@ public class PlayerDeath implements Listener {
      * @return The id of the death message in the deathMessages list.
      */
     private int getDeathMessageID() {
-         int messageNumber = new Random().nextInt(getDeathMessages().size()); //TODO throw a warning and disable if message list is empty
+         int messageNumber = new Random().nextInt(getDeathMessages(getConfigFile()).size()); //TODO throw a warning and disable if message list is empty
          return messageNumber;
     }
 
@@ -122,8 +121,8 @@ public class PlayerDeath implements Listener {
      * @param l The death location
      */
     private void sendDeathMessageToDiscord(String name, String c, String l, String deathMessage) {
-        final TextChannel DISCORD_MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(Main.getDiscordbot());
-        final TextChannel DISCORD_ADMIN_CHANNEL = ConfigFile.getAdminChannel(Main.getDiscordbot());
+        final TextChannel DISCORD_MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(getConfigFile(),getDiscordbot());
+        final TextChannel DISCORD_ADMIN_CHANNEL = ConfigFile.getAdminChannel(getConfigFile(),getDiscordbot());
 
 
         EmbedBuilder message = new EmbedBuilder();
@@ -132,15 +131,14 @@ public class PlayerDeath implements Listener {
         mAdmin.setTitle(deathMessage);
         message.setColor(0x888888);
         mAdmin.setColor(0x888888);
-        message.setDescription(ConfigFile.getDiscordDeathDescription());
+        message.setDescription(ConfigFile.getDiscordDeathDescription(getConfigFile()));
         mAdmin.setDescription(name + " died from " + c + ". Location: " + l);
 
 
-        assert DISCORD_MINECRAFT_CHANNEL != null;
         Objects.requireNonNull(DISCORD_MINECRAFT_CHANNEL.sendMessage(message.build())).queue();
 
         // Check if admin channel is enabled and check if we should send death data to the admin channel
-        if(Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.logDeathInAdmin()) {
+        if(Main.getConfigFile().isAdminChannelEnabled(getConfigFile()) && ConfigFile.logDeathInAdmin(getConfigFile())) {
             Objects.requireNonNull(DISCORD_ADMIN_CHANNEL.sendMessage(mAdmin.build())).queue();
         }
 

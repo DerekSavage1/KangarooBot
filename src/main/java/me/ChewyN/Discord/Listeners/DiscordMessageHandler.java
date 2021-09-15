@@ -1,5 +1,6 @@
 package me.ChewyN.Discord.Listeners;
 
+import me.ChewyN.Data.AbstractFile;
 import me.ChewyN.Data.ConfigFile;
 import me.ChewyN.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -18,7 +19,7 @@ import static me.ChewyN.Main.*;
 public class DiscordMessageHandler {
 
     final private static JDA DISCORDBOT = Main.getDiscordbot();
-    final private static TextChannel MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(DISCORDBOT);
+    final private static TextChannel MINECRAFT_CHANNEL = ConfigFile.getMinecraftChannel(Main.getConfigFile() ,getDiscordbot());
 
     public static void sendToMinecraftChannel(MessageEmbed message) {
         MINECRAFT_CHANNEL.sendMessage(message).queue();
@@ -29,41 +30,42 @@ public class DiscordMessageHandler {
     }
 
     public static void sendToAdminChannel(String message) {
-        TextChannel adminChannel = ConfigFile.getAdminChannel(DISCORDBOT);
-        if(Main.getConfigFile().isAdminChannelEnabled() && adminChannel == null) {
-            Main.getConfigFile().setAdminChannelEnabled(false);
+        TextChannel adminChannel = ConfigFile.getAdminChannel(getConfigFile(), DISCORDBOT);
+        if(Main.getConfigFile().isAdminChannelEnabled(getConfigFile()) && adminChannel == null) {
+            Main.getConfigFile().setAdminChannelEnabled(getConfigFile(),false);
             Main.log(Level.SEVERE, "Admin channel enabled but not found! Disabling...");
         }
-        else if (Main.getConfigFile().isAdminChannelEnabled()) {
+        else if (Main.getConfigFile().isAdminChannelEnabled(getConfigFile())) {
             adminChannel.sendMessage(message);
         }
     }
 
     public static void sendToAdminChannel(MessageEmbed message) {
-        TextChannel adminChannel = ConfigFile.getAdminChannel(discordbot);
-        if(Main.getConfigFile().isAdminChannelEnabled() && adminChannel == null) {
-            Main.getConfigFile().setAdminChannelEnabled(false);
+        TextChannel adminChannel = ConfigFile.getAdminChannel(getConfigFile(), discordbot);
+        if(Main.getConfigFile().isAdminChannelEnabled(getConfigFile()) && adminChannel == null) {
+            Main.getConfigFile().setAdminChannelEnabled(getConfigFile(), false);
             Main.log(Level.SEVERE, "Admin channel enabled but not found! Disabling...");
         }
-        else if (Main.getConfigFile().isAdminChannelEnabled()) {
+        else if (Main.getConfigFile().isAdminChannelEnabled(getConfigFile())) {
             adminChannel.sendMessage(message).queue();
         }
     }
 
     public static void sendToAdminChannel(String username, String message) {
         try{
-            if(Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.getAdminChannel(DISCORDBOT) == null) {
-                Main.getConfigFile().setAdminChannelEnabled(false);
+            if(Main.getConfigFile().isAdminChannelEnabled(getConfigFile()) && ConfigFile.getAdminChannel(getConfigFile(), DISCORDBOT) == null) {
+                Main.getConfigFile().setAdminChannelEnabled(getConfigFile(), false);
+                AbstractFile.save(configFile);
                 Main.log(Level.SEVERE, "Admin channel enabled but not found! Disabling...");
             }
-            else if (Main.getConfigFile().isAdminChannelEnabled()) {
-                ConfigFile.getAdminChannel(DISCORDBOT).sendMessage("`" + username + " »` " + message).queue();
+            else if (Main.getConfigFile().isAdminChannelEnabled(getConfigFile())) {
+                ConfigFile.getAdminChannel(getConfigFile(), DISCORDBOT).sendMessage("`" + username + " »` " + message).queue();
             }
         }
         catch(IllegalArgumentException | NullPointerException e) {
             log(Level.SEVERE, "Admin channel is enabled but " + e.getMessage());
             Main.log(Level.SEVERE, "Admin channel enabled but not found! Disabling...");
-            Main.getConfigFile().setAdminChannelEnabled(false);
+            Main.getConfigFile().setAdminChannelEnabled(getConfigFile(), false);
         }
     }
 
@@ -122,11 +124,11 @@ public class DiscordMessageHandler {
         EmbedBuilder joinMessage = new EmbedBuilder();
         joinMessage.setThumbnail(faceURL);
         if (isJoining) {
-            joinMessage.setTitle(playerName + ConfigFile.getDiscordPlayerJoinMessage());
+            joinMessage.setTitle(playerName + ConfigFile.getDiscordPlayerJoinMessage(getConfigFile()));
             joinMessage.setColor(0x42f545);
 
         } else { //is leaving
-            joinMessage.setTitle(playerName + ConfigFile.getDiscordPlayerLeaveMessage());
+            joinMessage.setTitle(playerName + ConfigFile.getDiscordPlayerLeaveMessage(getConfigFile()));
             joinMessage.setColor(0xeb4034);
             playerCount--; //I removed this thinking it was unnecessary, and it is very necessary
         }

@@ -9,13 +9,11 @@ import java.io.IOException;
 
 public class AbstractFile {
 
-    protected static Main instance;
-    protected static File file;
-    protected static FileConfiguration config;
+    private File file;
+    private FileConfiguration config;
 
     public AbstractFile(Main _main, String fileName) {
-        instance = _main;
-        file = new File(instance.getDataFolder(), fileName);
+        file = new File(_main.getDataFolder(), fileName);
 
         if(!file.exists()) {
             try {
@@ -30,9 +28,25 @@ public class AbstractFile {
 
     }
 
-    public static void save() {
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public FileConfiguration getConfig() {
+        return config;
+    }
+
+    public void setGetConfig(FileConfiguration getConfig) {
+        this.config = getConfig;
+    }
+
+    public static void save(ConfigFile file) {
         try {
-            config.save(file);
+            file.getConfig().save(file.getFile());
         } catch (IOException e) {
             e.printStackTrace();
         }

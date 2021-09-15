@@ -13,8 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static me.ChewyN.Main.discordbot;
-import static me.ChewyN.Main.getInstance;
+import static me.ChewyN.Main.*;
 
 public class onChat extends ListenerAdapter {
 
@@ -26,7 +25,7 @@ public class onChat extends ListenerAdapter {
         if(user.isBot())
             return;
 
-        if(e.getChannel().equals(ConfigFile.getMinecraftChannel(discordbot))) {
+        if(e.getChannel().equals(ConfigFile.getMinecraftChannel(Main.getConfigFile(), discordbot))) {
             String formattedMessage = formatMessage(e.getMessage());
 
             MinecraftMessageHandler.broadcastMessage("[" + ChatColor.AQUA + "Discord" + ChatColor.WHITE + "] " + ChatColor.AQUA + userName + ": " + ChatColor.WHITE + formattedMessage);
@@ -35,8 +34,8 @@ public class onChat extends ListenerAdapter {
 
         }
 
-        if(Main.getConfigFile().isAdminChannelEnabled() && ConfigFile.getAdminChannel(discordbot) != null) {
-            if(e.getChannel().equals(ConfigFile.getAdminChannel(discordbot))) {
+        if(Main.getConfigFile().isAdminChannelEnabled(getConfigFile()) && ConfigFile.getAdminChannel(getConfigFile(), discordbot) != null) {
+            if(e.getChannel().equals(ConfigFile.getAdminChannel(Main.getConfigFile(), discordbot))) {
                 for(Player p : getInstance().getServer().getOnlinePlayers()) {
                     if(p.hasPermission("adminChat.see")) {
                         p.sendMessage("[" + ChatColor.RED + "Admin Discord" + ChatColor.WHITE + "] " + ChatColor.RED + userName + ": " + ChatColor.WHITE + DiscordMessageHandler.formatMessage(discordMessage));
