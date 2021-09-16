@@ -13,7 +13,7 @@ public class PluginConfigYml extends AbstractFile {
         return configApi;
     }
 
-    PluginConfigAPI configApi;
+    private final PluginConfigAPI configApi;
 
     public PluginConfigYml(Main _main, String fileName) {
         super(_main, fileName);
@@ -22,65 +22,61 @@ public class PluginConfigYml extends AbstractFile {
     }
 
     public static void setup(PluginConfigYml pluginConfig) {
-        Map<String,Object> params = new HashMap<>();
 
 
 //      When adding new config sections this is the format:
-//      params.put("path", defaultValueObject);
+//      writeToConfig("pluginConfig, "path", "value);
 //      These terms are in the same order as readConfigFile so please keep that in mind too
 
-//            =====Mandatory===
-        params.put("discordMinecraftChannelID", "");
-        params.put("discordBotToken", "");
 
-//            ====Extra functionality====
-        params.put("discordWelcomeChannelID", "");
-        params.put("discordAdminChannelID", "");
-        params.put("deathMessages", new ArrayList<>().add("is no longer with us"));
-        params.put("discordOnlineRoleName", "online in-game");
-        params.put("logDeathInfoInAdminChannel", true);
+        Map<Integer, String> comments = new HashMap<>(); //integer is the line number
+        comments.put(0,"=====Mandatory===");
+        comments.put(4,"====Extra Functionality====");
+        comments.put(9,"=====Toggleable===");
+        comments.put(14,"=====Customization===");
+        comments.put(20,"=====Should probably be in a different plugin===");
+        comments.put(26,"=====Dev Tools===");
 
+        writeToConfig(pluginConfig, "discordMinecraftChannelID", "");
+        writeToConfig(pluginConfig, "discordBotToken", "");
 
-//            ====Toggleable====
-        params.put("discordAdminChannelEnabled", false);
-        params.put("sendDeathMessagesToDiscord", true);
-        params.put("discordCommandEnabled", true);
-        params.put("discordJoinLeaveMessagesEnabled", true);
+        writeToConfig(pluginConfig, "discordWelcomeChannelID", "");
+        writeToConfig(pluginConfig, "discordAdminChannelID", "");
+        writeToConfig(pluginConfig, "deathMessages", new ArrayList<>().add("is no longer with us"));
+        writeToConfig(pluginConfig, "discordOnlineRoleName", "online in-game");
+        writeToConfig(pluginConfig, "logDeathInfoInAdminChannel", true);
 
-//            ====Customization====
-        params.put("customDiscordBotStatus", "Minecraft!");
-        params.put("customDiscordDeathMessageDescription", null);
-        params.put("customDiscordMessageOnStartup", "Server online! Join now!");
-        params.put("customDiscordMessageOnShutdown", "Server Stopped.");
-        params.put("customDiscordPlayerJoinMessage", " has joined the server");
-        params.put("customDiscordPlayerLeaveMessage", " has left the server");
+        writeToConfig(pluginConfig, "discordAdminChannelEnabled", false);
+        writeToConfig(pluginConfig, "sendDeathMessagesToDiscord", true);
+        writeToConfig(pluginConfig, "discordCommandEnabled", true);
+        writeToConfig(pluginConfig, "discordJoinLeaveMessagesEnabled", true);
 
+        writeToConfig(pluginConfig, "customDiscordBotStatus", "Minecraft! #Kanagroobot is playing Minecraft!");
+        writeToConfig(pluginConfig, "customDiscordDeathMessageDescription", null);
+        writeToConfig(pluginConfig, "customDiscordMessageOnStartup", "Server online! Join now!");
+        writeToConfig(pluginConfig, "customDiscordMessageOnShutdown", "Server Stopped.");
+        writeToConfig(pluginConfig, "customDiscordPlayerJoinMessage", " has joined the server");
+        writeToConfig(pluginConfig, "customDiscordPlayerLeaveMessage", " has left the server");
 
-//            Should probably be in a different plugin
-        params.put("minecraftJoinMessageEnabled", true);
-        params.put("minecraftJoinMessage", " has joined the game!");
-        params.put("minecraftBackCommandEnabled", true);
-        params.put("minecraftCenterDeathMessages", false);
-        params.put("minecraftWelcomeMessageEnabled", true);
+        writeToConfig(pluginConfig, "minecraftJoinMessageEnabled", true);
+        writeToConfig(pluginConfig, "minecraftJoinMessage", " has joined the game!");
+        writeToConfig(pluginConfig, "minecraftBackCommandEnabled", true);
+        writeToConfig(pluginConfig, "minecraftCenterDeathMessages", false);
+        writeToConfig(pluginConfig, "minecraftWelcomeMessageEnabled", true);
 
-//            ====Dev tools====
-        params.put("debugEnabled", true);
-        params.put("discordDebugGuildID", "");
-        params.put("discordDebugChannelID", "");
+        writeToConfig(pluginConfig, "debugEnabled", true);
+        writeToConfig(pluginConfig, "discordDebugGuildID", "");
+        writeToConfig(pluginConfig, "discordDebugChannelID", "");
 
+        YamlCommentor.addComments(pluginConfig.getFile(), comments);
+        YamlCommentor.saveCommented(pluginConfig.getYamlConfig(), pluginConfig.getFile());
+    }
 
-        writeDefaultsToConfig(pluginConfig, params);
-
+    private static <Object> void writeToConfig(PluginConfigYml pluginConfig, String path, Object value) {
+        if (!pluginConfig.getYamlConfig().contains(path))
+            pluginConfig.getYamlConfig().set(path, value);
         AbstractFile.save(pluginConfig);
     }
 
-    private static <Object> void writeDefaultsToConfig(PluginConfigYml pluginConfig, Map<String,Object> hash) {
-        for ( Map.Entry<String, Object> entry : hash.entrySet()) {
-            String path = entry.getKey();
-            Object value = entry.getValue();
-
-            if (!pluginConfig.getYamlConfig().contains(path))
-                pluginConfig.getYamlConfig().set(path, value);
-        }
-    }
+    
 }
