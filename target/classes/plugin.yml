@@ -1,0 +1,32 @@
+name: KangarooBot
+main: me.ChewyN.Main
+version: 1.0
+authors: [ChewyN, Skyla]
+api-version: 1.17
+commands:
+    discord:
+      description: basic functionality
+    tpermissions:
+      description: Base Command.
+      usage: /tpermissions <rank> <user>
+    grapplinghook:
+      description: Base Command.
+      usage: /grapplinghook <give/enable/disable> <user>
+    back:
+      description: Go back when ded
+      usage: /back
+    trashcan:
+      description: Throw away your junk
+      usage: /trashcan
+      aliases: [trash, can, junk, bin]
+    kgrl:
+        description: Reloads bukkit
+        usage: Reload bukkit
+    weiner:
+      description: idk try it
+      usage: heh
+    exception:
+      description: throws a fat error
+      usage: debug
+libraries:
+  - com.squareup.okhttp3:okhttp:4.9.0
