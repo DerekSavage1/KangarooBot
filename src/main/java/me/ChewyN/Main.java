@@ -62,6 +62,7 @@ public class Main extends JavaPlugin {
 
 
     @Inject private PlayerSpy playerSpy;
+    @Inject private PlayerDeath playerDeath;
 
     @Override
     public void onEnable() {
@@ -97,7 +98,7 @@ public class Main extends JavaPlugin {
         List<Listener> listeners = new ArrayList<>();
         listeners.add(new JoinAndQuit());
         listeners.add(new PlayerChat());
-        listeners.add(new PlayerDeath());
+        listeners.add(this.playerDeath);
         listeners.add(this.playerSpy);
         listeners.add(new GrappleListener());
         listeners.add(new CommandListener());

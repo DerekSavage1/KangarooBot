@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -22,6 +23,13 @@ import java.util.Random;
 import static me.ChewyN.Main.*;
 
 public class PlayerDeath implements Listener {
+
+    private Main instance;
+
+    @Inject
+    private PlayerDeath(Main instance) {
+        this.instance = instance;
+    }
 
     /**
      * Map that contains a player and their latest death status
@@ -67,7 +75,7 @@ public class PlayerDeath implements Listener {
                 public void run() {
                     e.getEntity().sendMessage(ChatColor.GOLD + "You can teleport to where you died with /back");
                 }
-            }.runTaskLaterAsynchronously(Main.getInstance(), 10);
+            }.runTaskLaterAsynchronously(instance, 10);
 
         }
 
