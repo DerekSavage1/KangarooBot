@@ -61,8 +61,8 @@ public class Main extends JavaPlugin {
     }
 
 
-    @Inject private PlayerSpy playerSpy;
-    @Inject private PlayerDeath playerDeath;
+    @Inject protected PlayerSpy playerSpy;
+    @Inject protected PlayerDeath playerDeath;
 
     @Override
     public void onEnable() {
