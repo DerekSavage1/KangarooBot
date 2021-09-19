@@ -1,7 +1,7 @@
 package me.ChewyN.Minecraft.Commands;
 
 import me.ChewyN.Discord.Listeners.DiscordChannelHandler;
-import me.ChewyN.Main;
+import me.Main;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.Invite;
 import net.dv8tion.jda.api.events.guild.invite.GuildInviteCreateEvent;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-import static me.ChewyN.Main.getPluginConfig;
+import static me.Main.getPluginConfig;
 
 public class DiscordCommand extends AbstractCommand implements CommandExecutor{
 

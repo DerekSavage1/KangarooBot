@@ -1,7 +1,7 @@
 package me.ChewyN.Discord.Listeners;
 
 import me.ChewyN.Minecraft.Commands.DiscordCommand;
-import me.ChewyN.Main;
+import me.Main;
 import net.dv8tion.jda.api.entities.Invite;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.*;
 
-import static me.ChewyN.Main.getGuild;
+import static me.Main.getGuild;
 
 public class onGuildJoin extends ListenerAdapter {
 

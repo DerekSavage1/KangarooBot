@@ -18,10 +18,11 @@ me\ChewyN\Minecraft\Commands\ExceptionCommand.class
 me\Skyla\Minecraft\Listeners\CommandListener.class
 me\ChewyN\Data\AbstractFile.class
 me\ChewyN\Data\Configuration\PluginConfigAPI.class
+me\Main.class
 me\ChewyN\Minecraft\Listeners\Player\PlayerSpy.class
+me\SimpleBinderModule.class
 me\Skyla\Minecraft\Commands\FunCommand.class
 me\Skyla\Minecraft\Commands\TrashcanCommand.class
-me\ChewyN\Main.class
 me\Skyla\Minecraft\Objects\DeathStatus.class
 me\ChewyN\Data\Configuration\YamlCommentor.class
 me\ChewyN\Minecraft\Commands\AbstractCommand.class
@@ -29,5 +30,4 @@ me\ChewyN\Minecraft\Listeners\Player\PlayerDeath$1.class
 me\ChewyN\Discord\Listeners\onChat.class
 me\ChewyN\Discord\Listeners\DiscordChannelHandler.class
 me\ChewyN\Minecraft\Listeners\Player\PlayerDeath.class
-me\ChewyN\SimpleBinderModule.class
 me\Skyla\Minecraft\Commands\BackCommand.class

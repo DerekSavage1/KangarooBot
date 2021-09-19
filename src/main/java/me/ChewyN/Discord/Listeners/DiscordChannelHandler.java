@@ -1,7 +1,7 @@
 package me.ChewyN.Discord.Listeners;
 
 import me.ChewyN.Data.Configuration.PluginConfigYml;
-import me.ChewyN.Main;
+import me.Main;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.TextChannel;

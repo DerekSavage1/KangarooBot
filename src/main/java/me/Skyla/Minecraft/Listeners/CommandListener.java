@@ -1,6 +1,6 @@
 package me.Skyla.Minecraft.Listeners;
 
-import me.ChewyN.Main;
+import me.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,14 +9,20 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 public class CommandListener implements Listener {
 
+    private Main instance;
+
+    public CommandListener(Main instance) {
+        this.instance = instance;
+    }
+
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
         if (e.getMessage().equals("/stop") || e.getMessage().equals("/restart")) {
             e.setCancelled(true);
             Bukkit.broadcastMessage("Server Stopping in 10s!");
             Main.sendStartStopMessageToDiscord(false);
-            BukkitScheduler s = Main.getInstance().getServer().getScheduler();
-            s.scheduleSyncDelayedTask(Main.getInstance(), Bukkit::shutdown, 200L);
+            BukkitScheduler s = instance.getServer().getScheduler();
+            s.scheduleSyncDelayedTask(instance, Bukkit::shutdown, 200L);
         }
     }
  }

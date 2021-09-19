@@ -1,7 +1,7 @@
 package me.ChewyN.Data.Configuration;
 
 import me.ChewyN.Data.AbstractFile;
-import me.ChewyN.Main;
+import me.Main;
 
 import java.util.ArrayList;
 import java.util.HashMap;

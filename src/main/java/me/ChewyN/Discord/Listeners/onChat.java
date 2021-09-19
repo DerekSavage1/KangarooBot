@@ -1,6 +1,6 @@
 package me.ChewyN.Discord.Listeners;
 
-import me.ChewyN.Main;
+import me.Main;
 import me.ChewyN.Minecraft.Util.MinecraftMessageHandler;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
@@ -13,8 +13,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static me.ChewyN.Main.getInstance;
-import static me.ChewyN.Main.getPluginConfig;
+import static me.Main.getInstance;
+import static me.Main.getPluginConfig;
 
 public class onChat extends ListenerAdapter {
 

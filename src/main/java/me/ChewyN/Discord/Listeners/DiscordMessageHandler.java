@@ -1,6 +1,6 @@
 package me.ChewyN.Discord.Listeners;
 
-import me.ChewyN.Main;
+import me.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-import static me.ChewyN.Main.*;
+import static me.Main.*;
 
 public class DiscordMessageHandler {
 

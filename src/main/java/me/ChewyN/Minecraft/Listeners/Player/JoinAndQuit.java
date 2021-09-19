@@ -3,7 +3,7 @@ package me.ChewyN.Minecraft.Listeners.Player;
 
 //import me.ChewyN.Minecraft.Packets.packet;
 
-import me.ChewyN.Main;
+import me.Main;
 import me.ChewyN.Minecraft.Util.MinecraftMessageHandler;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import static me.ChewyN.Discord.Listeners.DiscordMessageHandler.sendJoinOrQuitMessageToDiscord;
-import static me.ChewyN.Main.*;
+import static me.Main.*;
 
 public class JoinAndQuit implements Listener {
 

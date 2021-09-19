@@ -1,6 +1,6 @@
 package me.Skyla.Minecraft.Commands;
 
-import me.ChewyN.Main;
+import me.Main;
 import me.ChewyN.Minecraft.Commands.AbstractCommand;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;
 import me.Skyla.Data.LastDeathFile;
@@ -17,7 +17,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 
-import static me.ChewyN.Main.getPluginConfig;
+import static me.Main.getPluginConfig;
 
 /**
  * A command that allows players to teleport to their death point once after death.

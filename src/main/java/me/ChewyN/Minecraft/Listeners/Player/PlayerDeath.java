@@ -2,7 +2,7 @@ package me.ChewyN.Minecraft.Listeners.Player;
 
 import me.ChewyN.Discord.Listeners.DiscordChannelHandler;
 import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
-import me.ChewyN.Main;
+import me.Main;
 import me.ChewyN.Minecraft.Util.centerMessage;
 import me.Skyla.Minecraft.Objects.DeathStatus;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-import static me.ChewyN.Main.*;
+import static me.Main.*;
 
 public class PlayerDeath implements Listener {
 

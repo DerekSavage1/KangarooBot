@@ -1,5 +1,5 @@
 name: KangarooBot
-main: me.ChewyN.Main
+main: me.Main
 version: 1.0
 authors: [ChewyN, Skyla]
 api-version: 1.17

@@ -1,6 +1,6 @@
 package me.Skyla.Minecraft.Listeners;
 
-import me.ChewyN.Main;
+import me.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

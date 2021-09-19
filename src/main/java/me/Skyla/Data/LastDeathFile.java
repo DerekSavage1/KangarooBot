@@ -1,7 +1,6 @@
 package me.Skyla.Data;
 
-import me.ChewyN.Data.AbstractFile;
-import me.ChewyN.Main;
+import me.Main;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;
 import me.Skyla.Minecraft.Objects.DeathStatus;
 import org.bukkit.Bukkit;
@@ -13,7 +12,6 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
