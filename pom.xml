@@ -1,182 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<modelVersion>4.0.0</modelVersion>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<groupId>KanagrooBot</groupId>
+<artifactId>KanagrooBot</artifactId>
+<version>1.0-SNAPSHOT</version>
+<packaging>jar</packaging>
 
-  <groupId>org.example</groupId>
-  <artifactId>KangarooBot</artifactId>
-  <version>1.0-SNAPSHOT</version>
+<name>Kangaroobot</name>
 
-  <name>KangarooBot</name>
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+<properties>
+  <java.version>1.8</java.version>
+  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+</properties>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
+<build>
 
-  <dependencies>
-    <dependency>
-      <groupId>net.dv8tion</groupId>
-      <artifactId>JDA</artifactId>
-      <version>4.3.0_324</version>
-      <exclusions>
-        <exclusion>
-          <groupId>club.minnced</groupId>
-          <artifactId>opus-java</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
+  <resources>
+    <resource>
+      <directory>./</directory>
+      <includes>
+        <include>plugin.yml</include>
+        <include>config.yml</include>
+      </includes>
+    </resource>
+  </resources>
 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.spigotmc</groupId>
-      <artifactId>spigot-api</artifactId>
-      <version>1.17.1-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
-
-<!--    url-parser https://engineering.linkedin.com/blog/2016/06/open-sourcing-url-detector&#45;&#45;a-java-library-to-detect-and-normali-->
-    <dependency>
-      <groupId>com.linkedin.urls</groupId>
-      <artifactId>url-detector</artifactId>
-      <version>0.1.17</version>
-    </dependency>
-
-<!--    console logging -->
-    <!-- https://logging.apache.org/log4j/2.x/maven-artifacts.html -->
-
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-api</artifactId>
-        <version>2.14.1</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-core</artifactId>
-        <version>2.14.1</version>
-      </dependency>
-
-
-
-
-
-
-  </dependencies>
-
-
-  <repositories>
-
-    <repository>
-      <id>dv8tion</id>
-      <name>m2-dv8tion</name>
-      <url>https://m2.dv8tion.net/releases</url>
-    </repository>
-
-    <!-- This adds the Spigot Maven repository to the build -->
-    <repository>
-      <id>spigot-repo</id>
-      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-    </repository>
-
-    <repository>
-      <id>jcenter</id>
-      <name>jcenter-bintray</name>
-      <url>https://jcenter.bintray.com</url>
-    </repository>
-
-  </repositories>
-
-  <build>
-
-    <resources>
-      <resource>
-        <directory>src/main/resources/</directory>
-        <includes>
-          <include>plugin.yml</include>
-          <include>config.yml</include>
-        </includes>
-      </resource>
-    </resources>
-
-    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
-      <plugins>
-        <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
-        <plugin>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>3.1.0</version>
-        </plugin>
-        <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
-        <plugin>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>3.0.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.22.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.0.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>2.5.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
-        </plugin>
-        <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
-        <plugin>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>3.7.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.0.0</version>
-        </plugin>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <version>3.8.1</version>
+      <configuration>
+        <source>15</source>
+        <target>15</target>
+      </configuration>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-shade-plugin</artifactId>
+      <version>3.1.0</version>
+      <executions>
+        <execution>
+          <phase>package</phase>
+          <goals>
+            <goal>shade</goal>
+          </goals>
           <configuration>
-            <source>8</source>
-            <target>8</target>
+            <createDependencyReducedPom>false</createDependencyReducedPom>
           </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>8</source>
-            <target>8</target>
-          </configuration>
-        </plugin>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>
 
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>9</source>
-            <target>9</target>
-          </configuration>
-        </plugin>
+<repositories>
+  <repository>
+    <id>papermc-repo</id>
+    <url>https://papermc.io/repo/repository/maven-public/</url>
+  </repository>
+  <repository>
+    <id>sonatype</id>
+    <url>https://oss.sonatype.org/content/groups/public/</url>
+  </repository>
+  <repository>
+    <id>dv8tion</id>
+    <name>m2-dv8tion</name>
+    <url>https://m2.dv8tion.net/releases</url>
+  </repository>
+</repositories>
 
-      </plugins>
-    </pluginManagement>
+<dependencies>
+  <dependency>
+    <groupId>io.papermc.paper</groupId>
+    <artifactId>paper-api</artifactId>
+    <version>1.17.1-R0.1-SNAPSHOT</version>
+    <scope>provided</scope>
+  </dependency>
+  <dependency>
+    <groupId>com.google.inject</groupId>
+    <artifactId>guice</artifactId>
+    <version>4.0</version>
+  </dependency>
+  <dependency>
+    <groupId>net.dv8tion</groupId>
+    <artifactId>JDA</artifactId>
+    <version>4.3.0_324</version>
+    <exclusions>
+      <exclusion>
+        <groupId>club.minnced</groupId>
+        <artifactId>opus-java</artifactId>
+      </exclusion>
+    </exclusions>
+  </dependency>
 
-  </build>
+  <!--    url-parser https://engineering.linkedin.com/blog/2016/06/open-sourcing-url-detector&#45;&#45;a-java-library-to-detect-and-normali-->
+  <dependency>
+    <groupId>com.linkedin.urls</groupId>
+    <artifactId>url-detector</artifactId>
+    <version>0.1.17</version>
+    <scope>provided</scope>
+  </dependency>
+
+  <!--    console logging -->
+  <!-- https://logging.apache.org/log4j/2.x/maven-artifacts.html -->
+  <dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-api</artifactId>
+    <version>2.14.1</version>
+    <scope>provided</scope>
+  </dependency>
+  <dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.14.1</version>
+    <scope>provided</scope>
+  </dependency>
+</dependencies>
+
 </project>

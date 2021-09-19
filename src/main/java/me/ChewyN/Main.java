@@ -1,5 +1,7 @@
 package me.ChewyN;
 
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import me.ChewyN.Data.ApacheTest;
 import me.ChewyN.Data.Configuration.PluginConfigAPI;
 import me.ChewyN.Data.Configuration.PluginConfigYml;
@@ -46,7 +48,7 @@ public class Main extends JavaPlugin {
 
     //bad quote nerd
     private static JDA discordbot;
-    private static Main instance;
+    private static Main instance1;
     private static PluginConfigYml pluginConfig;
     private static LastDeathFile deathFile;
 
@@ -58,12 +60,20 @@ public class Main extends JavaPlugin {
         return pluginConfig.getConfigApi();
     }
 
+
+    @Inject private PlayerSpy playerSpy;
+
     @Override
     public void onEnable() {
 
-        instance = this;
+        // Fetch dependencies. We only have to do it this way for our main class.
+        SimpleBinderModule module = new SimpleBinderModule(this);
+        Injector injector = module.createInjector();
+        injector.injectMembers(this);
 
-       deathFile = new LastDeathFile(instance);
+        instance1 = this;
+
+       deathFile = new LastDeathFile(instance1);
 
        /* FIXME breaks
        try {
@@ -77,13 +87,9 @@ public class Main extends JavaPlugin {
         if (!getDataFolder().exists())
             getDataFolder().mkdir();
 
-        pluginConfig = new PluginConfigYml(instance,"config.yml");
+        pluginConfig = new PluginConfigYml(instance1,"config.yml");
 
         awakenTheKangaroo();
-
-
-
-
 
         ((org.apache.logging.log4j.core.Logger) getRootLogger()).addFilter(new ApacheTest());
 
@@ -92,7 +98,7 @@ public class Main extends JavaPlugin {
         listeners.add(new JoinAndQuit());
         listeners.add(new PlayerChat());
         listeners.add(new PlayerDeath());
-        listeners.add(new PlayerSpy());
+        listeners.add(this.playerSpy);
         listeners.add(new GrappleListener());
         listeners.add(new CommandListener());
         listeners.add(new ServerCommandListener());
@@ -119,7 +125,7 @@ public class Main extends JavaPlugin {
     public void onDisable() {
         clearOnlineRole();
         discordbot.shutdownNow();
-        instance = null;
+        instance1 = null;
     }
 
     private void clearOnlineRole() {
@@ -169,7 +175,7 @@ public class Main extends JavaPlugin {
     }
 
     public static Main getInstance() {
-        return instance;
+        return instance1;
     }
 
     public static JDA getDiscordbot() {
@@ -207,12 +213,12 @@ public class Main extends JavaPlugin {
     }
 
     public static void log(Level level, String message) {
-        instance.getServer().getLogger().log(level, "[KangarooBot] " + message);
+        instance1.getServer().getLogger().log(level, "[KangarooBot] " + message);
     }
 
     public static void debug(String message) {
         if (getPluginConfigApi().isDebugEnabled(getPluginConfig())) {
-            instance.getServer().getLogger().log(Level.INFO, "[KangarooBot] Debug: " + message);
+            instance1.getServer().getLogger().log(Level.INFO, "[KangarooBot] Debug: " + message);
         }
     }
 

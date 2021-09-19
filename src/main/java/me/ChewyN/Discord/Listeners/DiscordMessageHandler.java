@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.logging.Level;
 
 import static me.ChewyN.Main.*;
 
@@ -39,7 +38,6 @@ public class DiscordMessageHandler {
     }
 
     public static void sendToAdminChannel(String username, String message) {
-        Main.log(Level.INFO, "Log!");
         if(!Main.getPluginConfigApi().isDiscordAdminChannelEnabled(Main.getPluginConfig()))
             return;
 
