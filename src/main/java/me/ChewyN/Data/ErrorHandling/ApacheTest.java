@@ -95,26 +95,6 @@ public class ApacheTest implements org.apache.logging.log4j.core.Filter {
         return null;
     }
 
-    public static void sendDebugMessage(Throwable exception) {
-
-//        String stacktrace = ExceptionUtils.getStackTrace(exception);
-//        String message = ExceptionUtils.getMessage(exception);
-//
-//
-//        String where = ExceptionUtils.getRootCauseMessage(exception);
-//
-//        EmbedBuilder errorMessage = new EmbedBuilder();
-////        errorMessage.setImage(url);
-//
-//        errorMessage.setTitle("Unhandled Exception Detected");
-//        errorMessage.setColor(0xFF3333);
-//        errorMessage.setFooter(where);
-//
-//        DiscordMessageHandler.sendToDebugChannel("Hello");
-//        errorMessage.clear();
-
-    }
-
 
     @Override
     public State getState() {
