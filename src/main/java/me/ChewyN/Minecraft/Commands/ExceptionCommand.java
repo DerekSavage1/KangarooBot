@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class ExceptionCommand extends AbstractCommand implements CommandExecutor {
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) throws NullPointerException {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 
         if(isCommandEnabled()) {
             sender.sendMessage(ChatColor.RED + "Command is disabled.");

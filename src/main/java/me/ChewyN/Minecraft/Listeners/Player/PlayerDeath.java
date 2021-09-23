@@ -15,6 +15,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -22,6 +23,7 @@ import java.util.Random;
 
 import static me.Main.*;
 
+@Singleton
 public class PlayerDeath implements Listener {
 
     private Main instance;
@@ -44,6 +46,7 @@ public class PlayerDeath implements Listener {
 
         // Construct the death message
         String deathMessage = getDeathMessage(e, Main.getPluginConfigApi().isMinecraftCenterDeathMessages(getPluginConfig()), deathMessageID);
+
 
         // replace the death message
         e.setDeathMessage(deathMessage);

@@ -16,6 +16,7 @@
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 </properties>
 
+
 <build>
 
   <resources>
@@ -34,8 +35,8 @@
       <artifactId>maven-compiler-plugin</artifactId>
       <version>3.8.1</version>
       <configuration>
-        <source>15</source>
-        <target>15</target>
+        <source>9</source>
+        <target>9</target>
       </configuration>
     </plugin>
     <plugin>
@@ -74,6 +75,35 @@
 </repositories>
 
 <dependencies>
+<!--  playwright-->
+  <dependency>
+    <groupId>com.microsoft.playwright</groupId>
+    <artifactId>playwright</artifactId>
+    <version>1.14.1</version>
+
+  </dependency>
+
+<!--  testng-->
+  <dependency>
+    <groupId>com.buschmais.jqassistant.plugin</groupId>
+    <artifactId>testng</artifactId>
+    <version>1.11.0-RC-1</version>
+    <scope>provided</scope>
+  </dependency>
+  <dependency>
+    <groupId>org.testng</groupId>
+    <artifactId>testng</artifactId>
+    <version>6.1.1</version>
+    <scope>test</scope>
+  </dependency>
+
+<!--  print out stack trace nicely-->
+  <dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-lang3</artifactId>
+    <version>3.8.1</version>
+  </dependency>
+
   <dependency>
     <groupId>io.papermc.paper</groupId>
     <artifactId>paper-api</artifactId>

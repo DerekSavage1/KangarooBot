@@ -1,10 +1,9 @@
 package me;
 
 import com.google.inject.Inject;
-import com.google.inject.Injector;
-import me.ChewyN.Data.ApacheTest;
 import me.ChewyN.Data.Configuration.PluginConfigAPI;
 import me.ChewyN.Data.Configuration.PluginConfigYml;
+import me.ChewyN.Data.ErrorHandling.ApacheTest;
 import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
 import me.ChewyN.Discord.Listeners.onChat;
 import me.ChewyN.Discord.Listeners.onGuildJoin;
@@ -16,7 +15,6 @@ import me.ChewyN.Minecraft.Listeners.Player.JoinAndQuit;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerChat;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerSpy;
-import me.Skyla.Data.LastDeathFile;
 import me.Skyla.Minecraft.Commands.BackCommand;
 import me.Skyla.Minecraft.Commands.FunCommand;
 import me.Skyla.Minecraft.Commands.ReloadCommand;
@@ -37,7 +35,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 
 import static org.apache.logging.log4j.LogManager.getRootLogger;
@@ -50,7 +47,6 @@ public class Main extends JavaPlugin {
     private static JDA discordbot;
     private static Main instance1;
     private static PluginConfigYml pluginConfig;
-    private static LastDeathFile deathFile;
 
     public static PluginConfigYml getPluginConfig() {
         return pluginConfig;
@@ -63,7 +59,8 @@ public class Main extends JavaPlugin {
 
     @Inject protected PlayerSpy playerSpy;
     @Inject protected PlayerDeath playerDeath;
-//    @Inject protected CommandListener commandListener;
+    @Inject protected onGuildJoin onGuildJoin;
+
 
     public static Main getInstance() {
         return instance1;
@@ -72,23 +69,7 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        // Fetch dependencies. We only have to do it this way for our main class.
-        SimpleBinderModule module = new SimpleBinderModule(this);
-        Injector injector = module.createInjector();
-        injector.injectMembers(this);
-
         instance1 = this;
-
-       deathFile = new LastDeathFile(instance1);
-
-       /* FIXME breaks
-       try {
-           LastDeathFile.loadDeathInfoFromFile();
-           log(Level.INFO, "Deaths loaded");
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
-       */
 
         if (!getDataFolder().exists())
             getDataFolder().mkdir();
@@ -114,13 +95,13 @@ public class Main extends JavaPlugin {
         }
 
         //commands
-        Objects.requireNonNull(this.getCommand("discord")).setExecutor(new DiscordCommand());
-        Objects.requireNonNull(this.getCommand("grapplinghook")).setExecutor(new GrapplingHook());
-        Objects.requireNonNull(this.getCommand("back")).setExecutor(new BackCommand());
-        Objects.requireNonNull(this.getCommand("trashcan")).setExecutor(new TrashcanCommand());
-        Objects.requireNonNull(this.getCommand("kgrl")).setExecutor(new ReloadCommand());
-        Objects.requireNonNull(this.getCommand("weiner")).setExecutor(new FunCommand());
-        Objects.requireNonNull(this.getCommand("exception")).setExecutor(new ExceptionCommand());
+        this.getCommand("discord").setExecutor(new DiscordCommand());
+        this.getCommand("grapplinghook").setExecutor(new GrapplingHook());
+        this.getCommand("back").setExecutor(new BackCommand());
+        this.getCommand("trashcan").setExecutor(new TrashcanCommand());
+        this.getCommand("kgrl").setExecutor(new ReloadCommand());
+        this.getCommand("weiner").setExecutor(new FunCommand());
+        this.getCommand("exception").setExecutor(new ExceptionCommand());
 
 
         // THIS STATEMENT NEEDS TO REMAIN AT THE END OF THE METHOD
@@ -129,8 +110,16 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        clearOnlineRole();
-        discordbot.shutdownNow();
+        try {
+            clearOnlineRole();
+        } catch(NullPointerException e) {
+            this.getLogger().log(Level.SEVERE, "Was unable to clear online role, server did not boot correctly!");
+        }
+
+        if(discordbot != null) {
+           discordbot.shutdownNow();
+        }
+
         instance1 = null;
     }
 
@@ -162,7 +151,7 @@ public class Main extends JavaPlugin {
 
 
         jdaBuilder.enableIntents(gatewayIntents);
-        jdaBuilder.addEventListeners(new onGuildJoin());
+        jdaBuilder.addEventListeners(this.onGuildJoin);
         jdaBuilder.addEventListeners(new onChat());
 
         jdaBuilder.setActivity(Activity.playing(getPluginConfigApi().getCustomDiscordBotStatus(getPluginConfig())));

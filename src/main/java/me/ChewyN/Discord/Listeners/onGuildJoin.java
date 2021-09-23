@@ -14,8 +14,6 @@ import static me.Main.getGuild;
 
 public class onGuildJoin extends ListenerAdapter {
 
-
-
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent e) {
 

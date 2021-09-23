@@ -18,7 +18,6 @@ public class AbstractFile {
         if(!file.exists()) {
             try {
                 file.createNewFile();
-                generateDefaultFile();
             } catch(IOException e) {
                 e.printStackTrace();
             }
@@ -43,18 +42,4 @@ public class AbstractFile {
             e.printStackTrace();
         }
     }
-
-    // TODO: MAKE THIS
-    /**
-     * Generates a new file with defaults if one does not exist
-     */
-    public static void generateDefaultFile() {
-
-    }
-
-
-
-
-
-
 }

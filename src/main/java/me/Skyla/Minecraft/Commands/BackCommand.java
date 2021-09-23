@@ -1,8 +1,8 @@
 package me.Skyla.Minecraft.Commands;
 
-import me.Main;
 import me.ChewyN.Minecraft.Commands.AbstractCommand;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;
+import me.Main;
 import me.Skyla.Data.LastDeathFile;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,12 +17,15 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 
+import javax.inject.Singleton;
+
 import static me.Main.getPluginConfig;
 
 /**
  * A command that allows players to teleport to their death point once after death.
  * @Author Skyla
  */
+@Singleton
 public class BackCommand extends AbstractCommand implements CommandExecutor {
 
     @Override

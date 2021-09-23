@@ -1,14 +1,11 @@
-package me.ChewyN.Data;
+package me.ChewyN.Data.ErrorHandling;
 
 
-import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
-
-import java.util.Arrays;
 
 public class ApacheTest implements org.apache.logging.log4j.core.Filter {
 
@@ -90,25 +87,33 @@ public class ApacheTest implements org.apache.logging.log4j.core.Filter {
 
     @Override
     public Result filter(LogEvent event) {
-        if(event.getThrown() != null) {
-            DiscordMessageHandler.sendToDebugChannel(formatMessage(event.getThrown()));
-        }
 
+        if(event.getThrown() != null) {
+//            DiscordMessageHandler.sendToDebugChannel();
+            new PlayWright().getImage(event.getThrown());
+        }
         return null;
     }
 
-    private static String formatMessage(Throwable exception) {
+    public static void sendDebugMessage(Throwable exception) {
 
-        String header = "***:octagonal_sign: \n" +
-                "```diff\n" +
-                "-"+ exception.getMessage()+ "-```***";
-        String message = "```java\n" + Arrays.toString(exception.getStackTrace()).replaceAll(" ", "\n") + "```";
-        String ln = "\n";
+//        String stacktrace = ExceptionUtils.getStackTrace(exception);
+//        String message = ExceptionUtils.getMessage(exception);
+//
+//
+//        String where = ExceptionUtils.getRootCauseMessage(exception);
+//
+//        EmbedBuilder errorMessage = new EmbedBuilder();
+////        errorMessage.setImage(url);
+//
+//        errorMessage.setTitle("Unhandled Exception Detected");
+//        errorMessage.setColor(0xFF3333);
+//        errorMessage.setFooter(where);
+//
+//        DiscordMessageHandler.sendToDebugChannel("Hello");
+//        errorMessage.clear();
 
-        return header + ln +
-                message;
     }
-
 
 
     @Override

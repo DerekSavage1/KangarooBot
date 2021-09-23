@@ -10,6 +10,7 @@ public abstract class AbstractCommand implements CommandExecutor {
     private boolean senderIsConsole;
     private Player  player;
 
+
     public AbstractCommand() {
         isCommandEnabled = true;
     }

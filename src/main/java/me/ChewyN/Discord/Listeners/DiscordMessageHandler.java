@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.List;
 
 import static me.Main.*;
@@ -101,6 +102,16 @@ public class DiscordMessageHandler {
             getDiscordbot().getGuildById(Main.getPluginConfigApi().getDiscordDebugGuildID(getPluginConfig()))
                     .getTextChannelById(getPluginConfigApi().getDiscordDebugChannelID(getPluginConfig()))
                     .sendMessage(message).queue();
+        } catch(NullPointerException exception) {
+            Main.debug("No Debug channel/guild found!");
+        }
+    }
+
+    public static void sendToDebugChannel(File image) {
+        try {
+            getDiscordbot().getGuildById(Main.getPluginConfigApi().getDiscordDebugGuildID(getPluginConfig()))
+                    .getTextChannelById(getPluginConfigApi().getDiscordDebugChannelID(getPluginConfig()))
+                    .sendMessage("").addFile(image);
         } catch(NullPointerException exception) {
             Main.debug("No Debug channel/guild found!");
         }

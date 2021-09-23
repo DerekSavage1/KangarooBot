@@ -10,8 +10,10 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 
+@Singleton
 public class PlayerSpy implements Listener {
 
     private Main instance;
@@ -24,7 +26,7 @@ public class PlayerSpy implements Listener {
     @EventHandler
     public void signSpy(SignChangeEvent e) {
         Player      p = e.getPlayer();
-        String      signMessage =  e.getLine(0) + " " + e.getLine(1)  + " " +  e.getLine(2) + " " + e.getLine(3);
+        String      signMessage =  e.line(0) + " " + e.line(1)  + " " +  e.line(2) + " " + e.line(3);
         String      playerName = p.getName();
 
         for(Player player : instance.getServer().getOnlinePlayers()) {
