@@ -1,6 +1,5 @@
 package me;
 
-import com.google.inject.Inject;
 import me.ChewyN.Data.Configuration.PluginConfigAPI;
 import me.ChewyN.Data.Configuration.PluginConfigYml;
 import me.ChewyN.Data.ErrorHandling.ApacheTest;
@@ -56,12 +55,6 @@ public class Main extends JavaPlugin {
         return pluginConfig.getConfigApi();
     }
 
-
-    @Inject protected PlayerSpy playerSpy;
-    @Inject protected PlayerDeath playerDeath;
-    @Inject protected onGuildJoin onGuildJoin;
-
-
     public static Main getInstance() {
         return instance1;
     }
@@ -84,8 +77,8 @@ public class Main extends JavaPlugin {
         List<Listener> listeners = new ArrayList<>();
         listeners.add(new JoinAndQuit());
         listeners.add(new PlayerChat());
-        listeners.add(this.playerDeath);
-        listeners.add(this.playerSpy);
+        listeners.add(new PlayerDeath());
+        listeners.add(new PlayerSpy());
         listeners.add(new GrappleListener());
         listeners.add(new CommandListener(this));
         listeners.add(new ServerCommandListener());
@@ -151,7 +144,7 @@ public class Main extends JavaPlugin {
 
 
         jdaBuilder.enableIntents(gatewayIntents);
-        jdaBuilder.addEventListeners(this.onGuildJoin);
+        jdaBuilder.addEventListeners(new onGuildJoin());
         jdaBuilder.addEventListeners(new onChat());
 
         jdaBuilder.setActivity(Activity.playing(getPluginConfigApi().getCustomDiscordBotStatus(getPluginConfig())));

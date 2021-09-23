@@ -35,8 +35,8 @@
       <artifactId>maven-compiler-plugin</artifactId>
       <version>3.8.1</version>
       <configuration>
-        <source>9</source>
-        <target>9</target>
+        <source>16</source>
+        <target>16</target>
       </configuration>
     </plugin>
     <plugin>
@@ -75,27 +75,6 @@
 </repositories>
 
 <dependencies>
-<!--  playwright-->
-  <dependency>
-    <groupId>com.microsoft.playwright</groupId>
-    <artifactId>playwright</artifactId>
-    <version>1.14.1</version>
-
-  </dependency>
-
-<!--  testng-->
-  <dependency>
-    <groupId>com.buschmais.jqassistant.plugin</groupId>
-    <artifactId>testng</artifactId>
-    <version>1.11.0-RC-1</version>
-    <scope>provided</scope>
-  </dependency>
-  <dependency>
-    <groupId>org.testng</groupId>
-    <artifactId>testng</artifactId>
-    <version>6.1.1</version>
-    <scope>test</scope>
-  </dependency>
 
 <!--  print out stack trace nicely-->
   <dependency>
@@ -109,11 +88,6 @@
     <artifactId>paper-api</artifactId>
     <version>1.17.1-R0.1-SNAPSHOT</version>
     <scope>provided</scope>
-  </dependency>
-  <dependency>
-    <groupId>com.google.inject</groupId>
-    <artifactId>guice</artifactId>
-    <version>4.0</version>
   </dependency>
   <dependency>
     <groupId>net.dv8tion</groupId>

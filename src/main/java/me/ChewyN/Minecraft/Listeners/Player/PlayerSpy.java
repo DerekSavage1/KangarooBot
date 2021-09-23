@@ -9,19 +9,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-
-@Singleton
 public class PlayerSpy implements Listener {
 
-    private Main instance;
-
-    @Inject
-    private PlayerSpy(Main instance) {
-        this.instance = instance;
-    }
+    private Main instance = Main.getInstance();
 
     @EventHandler
     public void signSpy(SignChangeEvent e) {

@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
-public class YamlCommentor
+public class YamlCommenter
 {
     public static void addComments(File file,Map<Integer, String> comments)
     {

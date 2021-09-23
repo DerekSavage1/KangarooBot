@@ -24,10 +24,10 @@ me\ChewyN\Minecraft\Listeners\Player\PlayerSpy.class
 me\Skyla\Minecraft\Commands\FunCommand.class
 me\Skyla\Minecraft\Commands\TrashcanCommand.class
 me\Skyla\Minecraft\Objects\DeathStatus.class
-me\ChewyN\Data\Configuration\YamlCommentor.class
 me\ChewyN\Minecraft\Commands\AbstractCommand.class
 me\ChewyN\Minecraft\Listeners\Player\PlayerDeath$1.class
 me\ChewyN\Discord\Listeners\onChat.class
+me\ChewyN\Data\Configuration\YamlCommenter.class
 me\ChewyN\Discord\Listeners\DiscordChannelHandler.class
 me\ChewyN\Minecraft\Listeners\Player\PlayerDeath.class
 me\Skyla\Minecraft\Commands\BackCommand.class

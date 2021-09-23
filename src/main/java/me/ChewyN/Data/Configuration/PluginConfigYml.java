@@ -68,8 +68,8 @@ public class PluginConfigYml extends AbstractFile {
         writeToConfig(pluginConfig, "discordDebugGuildID", "");
         writeToConfig(pluginConfig, "discordDebugChannelID", "");
 
-        YamlCommentor.addComments(pluginConfig.getFile(), comments);
-        YamlCommentor.saveCommented(pluginConfig.getYamlConfig(), pluginConfig.getFile());
+        YamlCommenter.addComments(pluginConfig.getFile(), comments);
+        YamlCommenter.saveCommented(pluginConfig.getYamlConfig(), pluginConfig.getFile());
     }
 
     private static <Object> void writeToConfig(PluginConfigYml pluginConfig, String path, Object value) {

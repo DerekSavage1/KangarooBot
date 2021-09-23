@@ -17,7 +17,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.NotNull;
 
-import javax.inject.Singleton;
 
 import static me.Main.getPluginConfig;
 
@@ -25,7 +24,6 @@ import static me.Main.getPluginConfig;
  * A command that allows players to teleport to their death point once after death.
  * @Author Skyla
  */
-@Singleton
 public class BackCommand extends AbstractCommand implements CommandExecutor {
 
     @Override

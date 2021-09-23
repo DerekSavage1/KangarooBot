@@ -14,8 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -23,15 +21,9 @@ import java.util.Random;
 
 import static me.Main.*;
 
-@Singleton
 public class PlayerDeath implements Listener {
 
-    private Main instance;
-
-    @Inject
-    private PlayerDeath(Main instance) {
-        this.instance = instance;
-    }
+    private Main instance = Main.getInstance();
 
     /**
      * Map that contains a player and their latest death status
