@@ -28,12 +28,14 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 
 import static org.apache.logging.log4j.LogManager.getRootLogger;
@@ -88,13 +90,13 @@ public class Main extends JavaPlugin {
         }
 
         //commands
-        this.getCommand("discord").setExecutor(new DiscordCommand());
-        this.getCommand("grapplinghook").setExecutor(new GrapplingHook());
-        this.getCommand("back").setExecutor(new BackCommand());
-        this.getCommand("trashcan").setExecutor(new TrashcanCommand());
-        this.getCommand("kgrl").setExecutor(new ReloadCommand());
-        this.getCommand("weiner").setExecutor(new FunCommand());
-        this.getCommand("exception").setExecutor(new ExceptionCommand());
+        Objects.requireNonNull(this.getCommand("discord")).setExecutor(new DiscordCommand());
+        Objects.requireNonNull(this.getCommand("grapplinghook")).setExecutor(new GrapplingHook());
+        Objects.requireNonNull(this.getCommand("back")).setExecutor(new BackCommand());
+        Objects.requireNonNull(this.getCommand("trashcan")).setExecutor(new TrashcanCommand());
+        Objects.requireNonNull(this.getCommand("kgrl")).setExecutor(new ReloadCommand());
+        Objects.requireNonNull(this.getCommand("weiner")).setExecutor(new FunCommand());
+        Objects.requireNonNull(this.getCommand("exception")).setExecutor(new ExceptionCommand());
 
 
         // THIS STATEMENT NEEDS TO REMAIN AT THE END OF THE METHOD
@@ -152,7 +154,8 @@ public class Main extends JavaPlugin {
         try {
             discordbot = jdaBuilder.build();
         } catch (LoginException e) {
-            e.printStackTrace();
+            log(Level.SEVERE, "Discord bot was unable to login.");
+            log(Level.SEVERE, ExceptionUtils.getMessage(e));
         }
         try {
             discordbot.awaitReady();
