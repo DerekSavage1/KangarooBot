@@ -1,5 +1,6 @@
 package me.ChewyN.Minecraft.Commands;
 
+import me.Main;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -26,7 +27,7 @@ public abstract class AbstractCommand implements CommandExecutor {
     }
 
     public boolean isCommandEnabled() {
-        return !isCommandEnabled;
+        return Main.getPluginConfigApi().isDiscordCommandEnabled(Main.getPluginConfig());
     }
 
     public void setCommandEnabled(boolean commandEnabled) {
