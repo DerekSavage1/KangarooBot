@@ -80,7 +80,7 @@
           </goals>
           <configuration>
             <overwrite>true</overwrite>
-            <outputDirectory>D:\FromCDrive\Minecraft Server for Tea Discord\TestServer\plugins</outputDirectory>
+            <outputDirectory>E:\spigot test server\plugins</outputDirectory>
             <resources>
               <resource>
                 <directory>${basedir}/target</directory>

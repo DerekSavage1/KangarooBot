@@ -42,9 +42,7 @@ import static org.apache.logging.log4j.LogManager.getRootLogger;
 
 public class Main extends JavaPlugin {
 
-
-
-    //bad quote nerd
+    //Quote of the day: What one developer can get done in 2 days, 2 developers can get done in 4!
     private static JDA discordbot;
     private static Main instance1;
     private static PluginConfigYml pluginConfig;

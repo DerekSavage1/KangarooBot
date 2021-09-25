@@ -43,10 +43,26 @@ public class BackCommand extends AbstractCommand implements CommandExecutor {
         // Our Player
         Player p = (Player) sender;
 
-        // If command is enabled or if the player has not teleported back once yet, run the command
-        if (Main.getPluginConfigApi().isMinecraftBackCommandEnabled(getPluginConfig()) && !PlayerDeath.getPlayerDeathStatus(p).getTPStatus()) {
+        // check teleport status
+        boolean getTPStatus;
+        try {
+            getTPStatus = PlayerDeath.getPlayerDeathStatus(p).getTPStatus();
+        } catch (NullPointerException e) {
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + "You haven't died yet!");
+            return true;
+        }
 
-            Location l = PlayerDeath.getPlayerDeathStatus(p).getLocation();
+        // If command is enabled or if the player has not teleported back once yet, run the command
+        if (Main.getPluginConfigApi().isMinecraftBackCommandEnabled(getPluginConfig()) && !getTPStatus) {
+
+            Location l;
+            try {
+                l = PlayerDeath.getPlayerDeathStatus(p).getLocation();
+            } catch (NullPointerException e) {
+                sender.sendMessage(ChatColor.LIGHT_PURPLE + "You haven't died yet!");
+                return true;
+            }
+
             Block b = l.subtract(0, 1, 0).getBlock();
 
             if (b.getType() == Material.LAVA || b.getType().isAir()) {
@@ -67,7 +83,7 @@ public class BackCommand extends AbstractCommand implements CommandExecutor {
             p.teleport(l.add(0,1,0));
             // set tp status to true
             PlayerDeath.getPlayerDeathStatus(p).setTPStatus(true);
-            LastDeathFile.saveTPStatus(p.getUniqueId().toString(), true);
+            //LastDeathFile.saveTPStatus(p.getUniqueId().toString(), true); //FIXME in 1.1
             return true;
         }
         p.sendMessage(ChatColor.RED + "This command has been disabled, or you have already teleported back!");

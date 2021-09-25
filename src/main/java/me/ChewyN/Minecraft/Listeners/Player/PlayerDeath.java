@@ -39,7 +39,6 @@ public class PlayerDeath implements Listener {
         // Construct the death message
         String deathMessage = getDeathMessage(e, Main.getPluginConfigApi().isMinecraftCenterDeathMessages(getPluginConfig()), deathMessageID);
 
-
         // replace the death message
         e.setDeathMessage(deathMessage);
 
@@ -50,7 +49,6 @@ public class PlayerDeath implements Listener {
 
         // players cause of death
         String cOD = Objects.requireNonNull(e.getEntity().getLastDamageCause()).getCause().toString();
-
 
         // If it was a player, make the player the cause FIXME: THIS BREAKS
         // if (!Objects.requireNonNull(e.getEntity().getKiller()).getPlayerListName().isEmpty())
@@ -94,6 +92,8 @@ public class PlayerDeath implements Listener {
 
         if (isEnabled) {
            randomDeathMessage = centerMessage.center(ChatColor.RED + "☠ " + ChatColor.WHITE + e.getEntity().getPlayerListName() + " " + randomDeathMessage + ChatColor.RED + " ☠");
+        } else {
+            randomDeathMessage = e.getEntity().getName() + " " + randomDeathMessage;
         }
 
         return randomDeathMessage;
@@ -104,14 +104,13 @@ public class PlayerDeath implements Listener {
      * @return The id of the death message in the deathMessages list.
      */
     private int getDeathMessageID() {
-         int messageNumber = new Random().nextInt(getPluginConfigApi().getDeathMessages((getPluginConfig())).size()); //TODO throw a warning and disable if message list is empty
-         return messageNumber;
+        return new Random().nextInt(getPluginConfigApi().getDeathMessages((getPluginConfig())).size());
     }
 
     /**
      * Method that returns the players DeathStatus
-     * @param p
-     * @return
+     * @param p the player
+     * @return returns the player's death status
      */
     public static DeathStatus getPlayerDeathStatus(Player p) {
         return deathMap.get(p);
