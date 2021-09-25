@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.logging.Level;
 
 import static me.Main.getPluginConfig;
 
@@ -32,7 +33,14 @@ public class DiscordCommand extends AbstractCommand implements CommandExecutor{
 
         //creates discord link
         GuildChannel welcomeChannel = DiscordChannelHandler.getDiscordWelcomeChannel(getPluginConfig(), Main.getDiscordbot());
-        assert welcomeChannel != null;
+        if(welcomeChannel == null) {
+            Main.log(Level.SEVERE, "Welcome channel not found! We need to know where to send players when using /discord!");
+            Main.log(Level.SEVERE, "Disabling /discord command...");
+            Main.getPluginConfigApi().setDiscordCommandEnabled(false,Main.getPluginConfig());
+            s.sendMessage(ChatColor.RED + "Command is disabled.");
+            return true;
+        }
+
         Invite invite = welcomeChannel.createInvite().setMaxAge(100).setMaxUses(1).setUnique(true).setTemporary(true).complete();
 
         GuildInviteCreateEvent guildInvite = new GuildInviteCreateEvent(Main.getDiscordbot(),5, invite, welcomeChannel);
