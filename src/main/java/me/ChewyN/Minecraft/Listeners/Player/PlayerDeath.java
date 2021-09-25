@@ -2,21 +2,23 @@ package me.ChewyN.Minecraft.Listeners.Player;
 
 import me.ChewyN.Discord.Listeners.DiscordChannelHandler;
 import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
-import me.Main;
 import me.ChewyN.Minecraft.Util.centerMessage;
+import me.Main;
 import me.Skyla.Minecraft.Objects.DeathStatus;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Locale;
 import java.util.Random;
 
 import static me.Main.*;
@@ -33,6 +35,10 @@ public class PlayerDeath implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
 
+        EntityDamageEvent damageEvent = e.getEntity().getLastDamageCause();
+        assert  damageEvent != null;
+        EntityDamageEvent.DamageCause damageCause = e.getEntity().getLastDamageCause().getCause();
+
         // get our new death message id
         int deathMessageID = getDeathMessageID();
 
@@ -47,19 +53,18 @@ public class PlayerDeath implements Listener {
 
         deathMap.put(e.getEntity(), new DeathStatus(e.getEntity().getLocation()));
 
-        // players cause of death
-        String cOD = Objects.requireNonNull(e.getEntity().getLastDamageCause()).getCause().toString();
+        e.getEntity().getLastDamageCause().getCause().toString().toLowerCase(Locale.ROOT);
 
-        // If it was a player, make the player the cause FIXME: THIS BREAKS
-        // if (!Objects.requireNonNull(e.getEntity().getKiller()).getPlayerListName().isEmpty())
-        //    cOD = Objects.requireNonNull(e.getEntity().getKiller().getPlayerListName());
+        String cause = damageCause.name().toLowerCase(Locale.ROOT).replaceAll("_", " ");
 
         // location of the death
-        String l  = ("X:" + e.getEntity().getLocation().getBlockX() + ", Y: " + e.getEntity().getLocation().getBlockY() + ", Z: " + e.getEntity().getLocation().getBlockZ());
+        Location loc = e.getEntity().getLocation();
+
+        String l  = ("X:" + loc.getBlockX() + ", Y: " + loc.getBlockY() + ", Z: " + loc.getBlockZ());
 
         // Send the death to discord if enabled
         if (Main.getPluginConfigApi().isSendDeathMessagesToDiscordEnabled(getPluginConfig()))
-            sendDeathMessageToDiscord(e.getEntity().getName(), cOD, l, deathMessage);
+            sendDeathMessageToDiscord(e.getEntity().getName(), cause, l, deathMessage);
 
         // Send the player info about the back command if enabled
         if (Main.getPluginConfigApi().isMinecraftBackCommandEnabled(getPluginConfig())) {
@@ -135,7 +140,6 @@ public class PlayerDeath implements Listener {
 
         if(Main.getPluginConfigApi().isDiscordAdminChannelEnabled(getPluginConfig())
                 && Main.getPluginConfigApi().isLogDeathInfoInAdminChannel(getPluginConfig())) {
-            final TextChannel DISCORD_ADMIN_CHANNEL = DiscordChannelHandler.getDiscordMinecraftChannel(getPluginConfig(),getDiscordbot());
             EmbedBuilder adminEmbed = new EmbedBuilder();
             adminEmbed.copyFrom(minecraftEmbed);
             adminEmbed.setDescription(name + " died from " + c + ". Location: " + l);
