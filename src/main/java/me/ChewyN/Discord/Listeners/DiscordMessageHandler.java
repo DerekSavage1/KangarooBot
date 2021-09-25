@@ -116,10 +116,9 @@ public class DiscordMessageHandler {
         }
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
-        embedBuilder.setDescription("```java\n".concat(stackMessage).concat("```"));
+        embedBuilder.setDescription("```java\n".concat(stackTrace).concat("```"));
         embedBuilder.setTitle(stackMessage);
         embedBuilder.setColor(0xFF3333);
-//      embedBuilder.setImage();
 
         debugChannel.sendMessage(embedBuilder.build()).queue();
     }
