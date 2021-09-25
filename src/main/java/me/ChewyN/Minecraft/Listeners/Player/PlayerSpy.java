@@ -9,8 +9,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+import java.util.HashMap;
+
 
 public class PlayerSpy implements Listener {
+
+    HashMap<Player,String> lastCommand = new HashMap<>();
+    HashMap<Player,String> lastSign = new HashMap<>();
 
     private final Main instance = Main.getInstance();
 
@@ -18,11 +23,14 @@ public class PlayerSpy implements Listener {
     public void signSpy(SignChangeEvent e) {
         Player      p = e.getPlayer();
         String[] lines = e.getLines();
-
         String signText = "";
         for (String line: lines) {
             signText = signText.concat(" ").concat(line);
         }
+
+        if(lastSign.containsKey(p) && lastSign.get(p).equals(signText))
+            return;
+        lastSign.put(p,signText);
 
         String      playerName = p.getName();
 
@@ -39,6 +47,13 @@ public class PlayerSpy implements Listener {
         Player      p = e.getPlayer();
         String      commandMessage = e.getMessage();
 
+        //If last command is the same as this command, don't spam admins
+        if(lastCommand.containsKey(p) && lastCommand.get(p).contains(commandMessage))
+            return;
+        lastCommand.put(p,commandMessage);
+
+
+
         String      playerName;
 
         if(p.getCustomName() == null) {
@@ -53,6 +68,8 @@ public class PlayerSpy implements Listener {
 
 
         DiscordMessageHandler.sendToAdminChannel(playerName, commandMessage);
+
+
     }
 
 
