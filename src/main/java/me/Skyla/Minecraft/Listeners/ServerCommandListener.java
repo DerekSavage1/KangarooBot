@@ -18,5 +18,18 @@ public class ServerCommandListener implements Listener {
             BukkitScheduler s = Main.getInstance().getServer().getScheduler();
             s.scheduleSyncDelayedTask(Main.getInstance(), Bukkit::shutdown, 200L);
         }
+
+        if (e.getCommand().equals("say") || e.getCommand().equals("r")) {
+            e.setCancelled(true);
+            Bukkit.broadcastMessage("Server Stopping in 10s!");
+            Main.sendStartStopMessageToDiscord(false);
+            BukkitScheduler s = Main.getInstance().getServer().getScheduler();
+            s.scheduleSyncDelayedTask(Main.getInstance(), Bukkit::shutdown, 200L);
+        }
+
     }
+
+
+
+
 }

@@ -42,7 +42,6 @@ public class PluginConfigYml extends AbstractFile {
 
         writeToConfig(pluginConfig, "discordWelcomeChannelID", "");
         writeToConfig(pluginConfig, "discordAdminChannelID", "");
-        writeToConfig(pluginConfig, "deathMessages", new ArrayList<>().add("is no longer with us"));
         writeToConfig(pluginConfig, "discordOnlineRoleName", "online in-game");
         writeToConfig(pluginConfig, "logDeathInfoInAdminChannel", true);
 
@@ -67,6 +66,13 @@ public class PluginConfigYml extends AbstractFile {
         writeToConfig(pluginConfig, "debugEnabled", false);
         writeToConfig(pluginConfig, "discordDebugGuildID", "");
         writeToConfig(pluginConfig, "discordDebugChannelID", "");
+
+        ArrayList<String> messages = new ArrayList<>();
+        messages.add("is no longer with us");
+        messages.add("passed away");
+        messages.add("slipped in bbq sauce");
+        messages.add("ate way too much rice");
+        writeToConfig(pluginConfig, "deathMessages", messages);
 
         YamlCommenter.addComments(pluginConfig.getFile(), comments);
         YamlCommenter.saveCommented(pluginConfig.getYamlConfig(), pluginConfig.getFile());
