@@ -64,56 +64,62 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        instance1 = this;
+        try {
 
-        if (!getDataFolder().exists())
-            getDataFolder().mkdir();
+            instance1 = this;
 
-        pluginConfig = new PluginConfigYml(instance1,"config.yml");
+            if (!getDataFolder().exists())
+                getDataFolder().mkdir();
 
-        awakenTheKangaroo();
+            pluginConfig = new PluginConfigYml(instance1, "config.yml");
 
-        ((org.apache.logging.log4j.core.Logger) getRootLogger()).addFilter(new ApacheTest());
+            awakenTheKangaroo();
 
-        //listeners
-        List<Listener> listeners = new ArrayList<>();
-        listeners.add(new JoinAndQuit());
-        listeners.add(new PlayerChat());
-        listeners.add(new PlayerDeath());
-        listeners.add(new PlayerSpy());
-        listeners.add(new GrappleListener());
-        listeners.add(new CommandListener(this));
-        listeners.add(new ServerCommandListener());
-
-        for(Listener event : listeners) {
-            getServer().getPluginManager().registerEvents(event, this);
-        }
-
-        //commands
-        Objects.requireNonNull(this.getCommand("discord")).setExecutor(new DiscordCommand());
-        Objects.requireNonNull(this.getCommand("grapplinghook")).setExecutor(new GrapplingHook());
-        Objects.requireNonNull(this.getCommand("back")).setExecutor(new BackCommand());
-        Objects.requireNonNull(this.getCommand("trashcan")).setExecutor(new TrashcanCommand());
-        Objects.requireNonNull(this.getCommand("kgrl")).setExecutor(new ReloadCommand());
-        Objects.requireNonNull(this.getCommand("weiner")).setExecutor(new FunCommand());
-        Objects.requireNonNull(this.getCommand("exception")).setExecutor(new ExceptionCommand());
+            ((org.apache.logging.log4j.core.Logger) getRootLogger()).addFilter(new ApacheTest());
 
 
-        // THIS STATEMENT NEEDS TO REMAIN AT THE END OF THE METHOD
-        sendStartStopMessageToDiscord(true);
+            //listeners
+            List<Listener> listeners = new ArrayList<>();
+            listeners.add(new JoinAndQuit());
+            listeners.add(new PlayerChat());
+            listeners.add(new PlayerDeath());
+            listeners.add(new PlayerSpy());
+            listeners.add(new GrappleListener());
+            listeners.add(new CommandListener(this));
+            listeners.add(new ServerCommandListener());
+
+            for (Listener event : listeners) {
+                getServer().getPluginManager().registerEvents(event, this);
+            }
+
+            //commands
+            Objects.requireNonNull(this.getCommand("discord")).setExecutor(new DiscordCommand());
+            Objects.requireNonNull(this.getCommand("grapplinghook")).setExecutor(new GrapplingHook());
+            Objects.requireNonNull(this.getCommand("back")).setExecutor(new BackCommand());
+            Objects.requireNonNull(this.getCommand("trashcan")).setExecutor(new TrashcanCommand());
+            Objects.requireNonNull(this.getCommand("kgrl")).setExecutor(new ReloadCommand());
+            Objects.requireNonNull(this.getCommand("weiner")).setExecutor(new FunCommand());
+            Objects.requireNonNull(this.getCommand("exception")).setExecutor(new ExceptionCommand());
+
+
+            // THIS STATEMENT NEEDS TO REMAIN AT THE END OF THE METHOD
+            sendStartStopMessageToDiscord(true);
+        }catch(IllegalStateException ignored) {}
     }
 
     @Override
     public void onDisable() {
+
+        sendStartStopMessageToDiscord(false);
+
         try {
             clearOnlineRole();
         } catch(NullPointerException e) {
-            this.getLogger().log(Level.SEVERE, "Was unable to clear online role, server did not boot correctly!");
+            debug("Was unable to clear online role, server did not boot correctly!");
         }
 
-        if(discordbot != null) {
+        if(discordbot != null)
            discordbot.shutdownNow();
-        }
 
         instance1 = null;
     }
@@ -138,13 +144,19 @@ public class Main extends JavaPlugin {
     }
 
     private void awakenTheKangaroo() {
+
         List<GatewayIntent> gatewayIntents = new ArrayList<>();
         gatewayIntents.add(GatewayIntent.GUILD_MEMBERS);
         gatewayIntents.add(GatewayIntent.GUILD_PRESENCES);
 
-        JDABuilder jdaBuilder = JDABuilder.createDefault(getPluginConfigApi().getDiscordBotToken(getPluginConfig()));
+        String token = getPluginConfigApi().getDiscordBotToken(getPluginConfig());
+        if(token.equals("")) {
+            log(Level.SEVERE, "Welcome to Kangaroo bot! Please fill out the config.yml located in plugins/KangarooBot/config.yml");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
-
+        JDABuilder jdaBuilder = JDABuilder.createDefault(token);
         jdaBuilder.enableIntents(gatewayIntents);
         jdaBuilder.addEventListeners(new onGuildJoin());
         jdaBuilder.addEventListeners(new onChat());
@@ -153,14 +165,15 @@ public class Main extends JavaPlugin {
 
         try {
             discordbot = jdaBuilder.build();
+            discordbot.awaitReady();
         } catch (LoginException e) {
             log(Level.SEVERE, "Discord bot was unable to login.");
-            log(Level.SEVERE, ExceptionUtils.getMessage(e));
-        }
-        try {
-            discordbot.awaitReady();
+            debug(ExceptionUtils.getMessage(e));
+            getServer().getPluginManager().disablePlugin(this);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log(Level.SEVERE, "Discord bot was interrupted!");
+            debug(ExceptionUtils.getMessage(e));
+            getServer().getPluginManager().disablePlugin(this);
         }
 
     }

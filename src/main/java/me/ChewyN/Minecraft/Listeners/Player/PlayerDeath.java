@@ -52,7 +52,7 @@ public class PlayerDeath implements Listener {
         String cOD = Objects.requireNonNull(e.getEntity().getLastDamageCause()).getCause().toString();
 
 
-        // If it was a player, make the player the cause //FIXME: THIS BREAKS
+        // If it was a player, make the player the cause FIXME: THIS BREAKS
         // if (!Objects.requireNonNull(e.getEntity().getKiller()).getPlayerListName().isEmpty())
         //    cOD = Objects.requireNonNull(e.getEntity().getKiller().getPlayerListName());
 

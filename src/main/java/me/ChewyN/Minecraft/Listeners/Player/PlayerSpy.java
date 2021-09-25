@@ -9,22 +9,29 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
+
 public class PlayerSpy implements Listener {
 
-    private Main instance = Main.getInstance();
+    private final Main instance = Main.getInstance();
 
     @EventHandler
     public void signSpy(SignChangeEvent e) {
         Player      p = e.getPlayer();
-        String      signMessage =  e.line(0) + " " + e.line(1)  + " " +  e.line(2) + " " + e.line(3);
+        String[] lines = e.getLines();
+
+        String signText = "";
+        for (String line: lines) {
+            signText = signText.concat(" ").concat(line);
+        }
+
         String      playerName = p.getName();
 
         for(Player player : instance.getServer().getOnlinePlayers()) {
-            if (player.hasPermission("commandspy.see.signs") & !player.equals(e.getPlayer())) player.sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + signMessage);
+            if (player.hasPermission("commandspy.see.signs") & !player.equals(e.getPlayer())) player.sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + signText);
         }
 
-        DiscordMessageHandler.sendToAdminChannel("(Sign) " + playerName, signMessage);
-        instance.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + signMessage);
+        DiscordMessageHandler.sendToAdminChannel("(Sign) " + playerName, signText);
+        instance.getServer().getConsoleSender().sendMessage(ChatColor.AQUA + "(Sign) " + playerName + " » " + signText);
     }
 
     @EventHandler

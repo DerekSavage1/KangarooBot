@@ -3,13 +3,14 @@ package me.ChewyN.Discord.Listeners;
 import me.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.io.File;
 import java.util.List;
 
 import static me.Main.*;
@@ -97,35 +98,30 @@ public class DiscordMessageHandler {
 
     }
 
-    public static void sendToDebugChannel(String message) {
-        try {
-            getDiscordbot().getGuildById(Main.getPluginConfigApi().getDiscordDebugGuildID(getPluginConfig()))
-                    .getTextChannelById(getPluginConfigApi().getDiscordDebugChannelID(getPluginConfig()))
-                    .sendMessage(message).queue();
-        } catch(NullPointerException exception) {
-            Main.debug("No Debug channel/guild found!");
-        }
-    }
+    public static void sendToDebugChannel(Throwable thrown) {
 
-    public static void sendToDebugChannel(File image) {
-        try {
-            getDiscordbot().getGuildById(Main.getPluginConfigApi().getDiscordDebugGuildID(getPluginConfig()))
-                    .getTextChannelById(getPluginConfigApi().getDiscordDebugChannelID(getPluginConfig()))
-                    .sendMessage("").addFile(image);
-        } catch(NullPointerException exception) {
-            Main.debug("No Debug channel/guild found!");
-        }
-    }
+        String stackTrace = ExceptionUtils.getStackTrace(thrown);
+        String stackMessage = ExceptionUtils.getMessage(thrown);
 
-    public static void sendToDebugChannel(MessageEmbed message) {
-        try {
-            getDiscordbot().getGuildById(Main.getPluginConfigApi().getDiscordDebugGuildID(getPluginConfig()))
-                            .getTextChannelById(getPluginConfigApi().getDiscordDebugChannelID(getPluginConfig()))
-                            .sendMessage(message).queue();
-        } catch(NullPointerException exception) {
-            Main.debug("No Debug channel/guild found!");
+        Guild guild = getDiscordbot().getGuildById(Main.getPluginConfigApi().getDiscordDebugGuildID(getPluginConfig()));
+        if(guild == null) {
+            debug("Guild not found!");
+            return;
         }
 
+        TextChannel debugChannel = guild.getTextChannelById(getPluginConfigApi().getDiscordDebugChannelID(getPluginConfig()));
+        if(debugChannel == null) {
+            debug("Guild Channel not found!");
+            return;
+        }
+
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setDescription("```java\n".concat(stackMessage).concat("```"));
+        embedBuilder.setTitle(stackMessage);
+        embedBuilder.setColor(0xFF3333);
+//      embedBuilder.setImage();
+
+        debugChannel.sendMessage(embedBuilder.build()).queue();
     }
 
     public static void sendJoinOrQuitMessageToDiscord(Player player, boolean isJoining) {

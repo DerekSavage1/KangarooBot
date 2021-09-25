@@ -58,13 +58,13 @@ public class PluginConfigYml extends AbstractFile {
         writeToConfig(pluginConfig, "customDiscordPlayerJoinMessage", " has joined the server");
         writeToConfig(pluginConfig, "customDiscordPlayerLeaveMessage", " has left the server");
 
-        writeToConfig(pluginConfig, "minecraftJoinMessageEnabled", true);
+        writeToConfig(pluginConfig, "minecraftJoinMessageEnabled", false);
         writeToConfig(pluginConfig, "minecraftJoinMessage", " has joined the game!");
-        writeToConfig(pluginConfig, "minecraftBackCommandEnabled", true);
+        writeToConfig(pluginConfig, "minecraftBackCommandEnabled", false);
         writeToConfig(pluginConfig, "minecraftCenterDeathMessages", false);
-        writeToConfig(pluginConfig, "minecraftWelcomeMessageEnabled", true);
+        writeToConfig(pluginConfig, "minecraftWelcomeMessageEnabled", false);
 
-        writeToConfig(pluginConfig, "debugEnabled", true);
+        writeToConfig(pluginConfig, "debugEnabled", false);
         writeToConfig(pluginConfig, "discordDebugGuildID", "");
         writeToConfig(pluginConfig, "discordDebugChannelID", "");
 

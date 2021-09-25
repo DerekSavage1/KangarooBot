@@ -1,6 +1,7 @@
 package me.ChewyN.Data.ErrorHandling;
 
 
+import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.core.LogEvent;
@@ -9,6 +10,42 @@ import org.apache.logging.log4j.message.Message;
 
 public class ApacheTest implements org.apache.logging.log4j.core.Filter {
 
+    @Override
+    public Result filter(LogEvent event) {
+
+        if(event.getThrown() != null) {
+            DiscordMessageHandler.sendToDebugChannel(event.getThrown());
+        }
+        return null;
+    }
+
+    @Override
+    public State getState() {
+        return State.STARTED;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    public boolean isStarted() {
+        return true;
+    }
+
+    @Override
+    public boolean isStopped() {
+        return false;
+    }
 
     @Override
     public Result getOnMismatch() {
@@ -86,22 +123,6 @@ public class ApacheTest implements org.apache.logging.log4j.core.Filter {
     }
 
     @Override
-    public Result filter(LogEvent event) {
-
-        if(event.getThrown() != null) {
-//            DiscordMessageHandler.sendToDebugChannel();
-            new PlayWright().getImage(event.getThrown());
-        }
-        return null;
-    }
-
-
-    @Override
-    public State getState() {
-        return State.STARTED;
-    }
-
-    @Override
     public void initialize() {
     }
 
@@ -113,13 +134,4 @@ public class ApacheTest implements org.apache.logging.log4j.core.Filter {
     public void stop() {
     }
 
-    @Override
-    public boolean isStarted() {
-        return true;
-    }
-
-    @Override
-    public boolean isStopped() {
-        return false;
-    }
 }
