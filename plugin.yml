@@ -6,9 +6,6 @@ api-version: 1.17
 commands:
     discord:
       description: basic functionality
-    tpermissions:
-      description: Base Command.
-      usage: /tpermissions <rank> <user>
     grapplinghook:
       description: Base Command.
       usage: /grapplinghook <give/enable/disable> <user>
@@ -28,5 +25,8 @@ commands:
     exception:
       description: throws a fat error
       usage: debug
+    say:
+      description: broadcasts to players in discord and minecraft from console
+      usage: /say <message>
 libraries:
   - com.squareup.okhttp3:okhttp:4.9.0
