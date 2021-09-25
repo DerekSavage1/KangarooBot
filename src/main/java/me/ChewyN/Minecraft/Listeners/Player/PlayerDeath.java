@@ -55,7 +55,7 @@ public class PlayerDeath implements Listener {
 
         e.getEntity().getLastDamageCause().getCause().toString().toLowerCase(Locale.ROOT);
 
-        String cause = damageCause.name().toLowerCase(Locale.ROOT).replaceAll("_", " ");
+        String cause = damageCause.name().toLowerCase(Locale.ROOT).replaceAll("_", " ").replaceAll("entity ", "");
 
         // location of the death
         Location loc = e.getEntity().getLocation();
