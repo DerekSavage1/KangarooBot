@@ -22,6 +22,7 @@ me\ChewyN\Data\Configuration\PluginConfigAPI.class
 me\Main.class
 me\ChewyN\Minecraft\Listeners\Player\PlayerSpy.class
 me\Skyla\Minecraft\Commands\FunCommand.class
+me\Skyla\Minecraft\Commands\SayCommand.class
 me\Skyla\Minecraft\Commands\TrashcanCommand.class
 me\Skyla\Minecraft\Objects\DeathStatus.class
 me\ChewyN\Minecraft\Commands\AbstractCommand.class

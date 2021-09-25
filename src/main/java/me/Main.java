@@ -14,10 +14,8 @@ import me.ChewyN.Minecraft.Listeners.Player.JoinAndQuit;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerChat;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerDeath;
 import me.ChewyN.Minecraft.Listeners.Player.PlayerSpy;
-import me.Skyla.Minecraft.Commands.BackCommand;
-import me.Skyla.Minecraft.Commands.FunCommand;
-import me.Skyla.Minecraft.Commands.ReloadCommand;
-import me.Skyla.Minecraft.Commands.TrashcanCommand;
+import me.Skyla.Minecraft.Commands.*;
+import me.Skyla.Minecraft.Commands.SayCommand;
 import me.Skyla.Minecraft.Listeners.CommandListener;
 import me.Skyla.Minecraft.Listeners.ServerCommandListener;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -100,6 +98,8 @@ public class Main extends JavaPlugin {
             Objects.requireNonNull(this.getCommand("kgrl")).setExecutor(new ReloadCommand());
             Objects.requireNonNull(this.getCommand("weiner")).setExecutor(new FunCommand());
             Objects.requireNonNull(this.getCommand("exception")).setExecutor(new ExceptionCommand());
+            Objects.requireNonNull(this.getCommand("say")).setExecutor(new SayCommand());
+
 
 
             // THIS STATEMENT NEEDS TO REMAIN AT THE END OF THE METHOD
