@@ -28,20 +28,17 @@ public class BackCommand extends AbstractCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(isCommandEnabled()) {
+        if(!isCommandEnabled()) {
             sender.sendMessage(net.md_5.bungee.api.ChatColor.RED + "Command is disabled.");
             return true;
         }
 
         // Check if sender is a player
 
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player p)) {
             sender.sendMessage("MR SQUIDWARD!? I SHOULD KICK YER FUCKING ARSE!");
             return false;
         }
-
-        // Our Player
-        Player p = (Player) sender;
 
         // check teleport status
         boolean getTPStatus;
