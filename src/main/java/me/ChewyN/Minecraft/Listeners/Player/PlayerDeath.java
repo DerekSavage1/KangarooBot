@@ -69,6 +69,7 @@ public class PlayerDeath implements Listener {
             cause = "a " + cause;
         }
 
+
         // location of the death
         Location loc = e.getEntity().getLocation();
 

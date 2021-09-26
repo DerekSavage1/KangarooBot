@@ -83,7 +83,7 @@ public class BackCommand extends AbstractCommand implements CommandExecutor {
             //LastDeathFile.saveTPStatus(p.getUniqueId().toString(), true); //FIXME in 1.1
             return true;
         }
-        p.sendMessage(ChatColor.RED + "This command has been disabled, or you have already teleported back!");
+        p.sendMessage(ChatColor.RED + "You have already teleported back!");
         return true;
     }
 }
