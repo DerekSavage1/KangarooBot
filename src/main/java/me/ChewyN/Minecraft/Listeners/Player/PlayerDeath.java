@@ -33,6 +33,7 @@ public class PlayerDeath implements Listener {
     private static final HashMap<Player, DeathStatus> deathMap = new HashMap<>();
 
     @EventHandler
+    @SuppressWarnings("StatementWithEmptyBody")
     public void onPlayerDeath(PlayerDeathEvent e) {
 
         EntityDamageEvent damageEvent = e.getEntity().getLastDamageCause();
@@ -56,7 +57,9 @@ public class PlayerDeath implements Listener {
         e.getEntity().getLastDamageCause().getCause().toString().toLowerCase(Locale.ROOT);
 
         String cause = damageCause.name().toLowerCase(Locale.ROOT).replaceAll("_", " ").replaceAll("entity ", "");
-        if(cause.charAt(0) == 'a'
+        if(cause.endsWith("ing")) {
+            //empty body intended
+        } else if(cause.charAt(0) == 'a'
                 || cause.charAt(0) == 'e'
                 || cause.charAt(0) == 'i'
                 || cause.charAt(0) == 'o'
