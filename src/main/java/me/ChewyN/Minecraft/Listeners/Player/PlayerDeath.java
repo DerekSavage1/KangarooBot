@@ -1,58 +1,55 @@
 package me.ChewyN.Minecraft.Listeners.Player;
 
-import me.ChewyN.Discord.Listeners.DiscordChannelHandler;
 import me.ChewyN.Discord.Listeners.DiscordMessageHandler;
 import me.ChewyN.Minecraft.Util.centerMessage;
 import me.Main;
-import me.Skyla.Minecraft.Objects.DeathStatus;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
+import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
-import static me.Main.*;
+import static me.Main.getPluginConfig;
+import static me.Main.getPluginConfigApi;
 
 public class PlayerDeath implements Listener {
 
-    private Main instance = Main.getInstance();
-
-    /**
-     * Map that contains a player and their latest death status
-     */
-    private static final HashMap<Player, DeathStatus> deathMap = new HashMap<>();
+    private final Main instance = Main.getInstance();
 
     @EventHandler
     @SuppressWarnings("StatementWithEmptyBody")
     public void onPlayerDeath(PlayerDeathEvent e) {
 
+        Location loc = e.getEntity().getLocation();
+
         EntityDamageEvent damageEvent = e.getEntity().getLastDamageCause();
         assert  damageEvent != null;
         EntityDamageEvent.DamageCause damageCause = e.getEntity().getLastDamageCause().getCause();
 
-        // get our new death message id
-        int deathMessageID = getDeathMessageID();
+        //Add death information to Player's NBT tag
+        PersistentDataContainer container = e.getEntity().getPersistentDataContainer();
+        String locationString = loc.getWorld().getName()+ ',' + loc.toVector() + ',' + loc.getYaw() + ',' + loc.getPitch();
+        container.set(new NamespacedKey(Main.getInstance(), "LastPlayerLocation"), PersistentDataType.STRING,locationString);
+        container.set(new NamespacedKey(Main.getInstance(), "hasTeleportedToDeathLocation"),PersistentDataType.BYTE,Byte.MIN_VALUE);
 
         // Construct the death message
-        String deathMessage = getDeathMessage(e, Main.getPluginConfigApi().isMinecraftCenterDeathMessages(getPluginConfig()), deathMessageID);
+        String deathMessage = getDeathMessage(e, Main.getPluginConfigApi().isMinecraftCenterDeathMessages(getPluginConfig()), getDeathMessageID());
 
         // replace the death message
         e.setDeathMessage(deathMessage);
 
         // get new non-centered message after replacing the mc death message
-        deathMessage = getDeathMessage(e, false, deathMessageID);
-
-        deathMap.put(e.getEntity(), new DeathStatus(e.getEntity().getLocation()));
+        deathMessage = getDeathMessage(e, false, getDeathMessageID());
 
         e.getEntity().getLastDamageCause().getCause().toString().toLowerCase(Locale.ROOT);
 
@@ -69,9 +66,6 @@ public class PlayerDeath implements Listener {
             cause = "a " + cause;
         }
 
-
-        // location of the death
-        Location loc = e.getEntity().getLocation();
 
         String l  = ("X:" + loc.getBlockX() + ", Y: " + loc.getBlockY() + ", Z: " + loc.getBlockZ());
 
@@ -100,7 +94,7 @@ public class PlayerDeath implements Listener {
      * @return The completed death message String.
      */
     private String getDeathMessage(PlayerDeathEvent e, boolean isEnabled, Integer id) {
-        String randomDeathMessage = " passed away :(";
+        String randomDeathMessage = "";
 
         List<String> deathMessages = getPluginConfigApi().getDeathMessages(getPluginConfig());
         if (!(deathMessages == null)) {
@@ -126,15 +120,6 @@ public class PlayerDeath implements Listener {
     }
 
     /**
-     * Method that returns the players DeathStatus
-     * @param p the player
-     * @return returns the player's death status
-     */
-    public static DeathStatus getPlayerDeathStatus(Player p) {
-        return deathMap.get(p);
-    }
-
-    /**
      * Sends death messages to discord. Will send a normal message to the minecraft channel, and a message with extra info to the admin channel.
      * @param name The players name
      * @param c The death cause
@@ -142,7 +127,6 @@ public class PlayerDeath implements Listener {
      */
     private void sendDeathMessageToDiscord(String name, String c, String l, String deathMessage) {
 
-        final TextChannel DISCORD_MINECRAFT_CHANNEL = DiscordChannelHandler.getDiscordMinecraftChannel(getPluginConfig(),getDiscordbot());
         EmbedBuilder minecraftEmbed = new EmbedBuilder();
         minecraftEmbed.setTitle(deathMessage);
         minecraftEmbed.setColor(0x888888);
@@ -163,10 +147,6 @@ public class PlayerDeath implements Listener {
         DiscordMessageHandler.sendToMinecraftChannel(minecraftEmbed.build());
 
         minecraftEmbed.clear();
-    }
-
-    public static void setDeathInfo(Player p, DeathStatus status) {
-        deathMap.put(p, status);
     }
 
 }
