@@ -67,12 +67,11 @@ public class BackCommand extends AbstractCommand implements CommandExecutor {
                 p.teleport(l);
                 setHasTeleported(p);
             }, 100L);
-            return true;
         } else {
             p.teleport(l);
             setHasTeleported(p);
-            return true;
         }
+        return true;
     }
 
     private static Location parseLocationFromPlayer(Player p) {
