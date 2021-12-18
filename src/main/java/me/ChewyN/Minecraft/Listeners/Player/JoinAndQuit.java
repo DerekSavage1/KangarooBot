@@ -29,14 +29,23 @@ public class JoinAndQuit implements Listener {
         modifyJoinMessage(e);
         if (Main.getPluginConfigApi().isDiscordJoinLeaveMessagesEnabled(getPluginConfig()))
             sendJoinOrQuitMessageToDiscord(p, true);
-        setDiscordOnlineRole(p.getPlayerListName(), true);
+        try{
+            setDiscordOnlineRole(p.getPlayerListName(), true);
+        } catch(IndexOutOfBoundsException ignored) {
+            debug("Can't set online role! Player's name in game does not match the nickname on the server!");
+        }
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
 
-        setDiscordOnlineRole(p.getPlayerListName(), false);
+        try{
+            setDiscordOnlineRole(p.getPlayerListName(), false);
+        } catch(IndexOutOfBoundsException ignored) {
+            debug("Can't set online role! Player's name in game does not match the nickname on the server!");
+        }
+
         if(Main.getPluginConfigApi().isDiscordJoinLeaveMessagesEnabled(getPluginConfig()))
             sendJoinOrQuitMessageToDiscord(p, false);
     }
